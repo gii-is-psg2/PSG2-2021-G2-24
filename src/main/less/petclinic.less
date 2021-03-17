@@ -15,6 +15,7 @@
 
 @spring-green:      #6db33f;
 @spring-dark-green: #5fa134;
+@spring-light-red:  #fa5a5a;
 @spring-brown:      #34302D;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
@@ -27,10 +28,10 @@
 @navbar-default-link-color:         @spring-light-grey;
 @navbar-default-link-active-color:  @spring-light-grey;
 @navbar-default-link-hover-color:   @spring-light-grey;
-@navbar-default-link-hover-bg:      @spring-green;
+@navbar-default-link-hover-bg:      @spring-light-red;
 @navbar-default-toggle-icon-bar-bg: @spring-light-grey;
 @navbar-default-toggle-hover-bg:    transparent;
-@navbar-default-link-active-bg:     @spring-green;
+@navbar-default-link-active-bg:     @spring-light-red;
 
 @border-radius-base:             0;
 @border-radius-large:            0;
@@ -49,14 +50,9 @@
 @pagination-active-border:                @spring-green;
 @table-border-color:                      @spring-brown;
 
-.table > thead > tr > th  {
+.table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
   color: @spring-light-grey;
-}
-
-.table-striped > thead#psg2Head  > tr > th  {
-  background-color: #D3D3D3;
-  color: black;
 }
 
 .table-filter {
