@@ -42,12 +42,14 @@ public class PetService {
 	
 	private VisitRepository visitRepository;
 	
+	private OwnerService ownerService;
 
 	@Autowired
 	public PetService(PetRepository petRepository,
 			VisitRepository visitRepository) {
 		this.petRepository = petRepository;
 		this.visitRepository = visitRepository;
+		this.ownerService =ownerService;
 	}
 
 	@Transactional(readOnly = true)
@@ -78,5 +80,9 @@ public class PetService {
 	public Collection<Visit> findVisitsByPetId(int petId) {
 		return visitRepository.findByPetId(petId);
 	}
-
+	
+	@Transactional
+	public void deletePet(Pet pet) {
+		petRepository.delete(pet);
+	}
 }
