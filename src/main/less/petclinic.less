@@ -19,39 +19,44 @@
 @spring-brown:      #34302D;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
+@spring-light-brown: #f5deb3;
+@spring-dark-brown: #2A0600;
+@spring-ultradark-brown: #190300;
+@spring-aqua-green: #39B89E;
 
-@body-bg:                           @spring-light-grey;
-@text-color:                        @spring-brown;
-@link-color:                        @spring-dark-green;
-@link-hover-color:                  @spring-dark-green;
+
+@body-bg:                           @spring-light-brown;
+@text-color:                        black;
+@link-color:                        @spring-aqua-green;
+@link-hover-color:                  @spring-aqua-green;
 
 @navbar-default-link-color:         @spring-light-grey;
 @navbar-default-link-active-color:  @spring-light-grey;
 @navbar-default-link-hover-color:   @spring-light-grey;
-@navbar-default-link-hover-bg:      @spring-light-red;
+@navbar-default-link-hover-bg:      @spring-aqua-green;
 @navbar-default-toggle-icon-bar-bg: @spring-light-grey;
 @navbar-default-toggle-hover-bg:    transparent;
-@navbar-default-link-active-bg:     @spring-light-red;
+@navbar-default-link-active-bg:     @spring-aqua-green;
 
 @border-radius-base:             0;
 @border-radius-large:            0;
 @border-radius-small:            0;
 
 @btn-default-color:              @spring-light-grey;
-@btn-default-bg:                 @spring-brown;
-@btn-default-border:             @spring-green;
+@btn-default-bg:                 @spring-dark-brown;
+@btn-default-border:             @spring-aqua-green;
 
 @nav-tabs-active-link-hover-color:        @spring-light-grey;
-@nav-tabs-active-link-hover-bg:           @spring-brown;
+@nav-tabs-active-link-hover-bg:           @spring-ultradark-brown;
 @nav-tabs-active-link-hover-border-color: @spring-brown;
 @nav-tabs-border-color:                   @spring-brown;
 
-@pagination-active-bg:                    @spring-brown;
+@pagination-active-bg:                    @spring-ultradark-brown;
 @pagination-active-border:                @spring-green;
 @table-border-color:                      @spring-brown;
 
 .table > thead > tr > th {
-  background-color: lighten(@spring-brown, 3%);
+  background-color: @spring-dark-brown;
   color: @spring-light-grey;
 }
 
@@ -66,6 +71,7 @@
 
 .btn-default {
   border-width: 2px;
+  border-radius: 10px;
   transition: border 0.15s;
   -webkit-transition: border 0.15s;
   -moz-transition: border 0.15s;
@@ -77,7 +83,7 @@
   &:active,
   &.active,
   .open .dropdown-toggle& {
-    background-color: @spring-brown;
+    background-color: @spring-ultradark-brown;
     border-color: @spring-brown;
   }
 }
