@@ -78,16 +78,22 @@
   -o-transition: border 0.15s;
   -ms-transition: border 0.15s;
 
-  &:hover,
-  &:focus,
-  &:active,
-  &.active,
-  .open .dropdown-toggle& {
-    background-color: @spring-ultradark-brown;
-    border-color: @spring-brown;
-  }
 }
 
+.btn-default:hover{
+	background-color: @spring-ultradark-brown;
+    border-color: @spring-brown;
+}
+
+.form-group{
+	border:none;
+}
+
+.btn.btn-default:active{
+	background-color: @spring-ultradark-brown;
+    border-color: @spring-dark-brown;
+	transform:scale(0.95);
+}
 
 .container .text-muted {
   margin: 20px 0;
@@ -164,6 +170,15 @@ table td.action-column {
   color: lighten(@text-color, 50%); // lighten the text some for contrast
 }
 
+.form-control{
+	background-color: #F7E6C8;
+	border-color: @spring-brown;
+	width:50%;
+}
+
+.form-control:focus{
+	border-color: @spring-brown;
+}
 .xd-containers {
   font-size: 15px;
 }
@@ -239,6 +254,10 @@ table td.action-column {
 
 hr {
   border-top: 1px dotted @spring-brown;
+}
+
+.btn btn-primary btn-block btn-sm{
+	background-color: #2A0600;
 }
 
 @import "typography.less";
