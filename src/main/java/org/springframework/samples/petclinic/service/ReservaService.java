@@ -23,6 +23,10 @@ public class ReservaService {
 	}
 	
 	@Transactional
+	public void save(Reserva reserva) {
+		reservaRepo.save(reserva);
+	}
+	@Transactional
 	public Iterable<Reserva> findAll() {
 		return reservaRepo.findAll();
 	}

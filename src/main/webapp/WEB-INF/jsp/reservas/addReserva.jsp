@@ -7,7 +7,7 @@
 
 
 
-<petclinic:layout pageName="restaurantreservations">
+<petclinic:layout pageName="reservas">
 	<jsp:attribute name="customScript">
 		<script>
 			$(function () {
