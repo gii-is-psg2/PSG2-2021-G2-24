@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+  * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -45,10 +47,14 @@ public class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerService ownerService;
+	private final UserService userService;
+	private final AuthoritiesService authoritiesService;
 
 	@Autowired
 	public OwnerController(OwnerService ownerService, UserService userService, AuthoritiesService authoritiesService) {
 		this.ownerService = ownerService;
+		this.userService = userService;
+		this.authoritiesService = authoritiesService;
 	}
 
 	@InitBinder
@@ -71,7 +77,6 @@ public class OwnerController {
 		else {
 			//creating owner, user and authorities
 			this.ownerService.saveOwner(owner);
-			
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
@@ -139,6 +144,12 @@ public class OwnerController {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		mav.addObject(this.ownerService.findOwnerById(ownerId));
 		return mav;
+	}
+	@PostMapping(path = "/owners/{ownerId}", params = {"postDeleteAccount"} )
+	public String deleteOwner(@PathVariable("ownerId") int ownerId) {
+		Owner owner = this.ownerService.findOwnerById(ownerId);
+		this.ownerService.deleteOwner(owner);
+		return "redirect:/owners/find";
 	}
 
 }
