@@ -38,8 +38,10 @@ import java.util.Optional;
 /**
  * Test class for the {@link VetController}
  */
+
 @WebMvcTest(controllers = VetController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class VetControllerTests {
+
 
 	@Autowired
 	private VetController vetController;
@@ -83,7 +85,23 @@ class VetControllerTests {
 				.andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
 				.andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
 	}
-
+	@WithMockUser(value = "spring")
+	@Test
+	void testInitCreationForm() throws Exception{
+		mockMvc.perform(get("/vets/new")).andExpect(status().isOk()).andExpect(model().attributeExists("vet"))
+		.andExpect(view().name("vets/addVet"));
+	}
+  @WithMockUser(value = "spring")
+    @Test
+    void testProcessCreationFormSuccess() throws Exception {
+		mockMvc.perform(post("/vets/save").param("name", "Magic and Ilusion")
+						.with(csrf())
+						.param("date", "2020/12/25")
+						.param("showtype_id", "Magic")
+						.param("stage_id", "1"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(view().name("events/listEvent"));
+	}
 	@WithMockUser(value = "spring")
 	@Test
 	void testDeleteVet() throws Exception {
@@ -93,4 +111,5 @@ class VetControllerTests {
 		verify(clinicService, times(1)).findVet(1);
 		verify(clinicService, times(1)).vetDelete(any(Vet.class));
 	}
+
 }
