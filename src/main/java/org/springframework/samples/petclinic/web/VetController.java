@@ -63,7 +63,8 @@ public class VetController {
 
 	@GetMapping(value = { "/vets" })
 	public String showVetList(Map<String, Object> model) {
-		// Here we are returning an object of type 'Vets' rather than a collection of Vet
+		// Here we are returning an object of type 'Vets' rather than a collection of
+		// Vet
 		// objects
 		// so it is simpler for Object-Xml mapping
 		Vets vets = new Vets();
@@ -72,49 +73,59 @@ public class VetController {
 		return "vets/vetList";
 	}
 
-	@GetMapping(value = { "/vets.xml"})
+	@GetMapping(value = { "/vets.xml" })
 	public @ResponseBody Vets showResourcesVetList() {
-		// Here we are returning an object of type 'Vets' rather than a collection of Vet
+		// Here we are returning an object of type 'Vets' rather than a collection of
+		// Vet
 		// objects
 		// so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetService.findVets());
 		return vets;
 	}
-	@GetMapping(path="/vets/new")
+
+	@GetMapping(path = "/vets/new")
 	public String createVet(ModelMap modelMap) {
-		String view="vets/addVet";
+		String view = "vets/addVet";
 		modelMap.addAttribute("vet", new Vet());
 		return view;
 	}
-	@PostMapping(path="/vets/save")
-	public String saveVet(@Valid Vet vet,@RequestParam Optional<String[]> specialties, BindingResult result, ModelMap modelMap) {
+
+	@PostMapping(path = "/vets/save")
+	public String saveVet(@Valid Vet vet, @RequestParam Optional<String[]> specialties, BindingResult result,
+			ModelMap modelMap) {
 		log.info("El nombre es:" + vet.getFirstName());
 		log.info("El apellido es:" + vet.getLastName());
-		String view="vets/vetList";
-		if(result.hasErrors()) {
+		String view = "vets/vetList";
+		if (result.hasErrors()) {
 			modelMap.addAttribute("vet", vet);
 			return "vet/addVet";
-			
-		}else {
-			String[] specialtiesstr = specialties.get();
-			for (String s : specialtiesstr) {
-				Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
-				for (Specialty type : findSpecialties) {
-					if (type.getName().equals(s)) {
-						vet.addSpecialty(type);
+
+		} else {
+			if (!specialties.isPresent()) {
+
+			} else {
+				String[] specialtiesstr = specialties.get();
+
+				for (String s : specialtiesstr) {
+					Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
+					for (Specialty type : findSpecialties) {
+						if (type.getName().equals(s)) {
+							vet.addSpecialty(type);
+						}
 					}
 				}
 			}
-			
 			vetService.save(vet);
 			modelMap.addAttribute("message", "vet successfully saved!");
-			view=showVetList(modelMap);
-			
+			view = showVetList(modelMap);
+
 		}
+
 		return view;
 	}
-	@GetMapping(value  = "vets/{vetId}/edit")
+
+	@GetMapping(value = "vets/{vetId}/edit")
 	public String initUpdateVetForm(@PathVariable("vetId") int vetId, ModelMap model) {
 		log.info("Loading update vet form");
 		Vet vet = vetService.findVetbyId(vetId).get();
@@ -123,32 +134,36 @@ public class VetController {
 	}
 
 	@PostMapping(value = "vets/{vetId}/edit")
-	public String processUpdateVetForm(@Valid Vet vet, BindingResult result,
-			@PathVariable("vetId") int vetId, ModelMap model,@RequestParam Optional<String[]> specialties) {
+	public String processUpdateVetForm(@Valid Vet vet, BindingResult result, @PathVariable("vetId") int vetId,
+			ModelMap model, @RequestParam Optional<String[]> specialties) {
 		log.info("Updating vet: " + vetId);
 		vet.setId(vetId);
 		if (result.hasErrors()) {
 			log.warn("Found errors on update: " + result.getAllErrors());
 			model.put("vet", vet);
 			return "vets/updateVet";
-		}
-		else {
-			String[] specialtiesstr = specialties.get();
-		for (String s : specialtiesstr) {
-			Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
-			for (Specialty type : findSpecialties) {
-				if (type.getName().equals(s)) {
-					vet.addSpecialty(type);
+		} else {
+			if (!specialties.isPresent()) {
+
+			} else {
+				String[] specialtiesstr = specialties.get();
+
+				for (String s : specialtiesstr) {
+					Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
+					for (Specialty type : findSpecialties) {
+						if (type.getName().equals(s)) {
+							vet.addSpecialty(type);
+						}
+					}
 				}
 			}
-		}
 			this.vetService.save(vet);
 			return "redirect:/vets";
 		}
 	}
-	
+
 	@ModelAttribute("specialties")
-    public Collection<Specialty> populateSpecialties() {
-        return this.vetService.findSpecialties();
-    }
+	public Collection<Specialty> populateSpecialties() {
+		return this.vetService.findSpecialties();
+	}
 }
