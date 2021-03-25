@@ -18,6 +18,7 @@
         	<th style="width: 150px;">Id</th>
             <th style="width: 150px;">Owner's First Name</th>
             <th style="width: 200px;">Owner's Last Name </th>
+            <th style="width: 200px;">Pet </th>
             <th style="width: 200px;">Room</th>
             <th style="width: 200px;">Start Date</th>
             <th style="width: 200px;">Ending Date</th>
@@ -37,6 +38,9 @@
                 </td>
                 <td>
                     <c:out value="${reserva.owner.lastName}"/>
+                </td>
+                <td>
+                    <c:out value="${reserva.pet}"/>
                 </td>
                 <td>
                     <c:out value="${reserva.room.id}"/>

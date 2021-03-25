@@ -11,21 +11,19 @@
 	<jsp:attribute name="customScript">
 		<script>
 			$(function () {
-				$("#date").datepicker({dateFormat: 'yy-mm-dd'});
+				$("#startDate").datepicker({dateFormat: 'yy-mm-dd'});
+				$("#endingDate").datepicker({dateFormat: 'yy-mm-dd'});
 			});
 		</script>
 	</jsp:attribute>
     <jsp:body>
-        <h2> Reserva</h2>
+        <h2>Añadir Reserva</h2>
 
 
         <form:form modelAttribute="reserva" class="form-horizontal" action="/reservas/save">
             <div class="form-group has-feedback">
             	<div class="control-group">
-                    <petclinic:inputField label="First Name" name="owner.firstName"/>
-                </div>
-                <div class="control-group">
-                    <petclinic:inputField label="First Name" name="owner.lastName"/>
+                     <petclinic:selectField name="owner" label="Owner" names="${owners}" size="5"/>
                 </div>
                 <div class="control-group">
                     <petclinic:selectField name="pet" label="Mascota" names="${pets}" size="5"/>
@@ -37,7 +35,7 @@
                     <petclinic:inputField label="Start Date" name="startDate"/>
                 </div>
                 <div class="control-group">
-                    <petclinic:inputField label="Ending Date" name="startDate"/>
+                    <petclinic:inputField label="Ending Date" name="endingDate"/>
                 </div>
                
 
