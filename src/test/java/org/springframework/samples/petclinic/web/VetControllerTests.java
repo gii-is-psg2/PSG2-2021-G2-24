@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.service.VetService;
@@ -15,22 +16,29 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.xml.HasXPath.hasXPath;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Optional;
 
 /**
  * Test class for the {@link VetController}
  */
-@WebMvcTest(controllers=VetController.class,
-		excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-		excludeAutoConfiguration= SecurityConfiguration.class)
+@WebMvcTest(controllers = VetController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class VetControllerTests {
 
 	@Autowired
@@ -58,21 +66,31 @@ class VetControllerTests {
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
 		given(this.clinicService.findVets()).willReturn(Lists.newArrayList(james, helen));
+		given(this.clinicService.findVet(any(int.class))).willReturn(Optional.of(james));
 	}
-        
-    @WithMockUser(value = "spring")
-		@Test
+
+	@WithMockUser(value = "spring")
+	@Test
 	void testShowVetListHtml() throws Exception {
 		mockMvc.perform(get("/vets")).andExpect(status().isOk()).andExpect(model().attributeExists("vets"))
 				.andExpect(view().name("vets/vetList"));
-	}	
+	}
 
 	@WithMockUser(value = "spring")
-        @Test
+	@Test
 	void testShowVetListXml() throws Exception {
 		mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML)).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
 				.andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
 	}
 
+	@WithMockUser(value = "spring")
+	@Test
+	void testDeleteVet() throws Exception {
+		mockMvc.perform(post("/vets", 1).with(csrf()).param("postDeleteVet", "").param("vetId", "1"))
+		.andExpect(status().isFound()).andExpect(redirectedUrl("/vets"));
+		
+		verify(clinicService, times(1)).findVet(1);
+		verify(clinicService, times(1)).vetDelete(any(Vet.class));
+	}
 }
