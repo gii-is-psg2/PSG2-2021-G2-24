@@ -1,30 +1,27 @@
 .navbar {
-  border-top: 4px solid #6db33f;
-  background-color: #34302d;
+  border-top: 4px solid #39B89E;
+  background-color: #2A0600;
   margin-bottom: 0px;
   border-bottom: 0;
   border-left: 0;
   border-right: 0;
+
 }
 
 .navbar a.navbar-brand {
-  background: url("../images/spring-logo-dataflow.png") -1px -1px no-repeat;
-  margin: 12px 0 6px;
+  background: url("../images/pethotel.png") -1px -1px no-repeat;
+  margin-top: -60px;
   width: 229px;
-  height: 46px;
+  height: 135px;
   display: inline-block;
   text-decoration: none;
   padding: 0;
 }
 
-.navbar a.navbar-brand span {
-  display: block;
-  width: 229px;
-  height: 46px;
-  background: url("../images/spring-logo-dataflow.png") -1px -48px no-repeat;
-  opacity: 0;
+.navbar a.navbar-brand:hover{
+   transform: rotateY(360deg);
   -moz-transition: opacity 0.12s ease-in-out;
-  -webkit-transition: opacity 0.12s ease-in-out;
+  -webkit-transition: 1.75s ease-in-out;
   -o-transition: opacity 0.12s ease-in-out;
 }
 
@@ -33,9 +30,10 @@
 }
 
 .navbar li > a, .navbar-text {
-  font-family: "montserratregular", sans-serif;
+  font-family: "Fjalla One", sans-serif;
   text-shadow: none;
-  font-size: 14px;
+  font-size: 17px;
+  letter-spacing:1px;
 
 /* line-height: 14px; */
   padding: 28px 20px;
@@ -48,6 +46,7 @@
 
 .navbar li > a {
   text-transform: uppercase;
+  height:80px;
 }
 
 .navbar .navbar-text {
@@ -56,8 +55,8 @@
 }
 .navbar li:hover > a {
   color: #eeeeee;
-  background-color: #fa5a5a;
 }
+
 
 .navbar-toggle {
   border-width: 0;
@@ -70,3 +69,29 @@
     height: 3px;
   }
 }
+
+.dropdown-menu{
+	background-color: #f5deb3;
+}
+
+a.btn.btn-primary.btn-block.btn-sm{
+  background-color: @spring-dark-brown;
+  border-color: @spring-aqua-green;
+  border-width: 2px;
+  border-radius: 10px;
+  transition: border 0.15s;
+  -webkit-transition: border 0.15s;
+  -moz-transition: border 0.15s;
+  -o-transition: border 0.15s;
+  -ms-transition: border 0.15s;
+}
+
+a.btn.btn-primary.btn-block.btn-sm:hover{
+	background-color: @spring-ultradark-brown;
+    border-color: @spring-brown
+}
+
+a.btn.btn-primary.btn-block.btn-sm:active{
+	transform:scale(0.95);
+}
+

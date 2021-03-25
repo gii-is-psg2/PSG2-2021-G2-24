@@ -75,6 +75,8 @@
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
+										</div>
+										<div class="col-lg-12">
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
