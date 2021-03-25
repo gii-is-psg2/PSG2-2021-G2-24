@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,10 +24,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Specialty;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.repository.SpecialtyRepository;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
@@ -42,9 +45,11 @@ import org.springframework.util.StringUtils;
  */
 @Service
 public class VetService {
-
+	@Autowired
 	private VetRepository vetRepository;
 
+	@Autowired
+	private SpecialtyRepository speRepo;
 
 	@Autowired
 	public VetService(VetRepository vetRepository) {
@@ -55,5 +60,32 @@ public class VetService {
 	public Collection<Vet> findVets() throws DataAccessException {
 		return vetRepository.findAll();
 	}	
+	
+	
+	@Transactional
+	public int vetCount() {
+		return (int)vetRepository.count();
+	}
+	
+	@Transactional(readOnly=true)
+	public  Optional<Vet> findVetbyId(int id){
+		return vetRepository.findById(id);
+	}
+	@Transactional(readOnly=true)
+	public  Optional<Specialty> findSpecialtybyId(int id){
+		return speRepo.findById(id);
+	}
 
+	@Transactional
+	public  void save(Vet vet) throws DataAccessException {
+		vetRepository.save(vet);
+		
+	}
+
+	public Collection<Specialty> findSpecialties() throws DataAccessException{
+        // TODO Auto-generated method stub
+        return vetRepository.findSpecialties();
+    }
+	
+	
 }
