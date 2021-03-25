@@ -27,6 +27,10 @@ public class ReservaService {
 		reservaRepo.save(reserva);
 	}
 	@Transactional
+	public void delete(Reserva reserva) {
+		reservaRepo.delete(reserva);
+	}
+	@Transactional
 	public Iterable<Reserva> findAll() {
 		return reservaRepo.findAll();
 	}

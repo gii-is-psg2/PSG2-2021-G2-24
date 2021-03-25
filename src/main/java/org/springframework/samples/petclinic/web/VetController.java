@@ -92,14 +92,14 @@ public class VetController {
 
 	@PostMapping(path = "/vets", params = {"postDeleteVet"})
 	public String deleteVet(@RequestParam("vetId") int vetId) {
-		Optional<Vet> vetOp = this.vetService.findVet(vetId);
+		Optional<Vet> vetOp = this.vetService.findVetbyId(vetId);
 		if(!vetOp.isPresent()) {
 			return "redirect:/vets";
 		}
 		Vet vet = vetOp.get();
 		this.vetService.vetDelete(vet);
-		return "redirect:/vets" ; 
-
+		return "redirect:/vets"; 
+	}
 	@GetMapping(path = "/vets/new")
 	public String createVet(ModelMap modelMap) {
 		String view = "vets/addVet";

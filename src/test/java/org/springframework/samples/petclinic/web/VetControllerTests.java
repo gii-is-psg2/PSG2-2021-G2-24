@@ -68,7 +68,7 @@ class VetControllerTests {
 		radiology.setName("radiology");
 		helen.addSpecialty(radiology);
 		given(this.clinicService.findVets()).willReturn(Lists.newArrayList(james, helen));
-		given(this.clinicService.findVet(any(int.class))).willReturn(Optional.of(james));
+		given(this.clinicService.findVetbyId(any(int.class))).willReturn(Optional.of(james));
 	}
 
 	@WithMockUser(value = "spring")
@@ -108,7 +108,7 @@ class VetControllerTests {
 		mockMvc.perform(post("/vets", 1).with(csrf()).param("postDeleteVet", "").param("vetId", "1"))
 		.andExpect(status().isFound()).andExpect(redirectedUrl("/vets"));
 		
-		verify(clinicService, times(1)).findVet(1);
+		verify(clinicService, times(1)).findVetbyId(1);
 		verify(clinicService, times(1)).vetDelete(any(Vet.class));
 	}
 

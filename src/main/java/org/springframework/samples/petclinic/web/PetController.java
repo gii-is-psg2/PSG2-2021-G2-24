@@ -24,8 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -52,11 +54,12 @@ public class PetController {
 
 	private final PetService petService;
 	private final OwnerService ownerService;
-
+	private final ReservaService reservaSer;
 	@Autowired
-	public PetController(PetService petService, OwnerService ownerService) {
+	public PetController(PetService petService, OwnerService ownerService,  ReservaService reservaSer) {
 		this.petService = petService;
 		this.ownerService = ownerService;
+		this.reservaSer = reservaSer;
 	}
 
 	@ModelAttribute("types")
@@ -149,6 +152,11 @@ public class PetController {
 
 	@PostMapping(params = { "postDeletePet" })
 	public String deletePet(@RequestParam("petId") int petId, @PathVariable("ownerId") int ownerId) {
+		for(Reserva reserva : this.reservaSer.findAll()) {
+			if(reserva.getPet().getId() == petId) {
+				reservaSer.delete(reserva);
+			}
+		}
 		Pet pet = this.petService.findPetById(petId);
 		Owner owner = this.ownerService.findOwnerById(ownerId);
 		owner.removePet(pet);

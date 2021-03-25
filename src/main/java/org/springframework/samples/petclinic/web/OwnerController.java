@@ -22,8 +22,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,12 +51,13 @@ public class OwnerController {
 	private final OwnerService ownerService;
 	private final UserService userService;
 	private final AuthoritiesService authoritiesService;
-
+	private final ReservaService reservaSer;
 	@Autowired
-	public OwnerController(OwnerService ownerService, UserService userService, AuthoritiesService authoritiesService) {
+	public OwnerController(OwnerService ownerService, UserService userService, AuthoritiesService authoritiesService, ReservaService reservaSer) {
 		this.ownerService = ownerService;
 		this.userService = userService;
 		this.authoritiesService = authoritiesService;
+		this.reservaSer = reservaSer;
 	}
 
 	@InitBinder
@@ -147,6 +150,11 @@ public class OwnerController {
 	}
 	@PostMapping(path = "/owners/{ownerId}", params = {"postDeleteAccount"} )
 	public String deleteOwner(@PathVariable("ownerId") int ownerId) {
+		for(Reserva reserva : this.reservaSer.findAll()) {
+			if(reserva.getOwner().getId() == ownerId) {
+				reservaSer.delete(reserva);
+			}
+		}
 		Owner owner = this.ownerService.findOwnerById(ownerId);
 		this.ownerService.deleteOwner(owner);
 		return "redirect:/owners/find";
