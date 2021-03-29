@@ -19,7 +19,9 @@ import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,13 @@ public class ReservaController {
 	
 	private List<Reserva> reservations;
 	
+	@Autowired
+	private ReservaValidator reservaVal;
+	
+	@InitBinder("reserva")
+	public void initRestaurantReservationBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(reservaVal);
+	}
 	@GetMapping()
 	public String reservasList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
@@ -72,15 +81,17 @@ public class ReservaController {
 		return view;
 	}
 	@PostMapping(path="/save")
-	public String saveReserva(@Valid Reserva  reserva, @RequestParam String owner,@RequestParam String room,BindingResult result, ModelMap modelMap) {
+	public String saveReserva(@Valid Reserva reserva, @RequestParam("pet.name") String pet,@RequestParam String room,BindingResult result, ModelMap modelMap) {
 		String view="reservas/listReservas";
-		
-		
-		
 		if(result.hasErrors()) {
 			modelMap.addAttribute("reserva", reserva);
 			return "reservas/addReserva";
 		}else {
+			for(Pet petname: this.reservaSer.findPets()) {
+				if(petname.getName().equals(pet)) {
+					reserva.setPet(petname);
+				}
+			}
 			for(Room roomid: this.reservaSer.findRooms()) {
 				if(roomid.getId().toString().equals(room)) {
 					reserva.setRoom(roomid);
@@ -93,7 +104,7 @@ public class ReservaController {
 		return view;
 	}
 	@ModelAttribute("pets")
-	public Collection<Pet> populatePets() {
+	public Collection<String> populatePets() {
 		List<String> petstostr = new ArrayList<String>();
 		List<Pet> pets = new ArrayList<Pet>();
 		String username = UserUtils.getUser();
@@ -115,7 +126,7 @@ public class ReservaController {
 		}
 		for(Pet pet : pets) {
 			petstostr.add(pet.getName());
-		}return pets;
+		}return petstostr;
 	}
 	@ModelAttribute("rooms")
 	public Collection<Integer> populateRooms() {

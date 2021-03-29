@@ -23,10 +23,10 @@
         <form:form modelAttribute="reserva" class="form-horizontal" action="/reservas/save">
             <div class="form-group has-feedback">
             	<div class="control-group">
-                     <petclinic:selectField name="owner" label="Owner" names="${owners}" size="5"/>
+                     <petclinic:selectField name="owner" label="Owner" names="${owners}"  size="5"/>
                 </div>
                 <div class="control-group">
-                    <petclinic:selectField name="pet" label="Mascota" names="${pets}" size="5"/>
+                    <petclinic:selectField name="pet.name" label="Mascota" names="${pets}" size="5"/>
                 </div>
                 <div class="control-group">
                     <petclinic:selectField name="room" label="Habitacion" names="${rooms}" size="5"/>
