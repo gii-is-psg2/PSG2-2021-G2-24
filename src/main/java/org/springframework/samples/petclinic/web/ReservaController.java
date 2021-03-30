@@ -81,15 +81,23 @@ public class ReservaController {
 		return view;
 	}
 	@PostMapping(path="/save")
-	public String saveReserva(@Valid Reserva reserva, @RequestParam("pet.name") String pet,@RequestParam String room,BindingResult result, ModelMap modelMap) {
+	public String saveReserva(@Valid Reserva reserva,@RequestParam("owner.user.username") String username, 
+			@RequestParam("pet.name") String pet
+			,@RequestParam String room,BindingResult result, ModelMap modelMap) {
 		String view="reservas/listReservas";
 		if(result.hasErrors()) {
+			log.info("Tiene errores");
 			modelMap.addAttribute("reserva", reserva);
 			return "reservas/addReserva";
 		}else {
 			for(Pet petname: this.reservaSer.findPets()) {
 				if(petname.getName().equals(pet)) {
 					reserva.setPet(petname);
+				}
+			}
+			for(Owner owner: this.reservaSer.findOwners()) {
+				if(owner.getUser().getUsername().equals(username)) {
+					reserva.setOwner(owner);
 				}
 			}
 			for(Room roomid: this.reservaSer.findRooms()) {
@@ -136,24 +144,26 @@ public class ReservaController {
 		}
 		return rooms;
 	}
-	@ModelAttribute("owners")
-	public Collection<Owner> populateOwners() {
+	@ModelAttribute("usernames")
+	public Collection<String> populateUsernames() {
 		
-		List<Owner> owners= new ArrayList<Owner>();
+		List<String> usernames= new ArrayList<String>();
 		String username = UserUtils.getUser();
 		Authorities authority = reservaSer.getAuthority(username);
 		if(authority.getAuthority().equals("owner")) {
 			for(Owner o: reservaSer.findOwners()) {
 				if(o.getUser().getUsername().equals(username)) {
-					owners.add(o);
+					usernames.add(o.getUser().getUsername());
 				}
 			}
 			
 		}else if (authority.getAuthority().equals("admin")) { 
-			owners = StreamSupport.stream(reservaSer.findOwners().spliterator(), false).collect(Collectors.toList());
+			for(Owner o: reservaSer.findOwners()) {
+					usernames.add(o.getUser().getUsername());
+			}
+			
 		}
-		return owners;
+		return usernames;
 	}
-	
 	
 }
