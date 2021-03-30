@@ -28,21 +28,23 @@
 			<td><c:out value="${owner.telephone}" /></td>
 		</tr>
 	</table>
+	<c:if test="${loggedUsername == userName || isAdmin}">
+		<spring:url value="{ownerId}/edit" var="editUrl">
+			<spring:param name="ownerId" value="${owner.id}" />
+		</spring:url>
+		<a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit
+			Owner</a>
 
-	<spring:url value="{ownerId}/edit" var="editUrl">
-		<spring:param name="ownerId" value="${owner.id}" />
-	</spring:url>
-	<a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit
-		Owner</a>
-
-	<spring:url value="{ownerId}/pets/new" var="addUrl">
-		<spring:param name="ownerId" value="${owner.id}" />
-	</spring:url>
-	<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New
-		Pet</a>
-	<form:form method="post">
-		<button type="submit" name="postDeleteAccount">Delete Account</button>
-	</form:form>
+		<spring:url value="{ownerId}/pets/new" var="addUrl">
+			<spring:param name="ownerId" value="${owner.id}" />
+		</spring:url>
+		<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New
+			Pet</a>
+		<form:form method="post">
+			<button type="submit" name="postDeleteAccount">Delete
+				Account</button>
+		</form:form>
+	</c:if>
 	<br />
 	<br />
 	<br />
@@ -84,21 +86,26 @@
 							</tr>
 						</c:forEach>
 						<tr>
-							<td><spring:url value="/owners/{ownerId}/pets/{petId}/edit"
-									var="petUrl">
-									<spring:param name="ownerId" value="${owner.id}" />
-									<spring:param name="petId" value="${pet.id}" />
-								</spring:url> <a href="${fn:escapeXml(petUrl)}">Edit Pet</a></td>
-							<form:form method="post" >
-								<input type="hidden" name ="petId" value = "${pet.id}" >
-								<button type="submit" name ="postDeletePet" >Delete Pet</button>
-							</form:form>
-							<td><spring:url
-									value="/owners/{ownerId}/pets/{petId}/visits/new"
-									var="visitUrl">
-									<spring:param name="ownerId" value="${owner.id}" />
-									<spring:param name="petId" value="${pet.id}" />
-								</spring:url> <a href="${fn:escapeXml(visitUrl)}">Add Visit</a></td>
+							<c:if test="${loggedUsername == userName || isAdmin}">
+								<td><spring:url value="/owners/{ownerId}/pets/{petId}/edit"
+										var="petUrl">
+										<spring:param name="ownerId" value="${owner.id}" />
+										<spring:param name="petId" value="${pet.id}" />
+
+									</spring:url> <a href="${fn:escapeXml(petUrl)}">Edit Pet</a></td>
+
+								<form:form method="post">
+									<input type="hidden" name="petId" value="${pet.id}">
+									<button type="submit" name="postDeletePet">Delete Pet</button>
+								</form:form>
+
+								<td><spring:url
+										value="/owners/{ownerId}/pets/{petId}/visits/new"
+										var="visitUrl">
+										<spring:param name="ownerId" value="${owner.id}" />
+										<spring:param name="petId" value="${pet.id}" />
+									</spring:url> <a href="${fn:escapeXml(visitUrl)}">Add Visit</a></td>
+							</c:if>
 						</tr>
 					</table>
 				</td>

@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Authorities;
@@ -59,4 +60,9 @@ public class ReservaService {
 	
 		return reservaRepo.findRooms();
 	}
+	@Transactional
+	public Optional<Reserva> getReservaById(int id) {
+		return this.reservaRepo.findById(id);		
+	}
+
 }

@@ -15,38 +15,31 @@
  */
 package org.springframework.samples.petclinic.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Specialty;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
+import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
-import sun.util.logging.resources.logging;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import java.util.Set;
-
-import javax.validation.Valid;
 
 
 /**
@@ -61,10 +54,11 @@ import javax.validation.Valid;
 public class VetController {
 
 	private final VetService vetService;
-
+	private final UserService userService;
 	@Autowired
-	public VetController(VetService clinicService) {
+	public VetController(VetService clinicService, UserService userService) {
 		this.vetService = clinicService;
+		this.userService = userService;
 	}
 
 	@GetMapping(value = { "/vets" })
@@ -73,9 +67,16 @@ public class VetController {
 		// Vet
 		// objects
 		// so it is simpler for Object-Xml mapping
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if(!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetService.findVets());
 		model.put("vets", vets);
+		model.put("isAdmin", this.userService.isAdmin(user));
 		return "vets/vetList";
 	}
 
@@ -92,6 +93,15 @@ public class VetController {
 
 	@PostMapping(path = "/vets", params = {"postDeleteVet"})
 	public String deleteVet(@RequestParam("vetId") int vetId) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if(!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
+		if(!this.userService.isAdmin(user)) {
+			return "redirect:/oups";
+		}
 		Optional<Vet> vetOp = this.vetService.findVetbyId(vetId);
 		if(!vetOp.isPresent()) {
 			return "redirect:/vets";
@@ -102,6 +112,15 @@ public class VetController {
 	}
 	@GetMapping(path = "/vets/new")
 	public String createVet(ModelMap modelMap) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if(!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
+		if(!this.userService.isAdmin(user)) {
+			return "redirect:/oups";
+		}
 		String view = "vets/addVet";
 		modelMap.addAttribute("vet", new Vet());
 		return view;
@@ -110,6 +129,15 @@ public class VetController {
 	@PostMapping(path = "/vets/save")
 	public String saveVet(@Valid Vet vet, @RequestParam Optional<String[]> specialties, BindingResult result,
 			ModelMap modelMap) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if(!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
+		if(!this.userService.isAdmin(user)) {
+			return "redirect:/oups";
+		}
 		log.info("El nombre es:" + vet.getFirstName());
 		log.info("El apellido es:" + vet.getLastName());
 		String view = "vets/vetList";
@@ -143,6 +171,15 @@ public class VetController {
 
 	@GetMapping(value = "vets/{vetId}/edit")
 	public String initUpdateVetForm(@PathVariable("vetId") int vetId, ModelMap model) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if(!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
+		if(!this.userService.isAdmin(user)) {
+			return "redirect:/oups";
+		}
 		log.info("Loading update vet form");
 		Vet vet = vetService.findVetbyId(vetId).get();
 		model.put("vet", vet);
@@ -152,6 +189,15 @@ public class VetController {
 	@PostMapping(value = "vets/{vetId}/edit")
 	public String processUpdateVetForm(@Valid Vet vet, BindingResult result, @PathVariable("vetId") int vetId,
 			ModelMap model, @RequestParam Optional<String[]> specialties) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if(!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
+		if(!this.userService.isAdmin(user)) {
+			return "redirect:/oups";
+		}
 		log.info("Updating vet: " + vetId);
 		vet.setId(vetId);
 		if (result.hasErrors()) {
