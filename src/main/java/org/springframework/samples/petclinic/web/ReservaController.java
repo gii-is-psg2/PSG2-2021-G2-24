@@ -21,7 +21,9 @@ import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,16 @@ public class ReservaController {
 	private final UserService userService;
 
 	private List<Reserva> reservations;
+
+	
+	@Autowired
+	private ReservaValidator reservaVal;
+	
+	@InitBinder("reserva")
+	public void initRestaurantReservationBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(reservaVal);
+	}
+
 
 	@Autowired
 	public ReservaController(ReservaService reservaSer, UserService userService) {
@@ -81,17 +93,28 @@ public class ReservaController {
 		return view;
 	}
 
-	@PostMapping(path = "/save")
-	public String saveReserva(@Valid Reserva reserva, @RequestParam String owner, @RequestParam String room,
-			BindingResult result, ModelMap modelMap) {
-		String view = "reservas/listReservas";
-
-		if (result.hasErrors()) {
+	@PostMapping(path="/save")
+	public String saveReserva(@Valid Reserva reserva,@RequestParam("owner.user.username") String username, 
+			@RequestParam("pet.name") String pet
+			,@RequestParam String room,BindingResult result, ModelMap modelMap) {
+		String view="reservas/listReservas";
+		if(result.hasErrors()) {
+			log.info("Tiene errores");
 			modelMap.addAttribute("reserva", reserva);
 			return "reservas/addReserva";
-		} else {
-			for (Room roomid : this.reservaSer.findRooms()) {
-				if (roomid.getId().toString().equals(room)) {
+		}else {
+			for(Pet petname: this.reservaSer.findPets()) {
+				if(petname.getName().equals(pet)) {
+					reserva.setPet(petname);
+				}
+			}
+			for(Owner owner: this.reservaSer.findOwners()) {
+				if(owner.getUser().getUsername().equals(username)) {
+					reserva.setOwner(owner);
+				}
+			}
+			for(Room roomid: this.reservaSer.findRooms()) {
+				if(roomid.getId().toString().equals(room)) {
 					reserva.setRoom(roomid);
 				}
 			}
@@ -103,7 +126,7 @@ public class ReservaController {
 	}
 
 	@ModelAttribute("pets")
-	public Collection<Pet> populatePets() {
+	public Collection<String> populatePets() {
 		List<String> petstostr = new ArrayList<String>();
 		List<Pet> pets = new ArrayList<Pet>();
 		String username = UserUtils.getUser();
@@ -125,8 +148,9 @@ public class ReservaController {
 		}
 		for (Pet pet : pets) {
 			petstostr.add(pet.getName());
-		}
-		return pets;
+
+		}return petstostr;
+
 	}
 
 	@ModelAttribute("rooms")
@@ -138,24 +162,29 @@ public class ReservaController {
 		return rooms;
 	}
 
-	@ModelAttribute("owners")
-	public Collection<Owner> populateOwners() {
-
-		List<Owner> owners = new ArrayList<Owner>();
+	@ModelAttribute("usernames")
+	public Collection<String> populateUsernames() {
+		
+		List<String> usernames= new ArrayList<String>();
 		String username = UserUtils.getUser();
 		Authorities authority = reservaSer.getAuthority(username);
-		if (authority.getAuthority().equals("owner")) {
-			for (Owner o : reservaSer.findOwners()) {
-				if (o.getUser().getUsername().equals(username)) {
-					owners.add(o);
+		if(authority.getAuthority().equals("owner")) {
+			for(Owner o: reservaSer.findOwners()) {
+				if(o.getUser().getUsername().equals(username)) {
+					usernames.add(o.getUser().getUsername());
 				}
 			}
+			
+		}else if (authority.getAuthority().equals("admin")) { 
+			for(Owner o: reservaSer.findOwners()) {
+					usernames.add(o.getUser().getUsername());
+			}
+			
 
-		} else if (authority.getAuthority().equals("admin")) {
-			owners = StreamSupport.stream(reservaSer.findOwners().spliterator(), false).collect(Collectors.toList());
 		}
-		return owners;
+		return usernames;
 	}
+
 
 	@PostMapping(params = { "postDeleteBooking" })
 	public String deleteBooking(@RequestParam("reservaId") int reservaId) {
