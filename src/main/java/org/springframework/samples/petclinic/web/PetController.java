@@ -28,7 +28,9 @@ import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.ReservaService;
+import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -55,11 +57,15 @@ public class PetController {
 	private final PetService petService;
 	private final OwnerService ownerService;
 	private final ReservaService reservaSer;
+	private final UserService userService;
+
 	@Autowired
-	public PetController(PetService petService, OwnerService ownerService,  ReservaService reservaSer) {
+	public PetController(PetService petService, OwnerService ownerService, ReservaService reservaSer,
+			UserService userService) {
 		this.petService = petService;
 		this.ownerService = ownerService;
 		this.reservaSer = reservaSer;
+		this.userService = userService;
 	}
 
 	@ModelAttribute("types")
@@ -91,6 +97,11 @@ public class PetController {
 
 	@GetMapping(value = "/pets/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
+		
+		if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) 
+				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			return "redirect:/oups";
+		}
 		Pet pet = new Pet();
 		owner.addPet(pet);
 		model.put("pet", pet);
@@ -103,20 +114,29 @@ public class PetController {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
-			try {
-				owner.addPet(pet);
-				this.petService.savePet(pet);
-			} catch (DuplicatedPetNameException ex) {
-				result.rejectValue("name", "duplicate", "already exists");
-				return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+			if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) 
+					&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+				return "redirect:/oups";
+			} else {
+				try {
+					owner.addPet(pet);
+					this.petService.savePet(pet);
+				} catch (DuplicatedPetNameException ex) {
+					result.rejectValue("name", "duplicate", "already exists");
+					return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+				}
+				return "redirect:/owners/{ownerId}";
 			}
-			return "redirect:/owners/{ownerId}";
 		}
 	}
 
 	@GetMapping(value = "/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		Pet pet = this.petService.findPetById(petId);
+		if (!(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))
+				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			return "redirect:/oups";
+		}
 		model.put("pet", pet);
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
@@ -138,31 +158,44 @@ public class PetController {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
-			Pet petToUpdate = this.petService.findPetById(petId);
-			BeanUtils.copyProperties(pet, petToUpdate, "id", "owner", "visits");
-			try {
-				this.petService.savePet(petToUpdate);
-			} catch (DuplicatedPetNameException ex) {
-				result.rejectValue("name", "duplicate", "already exists");
-				return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+			if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
+					&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+				return "redirect:/oups";
+			} else {
+				Pet petToUpdate = this.petService.findPetById(petId);
+				BeanUtils.copyProperties(pet, petToUpdate, "id", "owner", "visits");
+				try {
+					this.petService.savePet(petToUpdate);
+				} catch (DuplicatedPetNameException ex) {
+					result.rejectValue("name", "duplicate", "already exists");
+					return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+				}
+				return "redirect:/owners/{ownerId}";
 			}
-			return "redirect:/owners/{ownerId}";
 		}
 	}
 
 	@PostMapping(params = { "postDeletePet" })
 	public String deletePet(@RequestParam("petId") int petId, @PathVariable("ownerId") int ownerId) {
-		for(Reserva reserva : this.reservaSer.findAll()) {
-			if(reserva.getPet().getId() == petId) {
-				reservaSer.delete(reserva);
-			}
-		}
-		Pet pet = this.petService.findPetById(petId);
+
 		Owner owner = this.ownerService.findOwnerById(ownerId);
-		owner.removePet(pet);
-		this.petService.deletePet(pet);
-		this.ownerService.saveOwner(owner);
-		return String.format("redirect:/owners/%d", ownerId);
+		if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
+				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			return "redirect:/oups";
+
+		} else {
+			for (Reserva reserva : this.reservaSer.findAll()) {
+				if (reserva.getPet().getId() == petId) {
+					reservaSer.delete(reserva);
+				}
+			}
+			Pet pet = this.petService.findPetById(petId);
+
+			owner.removePet(pet);
+			this.petService.deletePet(pet);
+			this.ownerService.saveOwner(owner);
+			return String.format("redirect:/owners/%d", ownerId);
+		}
 	}
 
 }
