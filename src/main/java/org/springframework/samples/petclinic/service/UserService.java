@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class UserService {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
+	@Transactional
 	
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
@@ -54,5 +56,15 @@ public class UserService {
 	@Transactional
 	public void deleteUser(User user) {
 		userRepository.delete(user);
+	}
+	
+	public Boolean isAdmin(User user) {
+		Boolean result = false;
+		for(Authorities au:user.getAuthorities()) {
+			if(!result && au.getAuthority().equals(("admin"))) {
+				result = true;
+			}
+		}
+		return result;
 	}
 }
