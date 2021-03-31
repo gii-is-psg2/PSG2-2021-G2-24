@@ -32,6 +32,73 @@
 
     </properties>
 
+    
+	<developers>
+		<developer>
+			<id>frarodper4</id>
+			<name>Francisco Rodriguez Perez</name>
+			<email>frarodper4@alum.us.es</email>
+			<url>https://github.com/Fco-bit</url>
+			<roles>
+				<role>Scrum Master</role>
+			</roles>
+			<properties>
+				<picUrl></picUrl>
+			</properties>
+		</developer>
+		<developer>
+			<id>davbarsal1</id>
+			<name>David Barragan Salazar</name>
+			<email>davbarsal@alum.us.es</email>
+			<url>http://www.tmht.com/donnie</url>
+			<roles>
+				<role>Manager</role>
+			</roles>
+			<properties>
+				<picUrl></picUrl>
+			</properties>
+		</developer>
+		<developer>
+
+			<id>pabcolcap</id>
+			<name>Pablo Colmenero Capote</name>
+			<email>pabcolcap@alum.us.es</email>
+			<url>https://github.com/PabloColmeneroCapote</url>
+			<roles>
+				<role>Analista</role>
+			</roles>
+			<properties>
+				<picUrl></picUrl>
+			</properties>
+		</developer>
+		<developer>
+
+			<id>ginpasfer</id>
+			<name>Gines Pastor Fernandez</name>
+			<email>ginpasfer@alum.us.es</email>
+			<url>https://github.com/Ginpasfer</url>
+			<roles>
+				<role>Programador</role>
+			</roles>
+			<properties>
+				<picUrl></picUrl>
+			</properties>
+		</developer>
+
+		<developer>
+			<id>angmartnun1</id>
+			<name>Angel Martinez Nuñez</name>
+			<email>angmartnun1@alum.us.es</email>
+			<url>https://github.com/angmarnun1</url>
+			<roles>
+				<role>Tester</role>
+			</roles>
+			<properties>
+				<picUrl></picUrl>
+			</properties>
+		</developer>
+    </developers>
+    
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
