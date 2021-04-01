@@ -12,4 +12,8 @@
             <img class="d-flex justify-content-center img-fluid" style="max-width:100%" src="${petsImage}"/>
         </div>      
     </div>
+    <div style="padding: 10px; border: 2px solid brown">
+    	<a href="?lang=es">Español</a>
+        <a href="?lang=en">English</a>
+    </div>
 </petclinic:layout>
