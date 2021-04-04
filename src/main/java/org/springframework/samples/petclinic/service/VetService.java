@@ -44,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class VetService {
-	@Autowired
 	private VetRepository vetRepository;
 
 	@Autowired

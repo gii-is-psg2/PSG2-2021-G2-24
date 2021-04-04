@@ -55,6 +55,7 @@ public class VetController {
 
 	private final VetService vetService;
 	private final UserService userService;
+	
 	@Autowired
 	public VetController(VetService clinicService, UserService userService) {
 		this.vetService = clinicService;

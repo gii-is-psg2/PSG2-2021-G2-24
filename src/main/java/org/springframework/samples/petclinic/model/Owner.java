@@ -36,6 +36,9 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * Simple JavaBean domain object representing an owner.
  *
@@ -44,6 +47,8 @@ import org.springframework.core.style.ToStringCreator;
  * @author Sam Brannen
  * @author Michael Isvy
  */
+@Data
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
@@ -63,14 +68,13 @@ public class Owner extends Person {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
-	
-	
+
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "username", referencedColumnName = "username" )
+	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 	//
-	
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -124,26 +128,27 @@ public class Owner extends Person {
 		getPetsInternal().add(pet);
 		pet.setOwner(this);
 	}
-	
+
 	public boolean removePet(Pet pet) {
 		return getPetsInternal().remove(pet);
 	}
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
+	 * 
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
 	public Pet getPet(String name) {
 		return getPet(name, false);
 	}
-	
-	public Pet getPetwithIdDifferent(String name,Integer id) {
+
+	public Pet getPetwithIdDifferent(String name, Integer id) {
 		name = name.toLowerCase();
 		for (Pet pet : getPetsInternal()) {
 			String compName = pet.getName();
 			compName = compName.toLowerCase();
-			if (compName.equals(name) && pet.getId()!=id) {
+			if (compName.equals(name) && pet.getId() != id) {
 				return pet;
 			}
 		}
@@ -152,6 +157,7 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
+	 * 
 	 * @param name to test
 	 * @return true if pet name is already in use
 	 */
