@@ -13,13 +13,52 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
-@Getter
+
 @Table(name = "reservas")
 @Entity
 public class Reserva extends BaseEntity {
 
 	
+	public Pet getPet() {
+		return pet;
+	}
+
+	public void setPet(Pet pet) {
+		this.pet = pet;
+	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndingDate() {
+		return endingDate;
+	}
+
+	public void setEndingDate(LocalDate endingDate) {
+		this.endingDate = endingDate;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "pet_id")
 	private Pet pet;

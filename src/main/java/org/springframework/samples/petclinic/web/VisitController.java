@@ -79,8 +79,8 @@ public class VisitController {
 	@GetMapping(value = "/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
 		Pet pet = this.petService.findPetById(petId);
-		if (!(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))
-				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+				&& !(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 		}
 		return "pets/createOrUpdateVisitForm";
@@ -93,8 +93,8 @@ public class VisitController {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		} else {
-			if (!(visit.getPet().getOwner().getUser().getUsername().equals(UserUtils.getUser()))
-					&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+					&& !(visit.getPet().getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			}
 			this.petService.saveVisit(visit);

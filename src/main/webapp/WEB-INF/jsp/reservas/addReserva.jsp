@@ -20,7 +20,7 @@
         <h2>Añadir Reserva</h2>
 
 
-        <form:form modelAttribute="reserva" class="form-horizontal" action="/reservas/save">
+        <form:form modelAttribute="reserva" class="form-horizontal" action="/reservas">
             <div class="form-group has-feedback">
             	<div class="control-group">
                      <petclinic:selectField name="owner.user.username" label="Username" names="${usernames}"  size="5"/>

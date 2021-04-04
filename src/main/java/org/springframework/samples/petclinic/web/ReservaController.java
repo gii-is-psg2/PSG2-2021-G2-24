@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -79,6 +80,7 @@ public class ReservaController {
 			modelMap.addAttribute("reservas", reservations);
 		} else {
 			modelMap.addAttribute("reservas", reservas);
+			modelMap.addAttribute("currentDate", LocalDate.now());
 		}
 
 		String view = "reservas/listReservas";
@@ -93,7 +95,7 @@ public class ReservaController {
 		return view;
 	}
 
-	@PostMapping(path="/save")
+	@PostMapping()
 	public String saveReserva(@Valid Reserva reserva,@RequestParam("owner.user.username") String username, 
 			@RequestParam("pet.name") String pet
 			,@RequestParam String room,BindingResult result, ModelMap modelMap) {

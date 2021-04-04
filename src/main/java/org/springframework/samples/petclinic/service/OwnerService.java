@@ -45,15 +45,16 @@ public class OwnerService {
 
 	private OwnerRepository ownerRepository;	
 	
-	@Autowired
+
 	private UserService userService;
 	
-	@Autowired
 	private AuthoritiesService authoritiesService;
 
 	@Autowired
-	public OwnerService(OwnerRepository ownerRepository) {
+	public OwnerService(OwnerRepository ownerRepository, AuthoritiesService authoritiesService, UserService userService) {
 		this.ownerRepository = ownerRepository;
+		this.authoritiesService = authoritiesService;
+		this.userService = userService;
 	}	
 
 	@Transactional(readOnly = true)
