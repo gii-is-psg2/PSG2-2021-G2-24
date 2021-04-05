@@ -6,14 +6,15 @@
 
 <petclinic:layout pageName="home">
 <div class="welcomePage"  style="text-align: center;">
+ <!--     <div style="padding: 10px; margin-top:-30px">
+    	<a class="btn btn-default" href="?lang=es">Español</a>
+        <a class="btn btn-default" href="?lang=en">English</a>
+    </div> -->
     <h2><fmt:message key="welcome"/></h2>
         <div class="div">
             <spring:url value="/resources/images/loro.jpg" htmlEscape="true" var="petsImage"/>
             <img class="d-flex justify-content-center img-fluid" style="max-width:100%" src="${petsImage}"/>
         </div>      
     </div>
-    <div style="padding: 10px; border: 2px solid brown">
-    	<a href="?lang=es">Español</a>
-        <a href="?lang=en">English</a>
-    </div>
+   
 </petclinic:layout>
