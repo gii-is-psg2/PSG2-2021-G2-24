@@ -97,9 +97,9 @@ public class PetController {
 
 	@GetMapping(value = "/pets/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
-		
-		if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) 
-				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+
+		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+				&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 		}
 		Pet pet = new Pet();
@@ -114,8 +114,8 @@ public class PetController {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
-			if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) 
-					&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
 				try {
@@ -133,8 +133,8 @@ public class PetController {
 	@GetMapping(value = "/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		Pet pet = this.petService.findPetById(petId);
-		if (!(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))
-				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+				&& !(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 		}
 		model.put("pet", pet);
@@ -158,8 +158,8 @@ public class PetController {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
-			if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
-					&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
 				Pet petToUpdate = this.petService.findPetById(petId);
@@ -179,8 +179,8 @@ public class PetController {
 	public String deletePet(@RequestParam("petId") int petId, @PathVariable("ownerId") int ownerId) {
 
 		Owner owner = this.ownerService.findOwnerById(ownerId);
-		if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
-				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+				&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 
 		} else {

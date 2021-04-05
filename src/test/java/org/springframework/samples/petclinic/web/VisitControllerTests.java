@@ -65,7 +65,6 @@ class VisitControllerTests {
 		petMock.setVisits(new HashSet<>());
 		Set<Pet> pets = new HashSet<Pet>();
 		pets.add(petMock);
-		ownerMock.setPets(pets);
 		given(this.userService.findUser(any(String.class))).willReturn(Optional.of(userMock));
 		given(this.userService.isAdmin(any(User.class))).willReturn(true);
 		given(this.clinicService.findPetById(any(Integer.class))).willReturn(petMock);

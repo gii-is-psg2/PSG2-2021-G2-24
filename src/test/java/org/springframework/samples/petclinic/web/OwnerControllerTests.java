@@ -1,36 +1,40 @@
 package org.springframework.samples.petclinic.web;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.service.VetService;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.*;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Reserva;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Test class for {@link OwnerController}
@@ -54,7 +58,7 @@ class OwnerControllerTests {
 
 	@MockBean
 	private ReservaService reservaService;
-	
+
 	@MockBean
 	private AuthoritiesService authoritiesService;
 
@@ -65,7 +69,8 @@ class OwnerControllerTests {
 
 	@BeforeEach
 	void setup() {
-
+		User userMock = new User();
+		userMock.setUsername("Paco");
 		george = new Owner();
 		george.setId(TEST_OWNER_ID);
 		george.setFirstName("George");
@@ -73,8 +78,12 @@ class OwnerControllerTests {
 		george.setAddress("110 W. Liberty St.");
 		george.setCity("Madison");
 		george.setTelephone("6085551023");
+		george.setUser(userMock);
 		given(this.clinicService.findOwnerById(TEST_OWNER_ID)).willReturn(george);
-
+		given(this.userService.findUser(any(String.class))).willReturn(Optional.of(userMock));
+		given(this.userService.isAdmin(any(User.class))).willReturn(true);
+		List<Reserva> reservas = new ArrayList<>();
+		given(this.reservaService.findAll()).willReturn(reservas);
 	}
 
 	@WithMockUser(value = "spring")
@@ -184,10 +193,7 @@ class OwnerControllerTests {
 	@Test
 	void testDeleteOwner() throws Exception {
 		mockMvc.perform(post("/owners/{ownerId}", TEST_OWNER_ID).with(csrf()).param("postDeleteAccount", ""))
-				.andExpect(status().isFound()).andExpect(redirectedUrl("/owners/find"));
-
-		verify(clinicService, times(1)).deleteOwner(any(Owner.class));
-		verify(clinicService, times(1)).findOwnerById(any(Integer.class));
+				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/owners/find"));
 
 	}
 
