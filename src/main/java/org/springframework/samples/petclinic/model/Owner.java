@@ -47,8 +47,7 @@ import lombok.EqualsAndHashCode;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-@Data
-@EqualsAndHashCode(callSuper=false)
+
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
