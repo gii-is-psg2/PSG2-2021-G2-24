@@ -88,6 +88,20 @@ class VetServiceTests {
 		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
 		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
 	}
+	@Test
+	@Transactional
+	public void shouldUpdateVetName() throws Exception {
+		Vet vet = this.vetService.findVetbyId(1).get();
+		String oldFirstName = vet.getFirstName();
+		String oldLastName = vet.getLastName();
+		String newFirstName = oldFirstName + "X";
+		String newLastName = oldLastName + "X";
+		vet.setFirstName(newFirstName);
+		vet.setLastName(newLastName);
+		this.vetService.save(vet);
 
-
+		Vet newvet = this.vetService.findVetbyId(1).get();
+		assertThat(newvet.getFirstName()).isEqualTo(newFirstName);
+		assertThat(newvet.getLastName()).isEqualTo(newLastName);
+	}
 }

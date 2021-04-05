@@ -21,17 +21,50 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Fjalla One';
+  src: url('../fonts/fjalla-one-v8-latin-regular.eot'); 
+  src: local(''),
+       url('../fonts/fjalla-one-v8-latin-regular.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/fjalla-one-v8-latin-regular.woff2') format('woff2'), 
+       url('../fonts/fjalla-one-v8-latin-regular.woff') format('woff'), 
+       url('../fonts/fjalla-one-v8-latin-regular.ttf') format('truetype'), 
+       url('../fonts/fjalla-one-v8-latin-regular.svg#FjallaOne') format('svg'); 
+}
+
+@font-face {
+  font-family: 'Philosopher';
+  src: url('../fonts/philosopher-v14-latin-italic.eot'); 
+  src: local(''),
+       url('../fonts/philosopher-v14-latin-italic.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/philosopher-v14-latin-italic.woff2') format('woff2'), 
+       url('../fonts/philosopher-v14-latin-italic.woff') format('woff'), 
+       url('../fonts/philosopher-v14-latin-italic.ttf') format('truetype'), 
+       url('../fonts/philosopher-v14-latin-italic.svg#Philosopher') format('svg'); 
+}
+
+@font-face {
+  font-family: 'Denk One';
+  src: url('../fonts/denk-one-v10-latin-regular.eot'); 
+  src: local(''),
+       url('../fonts/denk-one-v10-latin-regular.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/denk-one-v10-latin-regular.woff2') format('woff2'),
+       url('../fonts/denk-one-v10-latin-regular.woff') format('woff'),
+       url('../fonts/denk-one-v10-latin-regular.ttf') format('truetype'), 
+       url('../fonts/denk-one-v10-latin-regular.svg#DenkOne') format('svg');
+}
+
 body, h1, h2, h3, p, input {
   margin: 0;
   font-weight: 400;
-  font-family: "varela_roundregular", sans-serif;
+  font-family: "Philosopher", sans-serif;
   color: #34302d;
 }
 
 h1 {
   font-size: 24px;
   line-height: 30px;
-  font-family: "montserratregular", sans-serif;
+  font-family: "Denk One", sans-serif;
 }
 
 h2 {
@@ -39,7 +72,7 @@ h2 {
   font-weight: 700;
   line-height: 24px;
   margin-bottom: 10px;
-  font-family: "montserratregular", sans-serif;
+  font-family: "Denk One", sans-serif;
 }
 
 h3 {
@@ -56,5 +89,5 @@ p {
 
 strong {
   font-weight: 700;
-  font-family: "montserratregular", sans-serif;
+  font-family: "Fjalla One", sans-serif;
 }

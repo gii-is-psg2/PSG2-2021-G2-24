@@ -40,11 +40,21 @@
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+				<petclinic:menuItem active="${name eq 'Booking'}" url="/reservas"
+					title="trigger a RuntimeException to see how it is handled">
+					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+					<span>Bookings</span>
+
+				</petclinic:menuItem>
+
+				<%-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
-				</petclinic:menuItem>
+
+				</petclinic:menuItem> --%>
+
+
 
 			</ul>
 
@@ -75,6 +85,8 @@
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
+										</div>
+										<div class="col-lg-12">
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
@@ -84,7 +96,7 @@
 								</div>
 							</li>
 							<li class="divider"></li>
-<!-- 							
+							<!-- 							
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+  * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +17,27 @@ package org.springframework.samples.petclinic.web;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Reserva;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.UserService;
+import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -45,10 +52,17 @@ public class OwnerController {
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
 	private final OwnerService ownerService;
+	private final UserService userService;
+	private final AuthoritiesService authoritiesService;
+	private final ReservaService reservaSer;
 
 	@Autowired
-	public OwnerController(OwnerService ownerService, UserService userService, AuthoritiesService authoritiesService) {
+	public OwnerController(OwnerService ownerService, UserService userService, AuthoritiesService authoritiesService,
+			ReservaService reservaSer) {
 		this.ownerService = ownerService;
+		this.userService = userService;
+		this.authoritiesService = authoritiesService;
+		this.reservaSer = reservaSer;
 	}
 
 	@InitBinder
@@ -67,11 +81,9 @@ public class OwnerController {
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			//creating owner, user and authorities
+		} else {
+			// creating owner, user and authorities
 			this.ownerService.saveOwner(owner);
-			
 			return "redirect:/owners/" + owner.getId();
 		}
 	}
@@ -96,13 +108,11 @@ public class OwnerController {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
-		}
-		else if (results.size() == 1) {
+		} else if (results.size() == 1) {
 			// 1 owner found
 			owner = results.iterator().next();
 			return "redirect:/owners/" + owner.getId();
-		}
-		else {
+		} else {
 			// multiple owners found
 			model.put("selections", results);
 			return "owners/ownersList";
@@ -112,6 +122,10 @@ public class OwnerController {
 	@GetMapping(value = "/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.ownerService.findOwnerById(ownerId);
+		if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
+				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			return "redirect:/oups";
+		}
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
@@ -121,24 +135,64 @@ public class OwnerController {
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			owner.setId(ownerId);
-			this.ownerService.saveOwner(owner);
-			return "redirect:/owners/{ownerId}";
+		} else {
+			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
+				return "redirect:/oups";
+			} else {
+				owner.setId(ownerId);
+				this.ownerService.saveOwner(owner);
+				return "redirect:/owners/{ownerId}";
+			}
 		}
 	}
 
 	/**
 	 * Custom handler for displaying an owner.
+	 * 
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+		System.out.println("holis2");
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if (!userOp.isPresent()) {
+
+			return new ModelAndView("/login");
+		}
+		User user = userOp.get();
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-		mav.addObject(this.ownerService.findOwnerById(ownerId));
+		Owner owner = this.ownerService.findOwnerById(ownerId);
+		mav.addObject(owner);
+		mav.addObject("userName", owner.getUser().getUsername());
+		mav.addObject("loggedUsername", UserUtils.getUser());
+		mav.addObject("isAdmin", this.userService.isAdmin(user));
 		return mav;
+	}
+
+	@PostMapping(path = "/owners/{ownerId}", params = { "postDeleteAccount" })
+	public String deleteOwner(@PathVariable("ownerId") int ownerId) {
+
+		Owner owner = this.ownerService.findOwnerById(ownerId);
+		if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
+				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			return "redirect:/oups";// Comprobamos que el usuario que va a borrar el owner es el usuario asociado al
+									// owner
+		}
+		for (Reserva reserva : this.reservaSer.findAll()) {
+			if (reserva.getOwner().getId() == ownerId) {
+				reservaSer.delete(reserva);
+			}
+		}
+		if (this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			this.ownerService.deleteOwner(owner);
+			return "redirect:/owners/find";
+		}
+		System.out.println("hola");
+		this.ownerService.deleteOwner(owner);
+		return "redirect:/login";
 	}
 
 }
