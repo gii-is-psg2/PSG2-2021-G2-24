@@ -16,9 +16,12 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +34,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.model.User;
@@ -73,35 +77,57 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-class VetServiceTests {
+class ReservaServiceTests {
 
 	@Autowired
-	protected VetService vetService;	
+	protected ReservaService reservaSer;	
 
 	@Test
-	void shouldFindVets() {
-		Collection<Vet> vets = this.vetService.findVets();
-
-		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-		assertThat(vet.getLastName()).isEqualTo("Douglas");
-		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+	void shouldFindReservas() {
+		Iterable<Reserva> reservaIt = this.reservaSer.findAll();
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		
+		for (Reserva reserva : reservaIt) {
+			reservas.add(reserva);
+		}
+		Reserva reserva = EntityUtils.getById(reservas, Reserva.class, 1);
+		assertThat(reserva.getPet().getName()).isEqualTo("Leo");
+		assertThat(reserva.getRoom().getId() == 1);
+		assertThat(reserva.getOwner().getFirstName()).isEqualTo("George");
+		assertThat(reserva.getOwner().getLastName()).isEqualTo("Franklin");
+		assertThat(reserva.getId() == 1);
+		assertThat(reserva.getStartDate()).isEqualTo("2013-01-01");
+		assertThat(reserva.getEndingDate()).isEqualTo("2013-01-03");
+		
+		
 	}
+	
 	@Test
-	@Transactional
-	public void shouldUpdateVetName() throws Exception {
-		Vet vet = this.vetService.findVetbyId(1).get();
-		String oldFirstName = vet.getFirstName();
-		String oldLastName = vet.getLastName();
-		String newFirstName = oldFirstName + "X";
-		String newLastName = oldLastName + "X";
-		vet.setFirstName(newFirstName);
-		vet.setLastName(newLastName);
-		this.vetService.save(vet);
-
-		Vet newvet = this.vetService.findVetbyId(1).get();
-		assertThat(newvet.getFirstName()).isEqualTo(newFirstName);
-		assertThat(newvet.getLastName()).isEqualTo(newLastName);
+	void shouldbebooked() {
+		Iterable<Reserva> reservaIt = this.reservaSer.findAll();
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		
+		for (Reserva reserva : reservaIt) {
+			reservas.add(reserva);
+		}
+		Reserva reserva = EntityUtils.getById(reservas, Reserva.class, 1);
+		assertTrue(reservaSer.alreadyBooked(reserva) == false);
 	}
+	
+	
+	@Test
+	void shouldfinduser() {
+		Authorities auth = this.reservaSer.getAuthority("admin1");
+		assertThat(auth.getUser().getUsername()).isEqualTo("admin1");
+	}
+	
+	@Test
+	void shoulddeletereserva() {
+		Reserva reserva = reservaSer.getReservaById(1).get();
+		this.reservaSer.delete(reserva);
+		for(Reserva res : reservaSer.findAll()) {
+			assertTrue(res.getId() != reserva.getId());
+		}
+	}
+
 }

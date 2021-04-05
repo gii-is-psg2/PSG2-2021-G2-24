@@ -83,20 +83,25 @@ public class ReservaService {
 	}
 
 	private Boolean diasSolapados(Reserva res1, Reserva res2) {
-		if ((res1.getStartDate().isAfter(res2.getStartDate()) && res1.getStartDate().isBefore(res2.getEndingDate()))
-				|| (res1.getEndingDate().isAfter(res2.getStartDate())
-						&& res1.getEndingDate().isBefore(res2.getEndingDate()))) {
-			return true;
-		}
-		if ((res2.getStartDate().isAfter(res1.getStartDate()) && res2.getStartDate().isBefore(res1.getEndingDate()))
-				|| (res2.getEndingDate().isAfter(res1.getStartDate())
-						&& res2.getEndingDate().isBefore(res1.getEndingDate()))) {
-			return true;
-		}
-		if (res1.getStartDate().isEqual(res2.getStartDate()) && res1.getEndingDate().isEqual(res1.getEndingDate())) {
-			return true;
-		} else {
+		if(res1.getId() == res2.getId()) {
 			return false;
+		}else {
+			if ((res1.getStartDate().isAfter(res2.getStartDate()) && res1.getStartDate().isBefore(res2.getEndingDate()))
+					|| (res1.getEndingDate().isAfter(res2.getStartDate())
+							&& res1.getEndingDate().isBefore(res2.getEndingDate()))) {
+				return true;
+			}
+			if ((res2.getStartDate().isAfter(res1.getStartDate()) && res2.getStartDate().isBefore(res1.getEndingDate()))
+					|| (res2.getEndingDate().isAfter(res1.getStartDate())
+							&& res2.getEndingDate().isBefore(res1.getEndingDate()))) {
+				return true;
+			}
+			if (res1.getStartDate().isEqual(res2.getStartDate()) && res1.getEndingDate().isEqual(res1.getEndingDate())) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+		
 	}
 }

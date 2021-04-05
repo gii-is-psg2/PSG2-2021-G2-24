@@ -40,7 +40,7 @@
 					<td><c:out value="${reserva.id}" /></td>
 					<td><c:out value="${reserva.owner.firstName}" /></td>
 					<td><c:out value="${reserva.owner.lastName}" /></td>
-					<td><c:out value="${reserva.pet}" /></td>
+					<td><c:out value="${reserva.pet.name}" /></td>
 					<td><c:out value="${reserva.room.id}" /></td>
 					<td><c:out value="${reserva.startDate}" /></td>
 					<td><c:out value="${reserva.endingDate}" /></td>
