@@ -47,7 +47,7 @@
 					<td><form:form method="post">
 							<input type="hidden" name="reservaId" value="${reserva.id}">
 							<c:if test="${reserva.startDate.isAfter(currentDate)}">
-							<button type="submit" name="postDeleteBooking">Cancel
+							<button type="submit" class="btn btn-default" name="postDeleteBooking">Cancel
 								Booking</button>
 								</c:if>
 						</form:form></td>

@@ -62,7 +62,7 @@ public class ReservaController {
 	@GetMapping()
 	public String reservasList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
-		log.info("El username es: " + username);
+	//	log.info("El username es: " + username);
 		Authorities authority = reservaSer.getAuthority(username);
 		List<Reserva> reservas = StreamSupport.stream(reservaSer.findAll().spliterator(), false)
 				.collect(Collectors.toList());
@@ -101,7 +101,7 @@ public class ReservaController {
 			,@RequestParam String room,BindingResult result, ModelMap modelMap) {
 		String view="reservas/listReservas";
 		if(result.hasErrors()) {
-			log.info("Tiene errores");
+	//		log.info("Tiene errores");
 			modelMap.addAttribute("reserva", reserva);
 			return "reservas/addReserva";
 		}else {

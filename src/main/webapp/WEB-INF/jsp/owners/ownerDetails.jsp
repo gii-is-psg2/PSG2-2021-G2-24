@@ -40,10 +40,11 @@
 		</spring:url>
 		<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New
 			Pet</a>
+		<div style="float:right">
 		<form:form method="post">
-			<button type="submit" name="postDeleteAccount">Delete
+			<button type="submit"  class="btn btn-default" name="postDeleteAccount">Delete
 				Account</button>
-		</form:form>
+		</form:form></div>
 	</c:if>
 	<br />
 	<br />
@@ -96,7 +97,7 @@
 
 								<form:form method="post">
 									<input type="hidden" name="petId" value="${pet.id}">
-									<button type="submit" name="postDeletePet">Delete Pet</button>
+									<button type="submit"  class="btn btn-default" name="postDeletePet">Delete Pet</button>
 								</form:form>
 
 								<td><spring:url

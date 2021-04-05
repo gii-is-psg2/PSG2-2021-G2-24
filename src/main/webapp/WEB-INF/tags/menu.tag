@@ -43,16 +43,16 @@
 				<petclinic:menuItem active="${name eq 'Booking'}" url="/reservas"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-					<span>Reservas</span>
+					<span>Bookings</span>
 
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+				<%-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
 
-				</petclinic:menuItem>
+				</petclinic:menuItem> --%>
 
 
 

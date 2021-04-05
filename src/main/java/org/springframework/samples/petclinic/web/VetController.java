@@ -139,8 +139,8 @@ public class VetController {
 		if(!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-		log.info("El nombre es:" + vet.getFirstName());
-		log.info("El apellido es:" + vet.getLastName());
+	//	log.info("El nombre es:" + vet.getFirstName());
+	//	log.info("El apellido es:" + vet.getLastName());
 		String view = "vets/vetList";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("vet", vet);
@@ -181,7 +181,7 @@ public class VetController {
 		if(!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-		log.info("Loading update vet form");
+	//	log.info("Loading update vet form");
 		Vet vet = vetService.findVetbyId(vetId).get();
 		model.put("vet", vet);
 		return "vets/updateVet";
@@ -199,10 +199,10 @@ public class VetController {
 		if(!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-		log.info("Updating vet: " + vetId);
+	//	log.info("Updating vet: " + vetId);
 		vet.setId(vetId);
 		if (result.hasErrors()) {
-			log.warn("Found errors on update: " + result.getAllErrors());
+	//		log.warn("Found errors on update: " + result.getAllErrors());
 			model.put("vet", vet);
 			return "vets/updateVet";
 		} else {
