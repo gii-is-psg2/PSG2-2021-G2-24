@@ -136,8 +136,8 @@ public class OwnerController {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		} else {
-			if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
-					&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
 				owner.setId(ownerId);
