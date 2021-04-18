@@ -61,6 +61,9 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
+	@Column(name = "adoption_id")
+	private boolean adoption;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
 	private Set<Visit> visits;
 
