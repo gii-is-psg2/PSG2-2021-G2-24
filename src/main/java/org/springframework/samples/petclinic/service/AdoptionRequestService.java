@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
+import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,21 +43,25 @@ public class AdoptionRequestService {
 	public Iterable<AdoptionRequest> findAll() {
 		return adoptReqrepo.findAll();
 	}
-	@Transactional
-	public Collection<AdoptionRequestResponse> findAdoptionRequestResponse() {
+	
+	
+	
+	public Authorities getAuthority(String username) {
+		// TODO Auto-generated method stub
 
-		return adoptReqrepo.findAdoptionRequestResponse();
+		return adoptReqrepo.getAuthority(username);
 	}
+	
 	@Transactional
-	public Collection<AdoptionRequestResponse> findAdoptionRequestResponsebyAdoptionRequest(AdoptionRequest adoptionRequest) {
-		List<AdoptionRequestResponse> adoptRRfilter = new ArrayList<AdoptionRequestResponse>();
-		List<AdoptionRequestResponse> adoptRR = adoptReqrepo.findAdoptionRequestResponse();
-		for(AdoptionRequestResponse arr : adoptRR ) {
-			if(arr.getAdoptionrequest().getId() == adoptionRequest.getId()) {
-				adoptRRfilter.add(arr);
-			}
-		}
-		return adoptRRfilter;
+	public Collection<Owner> findOwners() {
+
+		return adoptReqrepo.findOwners();
+	}
+	
+	@Transactional
+	public Collection<Pet> findPets() {
+
+		return adoptReqrepo.findPets();
 	}
 	
 }
