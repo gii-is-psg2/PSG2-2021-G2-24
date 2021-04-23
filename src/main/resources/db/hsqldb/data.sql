@@ -96,3 +96,5 @@ INSERT INTO ROOMS(id) VALUES (3);
 INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VALUES (1,1,1,1,'2013-01-01','2013-01-03');
 INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VALUES (2,2,2,1,'2013-03-05','2013-03-07');
 INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VALUES (3,3,3,2,'2013-01-01','2013-01-03');
+
+INSERT INTO causas VALUES (1, 'Prueba', 'Prueba', 100.00, 'Prueba', 1 );
