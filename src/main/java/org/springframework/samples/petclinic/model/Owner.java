@@ -26,6 +26,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -64,7 +65,15 @@ public class Owner extends Person {
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
-
+	
+	@OneToMany
+	@JoinColumn(name = "setadoptionrequest_id")
+	private Set<AdoptionRequest> adoptionrequest;
+	
+	@OneToMany
+	@JoinColumn(name = "setadoptionrequest_id")
+	private Set<AdoptionRequestResponse> adoptionrequestrespones;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 	
