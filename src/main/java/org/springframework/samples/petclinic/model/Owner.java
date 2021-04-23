@@ -67,6 +67,10 @@ public class Owner extends Person {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "donation_id", referencedColumnName = "donation_id")
+	private Donation donation;
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
