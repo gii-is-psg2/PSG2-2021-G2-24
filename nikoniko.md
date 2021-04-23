@@ -37,6 +37,8 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 1         | :smile:       |                |                |                |                |                |
 | Day 2         |               |    :smile:     |                |                |                |                |
 | Day 3         |               |    :worried:   |                |                |                |                |
-| Day 4         | :neutral_face:|               |                |                |                |                |
-| 19/04/2021    |               |                |    😐          |                |                |                |
+| Day 4         | :neutral_face:|                |                |                |                |                |
+| 15/04/2021    |               |                |                |                |   :smile:      |                |
+| 17/04/2021    |               |                |                |                | :neutral_face: |                |
+| 19/04/2021    |               |                |    😐         |                |                |                |
 ...
