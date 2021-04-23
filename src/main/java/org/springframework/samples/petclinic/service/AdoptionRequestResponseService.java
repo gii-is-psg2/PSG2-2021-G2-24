@@ -1,8 +1,11 @@
 package org.springframework.samples.petclinic.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.samples.petclinic.repository.AdoptionRequestResponseRepository;
 import org.springframework.stereotype.Service;
@@ -38,4 +41,9 @@ public class AdoptionRequestResponseService {
 		return adoptReqresprepo.findAll();
 	}
 
+	@Transactional
+	public Collection<AdoptionRequest> findAdoptionRequests() {
+
+		return adoptReqresprepo.findAdoptionRequests();
+	}
 }

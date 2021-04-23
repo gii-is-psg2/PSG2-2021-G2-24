@@ -101,5 +101,5 @@ INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (1,1,1);
 INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (2,3,4);
 INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (3,3,3);
 
-INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id) VALUES (1, 1, 4);
-INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id) VALUES (2, 2, 4);
+INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, description_id) VALUES (1, 1, 4, 'I want the pet, so pretty!');
+INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, description_id) VALUES (2, 2, 4, 'Is so beautiful!');

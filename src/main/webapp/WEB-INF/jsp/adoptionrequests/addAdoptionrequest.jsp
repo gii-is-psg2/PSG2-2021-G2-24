@@ -13,22 +13,20 @@
         <h2>Formulario para dar en adopción</h2>
 
 
-        <form:form modelAttribute="reserva" class="form-horizontal" action="/reservas">
+        <form:form modelAttribute="adoptionrequest" class="form-horizontal" action="/adoptionrequests">
             <div class="form-group has-feedback">
             	<div class="control-group">
                      <petclinic:selectField name="owner.user.username" label="Username" names="${usernames}"  size="5"/>
-              
+              	</div>
                 <div class="control-group">
                     <petclinic:selectField name="pet.name" label="Mascota" names="${pets}" size="5"/>
-               
-
-            </div>
-			</div>
+               </div>
+			
 			</div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="adoptionrequest" value="${adoptionrequest.id}"/>
-                    <button class="btn btn-default" type="submit">Enviar</button>
+                    <button class="btn btn-default" type="submit">Send</button>
                 </div>
             </div>
         </form:form>

@@ -29,37 +29,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @Controller
 @RequestMapping("/adoptionrequests")
 public class AdoptionRequestController {
 
-	private final UserService userService;
+	
 	private final AdoptionRequestService adoptioReqser;
 	
 	@Autowired
-	public AdoptionRequestController(AdoptionRequestService adoptioReqser, UserService userService) {
-		this.userService = userService;
+	public AdoptionRequestController(AdoptionRequestService adoptioReqser  ) {
 		this.adoptioReqser = adoptioReqser;
 	}
 	
 	@GetMapping(path = "/new")
-	public String createReserva(ModelMap modelMap) {
+	public String createAdoptionrequest(ModelMap modelMap) {
 		String view = "adoptionrequests/addAdoptionrequest";
 		modelMap.addAttribute("adoptionrequest", new AdoptionRequest());
 		return view;
 	}
 	
 	@PostMapping()
-	public String saveReserva(@Valid AdoptionRequest ar,BindingResult result, ModelMap modelMap) {
+	public String saveAdoptionrequest(@Valid AdoptionRequest ar,BindingResult result, ModelMap modelMap) {
 		String view="adoptionrequests/listAdoptionRequests";
 		if(result.hasErrors()) {
 	//		log.info("Tiene errores");
 			modelMap.addAttribute("adoptionrequest", ar);
 			return "adoptionrequests/addAdoptionrequests";
 		}else {
-			
-		
 			adoptioReqser.save(ar);
 			modelMap.addAttribute("message", "Request successfully saved!");
 			//view = reservasList(modelMap);
@@ -78,7 +75,6 @@ public class AdoptionRequestController {
 					usernames.add(o.getUser().getUsername());
 				}
 			}
-			
 		}else if (authority.getAuthority().equals("admin")) { 
 			for(Owner o: adoptioReqser.findOwners()) {
 					usernames.add(o.getUser().getUsername());
@@ -104,13 +100,11 @@ public class AdoptionRequestController {
 					}
 				}
 			}
-
 		} else {
 			pets = StreamSupport.stream(adoptioReqser.findPets().spliterator(), false).collect(Collectors.toList());
 		}
 		for (Pet pet : pets) {
 			petstostr.add(pet.getName());
-
 		}return petstostr;
 
 	}
