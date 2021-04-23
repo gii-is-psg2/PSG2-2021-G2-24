@@ -2,9 +2,14 @@ package org.springframework.samples.petclinic.model;
 
 
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -13,27 +18,28 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 
-
-@Table(name = "causas")
 @Entity
 @Data
-public class Causa extends BaseEntity {
+@Table(name = "causas")
+
+public class Causa extends NamedEntity {
+	
 	
 	@NotNull
-	@JoinColumn(name = "nameCausa_id")
-	String nameCausa;
-	
-	@NotNull
-	@JoinColumn(name = "descriptionCausa_id")
-	String descriptionCausa;
+	@Column(name = "descriptionCausa_id")
+	private String descriptionCausa;
 
 	@NotNull
-	@JoinColumn(name = "budgetTarget_id")
-	Integer budgetTarget;
+	@Column(name = "budgetTarget_id")
+	private Double budgetTarget;
 	
 	@NotNull
-	@JoinColumn(name = "ActivenpOrganization_id")
-	String ActivenpOrganization;
+	@Column(name = "ActivenpOrganization_id")
+	private String ActivenpOrganization;
+	
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private Owner owner;
 	
 
 }
