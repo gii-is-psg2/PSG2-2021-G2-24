@@ -16,10 +16,10 @@
         <form:form modelAttribute="adoptionrequest" class="form-horizontal" action="/adoptionrequests">
             <div class="form-group has-feedback">
             	<div class="control-group">
-                     <petclinic:selectField name="owner.user.username" label="Username" names="${usernames}"  size="5"/>
+                     <petclinic:selectField name="ownerrequest.user.username" label="Username" names="${usernames}"  size="5"/>
               	</div>
                 <div class="control-group">
-                    <petclinic:selectField name="pet.name" label="Mascota" names="${pets}" size="5"/>
+                    <petclinic:selectField name="petrequest.name" label="Mascota" names="${pets}" size="5"/>
                </div>
 			
 			</div>
