@@ -71,6 +71,16 @@ public class ReservaService {
 	public Optional<Reserva> getReservaById(int id) {
 		return this.reservaRepo.findById(id);
 	}
+	
+	public Boolean bookingSamePet(Reserva reserva) {
+		Boolean b = false;
+		for (Reserva r : findAll()) {
+			if (r.getPet().equals(reserva.getPet()) && !b) {
+				b = diasSolapados(reserva, r);
+			}
+		}
+		return b;
+	}
 
 	public Boolean alreadyBooked(Reserva reserva) {
 		Boolean resultado = false;

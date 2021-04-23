@@ -43,6 +43,9 @@ public class ReservaValidator implements Validator {
 		if(this.reservaService.alreadyBooked(reserva)) {
 			errors.rejectValue("room", "Room booked for another pet", "Room already booked for that time slot");
 		}
+		if(this.reservaService.bookingSamePet(reserva)) {
+			errors.rejectValue("room", "This pet has already booked a room", "This pet has already booked a room");
+		}
 	}
 
 	@Override
