@@ -41,5 +41,10 @@ public class Causa extends NamedEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "causa")
+	private Set<Donation> donations;
+	
+	
+	
 
 }

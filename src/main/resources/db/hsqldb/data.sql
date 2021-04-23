@@ -98,3 +98,5 @@ INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VAL
 INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VALUES (3,3,3,2,'2013-01-01','2013-01-03');
 
 INSERT INTO causas VALUES (1, 'Prueba', 'Prueba', 100.00, 'Prueba', 1 );
+
+INSERT INTO donations VALUES (1, '2021-04-22', 10.5, 1, 2);
