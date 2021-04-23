@@ -44,7 +44,11 @@ public class Causa extends NamedEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "causa")
 	private Set<Donation> donations;
 	
-	
+	@Column(name = "total_donations")
+	public static Double totalDonation(Set<Donation> donations) {		
+		return donations.stream().mapToDouble(d->d.getImporteDonacion()).sum();
+		
+	}
 	
 
 }
