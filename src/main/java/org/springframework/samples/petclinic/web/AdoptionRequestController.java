@@ -53,7 +53,6 @@ public class AdoptionRequestController {
 	public String saveAdoptionrequest(@Valid AdoptionRequest ar,BindingResult result, ModelMap modelMap) {
 		String view="adoptionrequests/listAdoptionRequests";
 		if(result.hasErrors()) {
-	//		log.info("Tiene errores");
 			modelMap.addAttribute("adoptionrequest", ar);
 			return "adoptionrequests/addAdoptionrequests";
 		}else {

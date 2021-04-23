@@ -1,7 +1,11 @@
 package org.springframework.samples.petclinic.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,4 +25,9 @@ public class AdoptionRequest extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name = "pet_id")
 	private Pet petrequest;
+	
+	@OneToMany
+	@JoinColumn(name = "setadoptionrequestresponse_id")
+	private Set<AdoptionRequestResponse> adoptionrequest;
+	
 }
