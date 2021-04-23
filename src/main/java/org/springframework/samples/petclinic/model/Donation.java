@@ -23,20 +23,24 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "donation")
+@Table(name = "donations")
 @Data
 public class Donation extends BaseEntity {
 	
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private Owner owner;
+	
+	@ManyToOne
+	@JoinColumn(name = "causa_id")
+	private Causa causa;
+	
+	@JoinColumn(name = "importeDonacion")
 	@NotNull
-	@JoinColumn(name = "nombreDonante_id")
-	String nombreDonante;
-
-	@NotNull
-	@Column(name = "importeDonacion_id")
-	Integer importeDonacion;
-		
+	Double importeDonacion;
+	
+	@JoinColumn(name = "fechaDonacion")	
 	@NotNull
 	@DateTimeFormat(pattern= "yyyy-MM-dd")
-	@Column(name = "fechaDonacion_id")
 	private LocalDate fechaDonacion;
 }
