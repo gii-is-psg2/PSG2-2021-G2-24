@@ -97,9 +97,15 @@ INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VAL
 INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VALUES (2,2,2,1,'2013-03-05','2013-03-07');
 INSERT INTO RESERVAS(id, pet_id, owner_id, room_id, start_date, ending_date) VALUES (3,3,3,2,'2013-01-01','2013-01-03');
 
+
 INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (1,1,1);
 INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (2,3,4);
 INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (3,3,3);
 
 INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, description_id) VALUES (1, 1, 4, 'I want the pet, so pretty!');
 INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, description_id) VALUES (2, 2, 4, 'Is so beautiful!');
+
+INSERT INTO causas VALUES (1, 'Prueba', 'Prueba', 100.00, 'Prueba', 1 );
+
+INSERT INTO donations VALUES (1, '2021-04-22', 10.5, 1, 2);
+
