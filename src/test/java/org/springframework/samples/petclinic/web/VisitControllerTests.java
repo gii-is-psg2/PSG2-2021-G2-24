@@ -62,7 +62,7 @@ class VisitControllerTests {
 
 		Pet petMock = new Pet();
 		petMock.setId(2);
-	//	petMock.setVisits(new HashSet<>());
+		petMock.setVisits(new HashSet<>());
 		Set<Pet> pets = new HashSet<Pet>();
 		pets.add(petMock);
 		given(this.userService.findUser(any(String.class))).willReturn(Optional.of(userMock));
