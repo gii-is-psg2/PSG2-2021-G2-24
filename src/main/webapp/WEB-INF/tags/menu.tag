@@ -44,6 +44,12 @@
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 					<span>Bookings</span>
+				</petclinic:menuItem>
+					
+				<petclinic:menuItem active="${name eq 'causes'}" url="/causes/list"
+					title="Causes">
+					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+					<span>Causes</span>
 
 				</petclinic:menuItem>
 
