@@ -42,4 +42,5 @@ In the retrospective meeting, the team has a discussion about those results.
 | 17/04/2021    |               |                |                |                | :neutral_face: |                |
 | 19/04/2021    |               |                |:neutral_face:  |                |                |                |
 | 23/04/2021    |               |                |    :smile:     |                | :neutral_face: |                |
+| 24/04/2021    |               |                |    :smile:     |                |                |                |
 ...
