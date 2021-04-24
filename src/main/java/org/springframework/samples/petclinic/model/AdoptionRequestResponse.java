@@ -23,7 +23,7 @@ public class AdoptionRequestResponse extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
-	private Owner ownerresponse;
+	private Owner owner;
 	
 	@NotNull
 	@Column(name = "description_id")

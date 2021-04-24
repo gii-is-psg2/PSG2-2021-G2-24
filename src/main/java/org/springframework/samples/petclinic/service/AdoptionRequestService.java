@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
@@ -44,7 +45,10 @@ public class AdoptionRequestService {
 		return adoptReqrepo.findAll();
 	}
 	
-	
+	@Transactional
+	public Optional<AdoptionRequest> findById(int id) {
+		return adoptReqrepo.findById(id);
+	}	
 	
 	public Authorities getAuthority(String username) {
 		// TODO Auto-generated method stub
@@ -62,6 +66,12 @@ public class AdoptionRequestService {
 	public Collection<Pet> findPets() {
 
 		return adoptReqrepo.findPets();
+	}
+	
+	@Transactional
+	public List<AdoptionRequest> findActive() {
+
+		return adoptReqrepo.findAdoptionsActive();
 	}
 	
 }
