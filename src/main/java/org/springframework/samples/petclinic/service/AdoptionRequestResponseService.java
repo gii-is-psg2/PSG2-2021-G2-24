@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
+import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.samples.petclinic.repository.AdoptionRequestResponseRepository;
@@ -45,5 +46,11 @@ public class AdoptionRequestResponseService {
 	public Collection<AdoptionRequest> findAdoptionRequests() {
 
 		return adoptReqresprepo.findAdoptionRequests();
+	}
+	
+	public Authorities getAuthority(String username) {
+		// TODO Auto-generated method stub
+
+		return adoptReqresprepo.getAuthority(username);
 	}
 }

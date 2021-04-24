@@ -1,14 +1,23 @@
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
+import org.springframework.samples.petclinic.model.Authorities;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.service.AdoptionRequestResponseService;
 import org.springframework.samples.petclinic.service.AdoptionRequestService;
+import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,30 +28,78 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/adoptionRequestResponse")
+@RequestMapping("/adoptionrequestresponses")
 public class AdoptionRequestResponseController {
 
 	private final AdoptionRequestResponseService adoptionRequestResponseService;
 	private final AdoptionRequestService adoptionRequestService;
-	
+	private List<AdoptionRequestResponse> arrs;
 	@Autowired
 	public AdoptionRequestResponseController(AdoptionRequestResponseService adoptioReqResser, AdoptionRequestService adoptionRequestService) {
 		this.adoptionRequestResponseService = adoptioReqResser;
 		this.adoptionRequestService = adoptionRequestService;
 	}
 	
-	@GetMapping(path = "/{adoptionRequestId}/new")
-	public String createAdoptionrequestresponse(ModelMap modelMap,@PathVariable("adoptionRequestId") int adoptionRequestId) {
+	@GetMapping(value = "/{adoptionRequestId}/new")
+	public String createAdoptionrequestresponse(@PathVariable("adoptionRequestId") int adoptionRequestId,ModelMap modelMap) {
 		String view = "adoptionrequestresponses/addAdoptionrequestresponse";
 		AdoptionRequestResponse adoptionRequestResponse =  new AdoptionRequestResponse();
 		adoptionRequestResponse.setAdoptionrequest(adoptionRequestService.findById(adoptionRequestId).get());
-		modelMap.addAttribute("adoptionRequestResponse",adoptionRequestResponse);
+		modelMap.addAttribute("adoptionrequestresponse",adoptionRequestResponse);
 		return view;
+	}
+	
+	@GetMapping("/ownersresponses")
+	public String getOwnersresponsesListed(ModelMap modelMap) {
+		String username = UserUtils.getUser();
+		//	log.info("El username es: " + username);
+			Authorities authority = adoptionRequestResponseService.getAuthority(username);
+			List<AdoptionRequestResponse> adrrs = StreamSupport.stream(adoptionRequestResponseService.findAll().spliterator(), false)
+					.collect(Collectors.toList());
+			if (authority.getAuthority().equals("owner")) {
+				for (AdoptionRequestResponse ars : adrrs) {
+					if (ars.getAdoptionrequest().getOwner().getUser().getUsername().equals(username)) {
+						 arrs = new ArrayList<AdoptionRequestResponse>();
+						arrs.add(ars);
+					}
+				}
+				modelMap.addAttribute("adoptionrequestresponses", arrs);
+			} else {
+				modelMap.addAttribute("adoptionrequestresponses", adrrs);
+			}
+
+			String view = "adoptionrequestresponses/listOwnersresponses";
+
+			return view;
+	}
+	
+	@GetMapping("/list")
+	public String getmyresponses(ModelMap modelMap) {
+		String username = UserUtils.getUser();
+		//	log.info("El username es: " + username);
+			Authorities authority = adoptionRequestResponseService.getAuthority(username);
+			List<AdoptionRequestResponse> adrrs = StreamSupport.stream(adoptionRequestResponseService.findAll().spliterator(), false)
+					.collect(Collectors.toList());
+			if (authority.getAuthority().equals("owner")) {
+				for (AdoptionRequestResponse ars : adrrs) {
+					if (ars.getOwner().getUser().getUsername().equals(username)) {
+						 arrs = new ArrayList<AdoptionRequestResponse>();
+						arrs.add(ars);
+					}
+				}
+				modelMap.addAttribute("adoptionrequestresponses", arrs);
+			} else {
+				modelMap.addAttribute("adoptionrequestresponses", adrrs);
+			}
+
+			String view = "adoptionrequestresponses/listAdoptionrequestresponses";
+
+			return view;
 	}
 	
 	@PostMapping()
 	public String saveAdoptionrequest(@Valid AdoptionRequestResponse arr,BindingResult result, ModelMap modelMap) {
-		String view="adoptionrequestresponses/listAdoptionRequests";
+		String view="adoptionrequestresponses/listAdoptionrequestresponses";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("adoptionrequest", arr);
 			return "adoptionrequests/addAdoptionrequests";
@@ -53,8 +110,24 @@ public class AdoptionRequestResponseController {
 		}
 		return view;
 	}
-	/*@ModelAttribute
-	public Collection<String> populateAdoptionRequest(){
+	@ModelAttribute("usernames")
+	public Collection<String> populateUsernames() {
 		
-	}*/
+		List<String> usernames= new ArrayList<String>();
+		String username = UserUtils.getUser();
+		Authorities authority = adoptionRequestService.getAuthority(username);
+		if(authority.getAuthority().equals("owner")) {
+			for(Owner o: adoptionRequestService.findOwners()) {
+				if(o.getUser().getUsername().equals(username)) {
+					usernames.add(o.getUser().getUsername());
+				}
+			}
+		}else if (authority.getAuthority().equals("admin")) { 
+			for(Owner o: adoptionRequestService.findOwners()) {
+					usernames.add(o.getUser().getUsername());
+			}
+		}
+		return usernames;
+	}
+
 }
