@@ -46,7 +46,7 @@
 					<span>Bookings</span>
 				</petclinic:menuItem>
 					
-				<petclinic:menuItem active="${name eq 'causes'}" url="/causes/list"
+				<petclinic:menuItem active="${name eq 'causes'}" url="/causas/list"
 					title="Causes">
 					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 					<span>Causes</span>

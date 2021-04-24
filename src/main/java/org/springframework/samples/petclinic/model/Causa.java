@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 
+
 @Entity
 @Data
 @Table(name = "causas")
@@ -44,11 +45,73 @@ public class Causa extends NamedEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "causa")
 	private Set<Donation> donations;
 	
-	@Column(name = "total_donations")
-	public static Double totalDonation(Set<Donation> donations) {		
-		return donations.stream().mapToDouble(d->d.getImporteDonacion()).sum();
-		
+
+	public Double totalDonation;
+
+
+	public String getDescriptionCausa() {
+		return descriptionCausa;
+	}
+
+
+	public void setDescriptionCausa(String descriptionCausa) {
+		this.descriptionCausa = descriptionCausa;
+	}
+
+
+	public Double getBudgetTarget() {
+		return budgetTarget;
+	}
+
+
+	public void setBudgetTarget(Double budgetTarget) {
+		this.budgetTarget = budgetTarget;
+	}
+
+
+	public String getActivenpOrganization() {
+		return ActivenpOrganization;
+	}
+
+
+	public void setActivenpOrganization(String activenpOrganization) {
+		ActivenpOrganization = activenpOrganization;
+	}
+
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+
+	public Set<Donation> getDonations() {
+		return donations;
+	}
+
+
+	public void setDonations(Set<Donation> donations) {
+		this.donations = donations;
+	}
+
+
+	public Double getTotalDonation() {
+		return totalDonation;
+	}
+
+
+	public void setTotalDonation(Double totalDonation) {
+		this.totalDonation = totalDonation;
+	}
+	
+	
+
+
 	}
 	
 
-}
+

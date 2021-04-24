@@ -6,41 +6,31 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="causes">
-    <h2>Causes</h2>
+    <h2>Causes
 
-    <table id="causesTable"	 class="table table-striped">
-        <thead id="psg2Head">
-        <tr>
-            <th style="width: 150px;">Name</th>
-            <th>Total Donations</th>
-            <th>Budget Target</th>
-        </tr>
-        </thead>
+		<spring:url value="/causas/new" var="causaNewUrl">
+		</spring:url>
+		<a href="${fn:escapeXml(causaNewUrl)}">Add Cause</a>
+	</h2>
+	<table id="causasTable" class="table table-striped">
+		<thead>
+			<tr>
+				<th style="width: 150px;">Name</th>
+				<th style="width: 200px;">Total Donation</th>
+				<th style="width: 200px;">Budget Target</th>
+
+
+
+			</tr>
+		</thead>
         <tbody>
-        <c:forEach items="${causes}" var="causes">
+        <c:forEach items="${causas}" var="causa">
             <tr>
-                <td>
-                    <spring:url value="/causes/{causesId}" var="causesUrl">
-                        <spring:param name="causesId" value="${causes.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(causesUrl)}"><c:out value="${causes.name}"/></a>
-                </td>
-                <td>
-                    <c:out value="${causes.total_donations}"/>
-                </td>
-                <td>
-                    <c:out value="${causes.budgetTarget_id}"/>
-                </td>              
-      
-<!--
-                <td> 
-                    <c:out value="${owner.user.username}"/> 
-                </td>
-                <td> 
-                   <c:out value="${owner.user.password}"/> 
-                </td> 
--->
-                
+				<td><c:out value="${causa.name}" /></td>
+				<td><c:out value="${causa.totalDonation}" /></td>
+				<td><c:out value="${causa.budgetTarget}" /></td>            
+     
+ 
             </tr>
         </c:forEach>
         </tbody>

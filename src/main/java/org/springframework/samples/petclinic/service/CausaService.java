@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Causa;
+import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Room;
 import org.springframework.samples.petclinic.repository.CausaRepository;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,12 @@ public class CausaService {
 	@Transactional
 	public Optional<Causa> getCausaById(int id) {
 		return this.causaRepo.findById(id);
+	}
+	
+	@Transactional
+	public Collection<Donation> findDonations() {
+
+		return causaRepo.findDonations();
 	}
 	
 
