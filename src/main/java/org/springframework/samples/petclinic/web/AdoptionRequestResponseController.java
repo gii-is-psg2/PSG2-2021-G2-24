@@ -136,6 +136,7 @@ public class AdoptionRequestResponseController {
 			Set<AdoptionRequestResponse> set = ownerResponse.getAdoptionrequestresponses();
 			set.add(arr);
 			ownerResponse.setAdoptionrequestresponses(set);
+			arr.setIsactive(true);
 			adoptionRequestResponseService.save(arr);
 			modelMap.addAttribute("message", "Response successfully saved!");
 			view = getmyresponses(modelMap);

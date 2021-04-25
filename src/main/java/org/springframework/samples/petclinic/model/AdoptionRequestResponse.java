@@ -27,4 +27,7 @@ public class AdoptionRequestResponse extends BaseEntity {
 	@NotNull
 	@Column(name = "description_id")
 	private String description;
+	
+	@Column(name = "isactive")
+	private boolean isactive;
 }

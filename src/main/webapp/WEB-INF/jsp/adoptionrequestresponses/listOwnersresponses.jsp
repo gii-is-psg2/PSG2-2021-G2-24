@@ -27,7 +27,13 @@
 					</td>
 					<td><c:out value="${adoptionrequestresponse.adoptionrequest.pet.name}" /></td>
 					<td><c:out value="${adoptionrequestresponse.description}" /></td>
-					<td>Accept	Decline</td>
+					<td><spring:url value="/notifications/accept" var="acceptUrl">
+						</spring:url>
+						<a href="${fn:escapeXml(acceptUrl)}">Accept</a></td> 
+						
+					<td><spring:url value="/notifications/decline" var="declineUrl">
+						</spring:url>
+						<a href="${fn:escapeXml(declineUrl)}">Decline</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
