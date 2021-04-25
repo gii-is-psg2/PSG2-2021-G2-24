@@ -20,7 +20,7 @@
 				<th style="width: 200px;">Pet's name</th>
 				<th>Adopt</th>
 				<c:if test="${loggedUsername == userName || isAdmin}">
-					<th aria-hidden="true">Details</th>
+					<th aria-hidden="true">Owner's Details</th>
 				</c:if>
 			</tr>
 		</thead>
@@ -40,9 +40,12 @@
 								value="Adopt" /></a></td>
 								
 					<c:if test="${loggedUsername == userName || isAdmin}">
-						<td><a href="//adoptionrequests/${adoptionRequest.id}/details"> <span
+						<td><spring:url value="/owners/{ownerId}" var="ownerUrl">
+							<spring:param name="ownerId"
+								value="${adoptionRequest.owner.id}" /></spring:url>						
+						<a href="${fn:escapeXml(ownerUrl)}"> <span
 								class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						</a></td>
+						</a></td>						
 					</c:if>
 				
 				</tr>

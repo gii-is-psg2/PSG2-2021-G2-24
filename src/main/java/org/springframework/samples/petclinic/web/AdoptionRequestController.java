@@ -35,16 +35,15 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdoptionRequestController {
 
 	private final AdoptionRequestService adoptionRequestService;
-//	private final UserService userService;
-//	private final OwnerService ownerService;
+	private final UserService userService;
+	private final OwnerService ownerService;
 
 	@Autowired
-	public AdoptionRequestController(AdoptionRequestService adoptionRequestService	
-//			, UserService userService, OwnerService ownerService
-			){
+	public AdoptionRequestController(AdoptionRequestService adoptionRequestService, UserService userService,
+			OwnerService ownerService) {
 		this.adoptionRequestService = adoptionRequestService;
-//		this.userService = userService;
-//		this.ownerService = ownerService;
+		this.userService = userService;
+		this.ownerService = ownerService;
 
 	}
 
@@ -144,22 +143,22 @@ public class AdoptionRequestController {
 		return petstostr;
 	}
 
-//	@GetMapping("/{id}/details")
-//	public ModelAndView adoptionRequestDetails(@PathVariable("ownerId") int ownerId) {
-//		System.out.println("holis2");
-//		String userName = UserUtils.getUser();
-//		Optional<User> userOp = this.userService.findUser(userName);
-//		if (!userOp.isPresent()) {
-//
-//			return new ModelAndView("/login");
-//		}
-//		User user = userOp.get();
-//		ModelAndView mav = new ModelAndView("owners/ownerDetails");
-//		Owner owner = this.ownerService.findOwnerById(ownerId);
-//		mav.addObject(owner);
-//		mav.addObject("userName", owner.getUser().getUsername());
-//		mav.addObject("loggedUsername", UserUtils.getUser());
-//		mav.addObject("isAdmin", this.userService.isAdmin(user));
-//		return mav;
-//	}
+	@GetMapping("/owners/{ownerId}")
+	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
+		System.out.println("holis2");
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if (!userOp.isPresent()) {
+
+			return new ModelAndView("/login");
+		}
+		User user = userOp.get();
+		ModelAndView mav = new ModelAndView("owners/ownerDetails");
+		Owner owner = this.ownerService.findOwnerById(ownerId);
+		mav.addObject(owner);
+		mav.addObject("userName", owner.getUser().getUsername());
+		mav.addObject("loggedUsername", UserUtils.getUser());
+		mav.addObject("isAdmin", this.userService.isAdmin(user));
+		return mav;
+	}
 }
