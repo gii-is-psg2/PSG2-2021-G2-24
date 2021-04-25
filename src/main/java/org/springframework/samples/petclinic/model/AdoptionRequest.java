@@ -28,7 +28,7 @@ public class AdoptionRequest extends BaseEntity {
 	
 	@OneToMany
 	@JoinColumn(name = "setadoptionrequestresponse_id")
-	private Set<AdoptionRequestResponse> adoptionrequest;
+	private Set<AdoptionRequestResponse> adoptionRequestResponse;
 	
 	
 }

@@ -27,8 +27,7 @@
 					</td>
 					<td><c:out value="${adoptionrequestresponse.adoptionrequest.pet.name}" /></td>
 					<td><c:out value="${adoptionrequestresponse.description}" /></td>
-					<td>Accept</td>
-					<td>Decline</td>
+					<td>Accept	Decline</td>
 				</tr>
 			</c:forEach>
 		</tbody>
