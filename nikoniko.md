@@ -40,8 +40,8 @@ In the retrospective meeting, the team has a discussion about those results.
 | Day 4         | :neutral_face:|                |                |                |                |                |
 | 15/04/2021    |               |                |                |                |   :smile:      |                |
 | 17/04/2021    |               |                |                |                | :neutral_face: |                |
-| 19/04/2021    |               |                |:neutral_face:  |                |                |                |
-| 23/04/2021    |    :smile:    |                |    :smile:     |                | :neutral_face: |                |
-| 24/04/2021    |:neutral_face: |   :worried:    |    :smile:     |                |                |                |
-| 25/04/2021    |               |                |    :smile:     |                |   :fearful:    |                |
+| 19/04/2021    |               |                |:neutral_face:  |:neutral_face:  |                |                |
+| 23/04/2021    |    :smile:    |                |    :smile:     |:neutral_face:  | :neutral_face: |                |
+| 24/04/2021    |:neutral_face: |   :worried:    |    :smile:     |:neutral_face:  |                |                |
+| 25/04/2021    |               |                |    :smile:     |:worried:       |   :fearful:    |                |
 ...
