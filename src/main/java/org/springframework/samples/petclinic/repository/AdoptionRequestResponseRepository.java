@@ -18,4 +18,8 @@ public interface AdoptionRequestResponseRepository extends CrudRepository<Adopti
 	
 	@Query("SELECT  auth FROM Authorities auth WHERE auth.user.username LIKE :username")
 	public Authorities getAuthority(@Param("username")String username) throws DataAccessException;
+	
+	@Query("SELECT owner FROM Owner owner ORDER BY owner.id")
+	List<Owner> findOwners() throws DataAccessException;
+	
 }

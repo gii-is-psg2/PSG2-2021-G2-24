@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/adoptionrequestresponses")
@@ -98,15 +99,22 @@ public class AdoptionRequestResponseController {
 	}
 	
 	@PostMapping()
-	public String saveAdoptionrequest(@Valid AdoptionRequestResponse arr,BindingResult result, ModelMap modelMap) {
+	public String saveAdoptionrequest(@Valid AdoptionRequestResponse arr,@RequestParam("owner.user.username") String username,@RequestParam("adoptionrequest") int ar,BindingResult result, ModelMap modelMap) {
 		String view="adoptionrequestresponses/listAdoptionrequestresponses";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("adoptionrequest", arr);
 			return "adoptionrequests/addAdoptionrequests";
 		}else {
+			for(Owner owner: this.adoptionRequestResponseService.findOwners()) {
+				if(owner.getUser().getUsername().equals(username)) {
+					arr.setOwner(owner);
+				}
+			}
+			AdoptionRequest a = this.adoptionRequestService.findById(ar).get();
+			arr.setAdoptionrequest(a);
 			adoptionRequestResponseService.save(arr);
 			modelMap.addAttribute("message", "Response successfully saved!");
-			//view = reservasList(modelMap);
+			view = getmyresponses(modelMap);
 		}
 		return view;
 	}

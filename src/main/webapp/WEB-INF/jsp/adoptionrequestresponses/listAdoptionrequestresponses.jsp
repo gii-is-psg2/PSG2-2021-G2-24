@@ -28,6 +28,7 @@
 					<td><c:out value="${adoptionrequestresponse.adoptionrequest.pet.name}" /></td>
 					<td><c:out value="${adoptionrequestresponse.description}" /></td>
 				
+				
 				</tr>
 			</c:forEach>
 		</tbody>

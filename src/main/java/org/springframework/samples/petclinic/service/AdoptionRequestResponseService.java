@@ -49,8 +49,12 @@ public class AdoptionRequestResponseService {
 	}
 	
 	public Authorities getAuthority(String username) {
-		// TODO Auto-generated method stub
-
 		return adoptReqresprepo.getAuthority(username);
 	}
+	
+	@Transactional
+	public Collection<Owner> findOwners() {
+		return adoptReqresprepo.findOwners();
+	}
+	
 }

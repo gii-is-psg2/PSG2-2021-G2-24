@@ -29,6 +29,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="adoptionrequestresponse" value="${adoptionrequestresponse.id}"/>
+                    <input type="hidden" name="adoptionrequest" value="${adoptionrequestresponse.adoptionrequest.id}"/>
                     <button class="btn btn-default" type="submit">Send</button>
                 </div>
             </div>
