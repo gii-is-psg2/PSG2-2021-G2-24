@@ -22,4 +22,7 @@ public interface AdoptionRequestRepository extends CrudRepository<AdoptionReques
 	
 	@Query("SELECT pet FROM Pet pet ORDER BY pet.id")
 	List<Pet> findPets() throws DataAccessException;
+	
+	@Query("SELECT active FROM AdoptionRequest active WHERE active.pet.adoption = true")
+	List<AdoptionRequest> findAdoptionsActive() throws DataAccessException;
 }

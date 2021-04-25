@@ -5,15 +5,15 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
+import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.samples.petclinic.repository.AdoptionRequestResponseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdoptionRequestResponseService {
-	
+
 	private AdoptionRequestResponseRepository adoptReqresprepo;
 
 	@Autowired
@@ -46,4 +46,14 @@ public class AdoptionRequestResponseService {
 
 		return adoptReqresprepo.findAdoptionRequests();
 	}
+
+	public Authorities getAuthority(String username) {
+		return adoptReqresprepo.getAuthority(username);
+	}
+
+	@Transactional
+	public Collection<Owner> findOwners() {
+		return adoptReqresprepo.findOwners();
+	}
+
 }

@@ -26,7 +26,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,9 +35,6 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -65,25 +61,23 @@ public class Owner extends Person {
 	@NotEmpty
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
-	
+
 	@OneToMany
 	@JoinColumn(name = "setadoptionrequest_id")
 	private Set<AdoptionRequest> adoptionrequest;
-	
+
 	@OneToMany
 	@JoinColumn(name = "setadoptionrequest_id")
-	private Set<AdoptionRequestResponse> adoptionrequestrespones;
-	
+	private Set<AdoptionRequestResponse> adoptionrequestresponses;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
-	
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,  mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<Donation> donations;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Causa> causas;
-
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -198,6 +192,26 @@ public class Owner extends Person {
 				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
 				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
 				.append("telephone", this.telephone).toString();
+	}
+
+	public Set<AdoptionRequest> getAdoptionrequest() {
+		return adoptionrequest;
+	}
+
+	public void setAdoptionrequest(Set<AdoptionRequest> adoptionrequest) {
+		this.adoptionrequest = adoptionrequest;
+	}
+
+	public Set<AdoptionRequestResponse> getAdoptionrequestresponses() {
+		return adoptionrequestresponses;
+	}
+
+	public void setPets(Set<Pet> pets) {
+		this.pets = pets;
+	}
+
+	public void setAdoptionrequestresponses(Set<AdoptionRequestResponse> set) {
+		this.adoptionrequestresponses = set;
 	}
 
 }

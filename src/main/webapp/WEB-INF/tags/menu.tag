@@ -46,6 +46,13 @@
 					<span>Bookings</span>
 
 				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'Adoptions'}" url="/adoptionrequests/list"
+					title="trigger a RuntimeException to see how it is handled">
+					<span class="glyphicon glyphicon-text-background" aria-hidden="true"></span>
+					<span>Adoptions</span>
+
+				</petclinic:menuItem>
 
 				<%-- <petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
@@ -90,6 +97,17 @@
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
+											</p>
+											<div class="col-lg-12">
+											<p class="text-left">
+												<a href="<c:url value="/adoptionrequestresponses/ownersresponses" />"
+													class="btn btn-primary btn-block btn-sm">Adoption Request Responses</a>
+											</p>
+										</div>
+										<div class="col-lg-12">
+											<p class="text-left">
+												<a href="<c:url value="/adoptionrequestresponses/list" />"
+													class="btn btn-primary btn-block btn-sm">Adoption Sent Responses</a>
 											</p>
 										</div>
 									</div>
