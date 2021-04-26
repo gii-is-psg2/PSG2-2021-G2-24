@@ -20,6 +20,9 @@
 				<th style="width: 200px;">Budget Target</th>
 
 
+				
+
+
 
 			</tr>
 		</thead>
@@ -28,11 +31,17 @@
             <tr>
 				<td><c:out value="${causa.name}" /></td>
 				<td><c:out value="${causa.totalDonation}" /></td>
-				<td><c:out value="${causa.budgetTarget}" /></td>            
+				<td><c:out value="${causa.budgetTarget}" /></td> 
+
+  
      
  
             </tr>
         </c:forEach>
         </tbody>
     </table>
+    
+    		<a class="btn btn-default" href='<spring:url value="/donations/new" htmlEscape="true"/>'>Donate</a>
+    
+
 </petclinic:layout>

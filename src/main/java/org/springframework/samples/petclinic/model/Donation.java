@@ -43,4 +43,39 @@ public class Donation extends BaseEntity {
 	@NotNull
 	@DateTimeFormat(pattern= "yyyy-MM-dd")
 	private LocalDate fechaDonacion;
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Causa getCausa() {
+		return causa;
+	}
+
+	public void setCausa(Causa causa) {
+		this.causa = causa;
+	}
+
+	public Double getImporteDonacion() {
+		return importeDonacion;
+	}
+
+	public void setImporteDonacion(Double importeDonacion) {
+		this.importeDonacion = importeDonacion;
+	}
+
+	public LocalDate getFechaDonacion() {
+		return fechaDonacion;
+	}
+
+	public void setFechaDonacion(LocalDate fechaDonacion) {
+		this.fechaDonacion = fechaDonacion;
+	}
+	
+	
+	
 }

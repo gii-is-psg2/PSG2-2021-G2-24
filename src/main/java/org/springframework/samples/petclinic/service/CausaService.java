@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.model.Causa;
 import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Room;
@@ -66,6 +67,33 @@ public class CausaService {
 	public Collection<Donation> findDonations() {
 
 		return causaRepo.findDonations();
+	}
+	
+	public Boolean sameName(Causa causa) {
+		Boolean resultado = false;
+		for (Causa res : findAll()) {
+			if (res.getName().equals(causa.getName()) && !resultado) {
+				resultado = mismaCausa(causa, res);
+			}
+		}
+		return resultado;
+	}
+	
+	
+	private Boolean mismaCausa(Causa cau1, Causa cau2) {
+		if(cau1.getId() == cau2.getId()) {
+			return false;
+		}else {
+			if (cau1.getName() != cau2.getName()) {
+				return true;
+
+			} else {
+				return false;
+			}
+		}
+		
+		
+		
 	}
 	
 
