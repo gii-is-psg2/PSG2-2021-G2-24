@@ -43,7 +43,7 @@ In the retrospective meeting, the team has a discussion about those results.
 | 19/04/2021    |               |                |:neutral_face:  |:neutral_face:  |                |                |
 | 23/04/2021    |    :smile:    |                |    :smile:     |:neutral_face:  | :neutral_face: |                |
 | 24/04/2021    |:neutral_face: |   :worried:    |    :smile:     |:neutral_face:  |                |                |
-| 25/04/2021    |               |                |    :smile:     |:worried:       |   :fearful:    |                |
-| 26/04/2021    |               |                |                |                |   :smile:      |                |
-
+| 25/04/2021    |      :smile:  |                |    :smile:     |:worried:       |   :fearful:    |                |
+| 26/04/2021    |😐             |                |                |                |   :smile:      |                |
+| 27/04/2021    |:smile:        |                |                |                |   :smile:      |                |
 ...
