@@ -193,7 +193,6 @@ public class PetController {
 
 			owner.removePet(pet);
 			this.petService.deletePet(pet);
-			this.ownerService.saveOwner(owner);
 			return String.format("redirect:/owners/%d", ownerId);
 		}
 	}

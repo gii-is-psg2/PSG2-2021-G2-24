@@ -102,11 +102,7 @@ INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (2,3,4);
 INSERT INTO ADOPTIONREQUESTS (id, owner_id, pet_id) VALUES (3,3,3);
 
 
-INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, description_id,isactive) VALUES (2, 2, 4, 'Is so beautiful!', true);
+INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, description,isactive) VALUES (2, 2, 4, 'Is so beautiful!', true);
 
-INSERT INTO NOTIFICATIONS(id, message, response) VALUES (1,'Accept', 2);
-
-/*INSERT INTO causas VALUES (1, 'Prueba', 'Prueba', 100.00, 'Prueba', 1 );
-
-INSERT INTO donations VALUES (1, '2021-04-22', 10.5, 1, 2);*/
+INSERT INTO NOTIFICATIONS(id, message, response_id) VALUES (1,'Decline', 2);
 

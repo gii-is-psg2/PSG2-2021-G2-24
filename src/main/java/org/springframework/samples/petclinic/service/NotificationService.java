@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
+import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
@@ -20,40 +21,50 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class NotificationService {
 	
-	private NotificationRepository notifrepo;
+	private NotificationRepository notificationRepository;
 
 	@Autowired
-	public NotificationService(NotificationRepository notifrepo) {
-		this.notifrepo = notifrepo;
+	public NotificationService(NotificationRepository notificationRepository) {
+		this.notificationRepository = notificationRepository;
 	}
 
 	@Transactional
 	public int notificationcount() {
-		return (int) notifrepo.count();
+		return (int) notificationRepository.count();
 	}
 
 	@Transactional
 	public void save(Notification notif) {
-		notifrepo.save(notif);
+		notificationRepository.save(notif);
 	}
 
 	@Transactional
 	public void delete(Notification notif) {
-		notifrepo.delete(notif);
+		notificationRepository.delete(notif);
 	}
 
 	@Transactional
 	public Iterable<Notification> findAll() {
-		return notifrepo.findAll();
+		return notificationRepository.findAll();
 	}
 
 	@Transactional
 	public Optional<Notification> findById(int id) {
-		return notifrepo.findById(id);
+		return notificationRepository.findById(id);
 	}
 	@Transactional
 	public Collection<AdoptionRequestResponse> findAdoptionRequestResponses() {
 
-		return notifrepo.findAdoptionRequestResponses();
+		return notificationRepository.findAdoptionRequestResponses();
 	}
+	
+	@Transactional
+	public Authorities getAuthority(String username) {
+		return notificationRepository.getAuthority(username);
+	}
+	@Transactional
+	public List<Notification> findNotificationsByOwner(int ownerId) {
+		return notificationRepository.notificationsByOwner(ownerId);
+	}
+	
 }

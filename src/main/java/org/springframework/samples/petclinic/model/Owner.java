@@ -62,22 +62,16 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany
-	@JoinColumn(name = "setadoptionrequest_id")
+	@OneToMany( fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<AdoptionRequest> adoptionrequest;
 
-	@OneToMany
-	@JoinColumn(name = "setadoptionrequest_id")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<AdoptionRequestResponse> adoptionrequestresponses;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
-	private Set<Donation> donations;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	private Set<Causa> causas;
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

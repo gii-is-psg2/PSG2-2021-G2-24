@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -67,11 +68,11 @@ public class Reserva extends BaseEntity {
 
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JoinColumn(name = "start_date")
+	@Column(name = "start_date")
 	private LocalDate startDate;
 
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JoinColumn(name = "ending_date")
+	@Column(name = "ending_date")
 	private LocalDate endingDate;
 }
