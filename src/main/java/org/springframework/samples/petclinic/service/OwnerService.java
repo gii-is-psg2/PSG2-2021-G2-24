@@ -75,4 +75,5 @@ public class OwnerService {
 	public Owner findByUserName(String username) throws DataAccessException {
 		return ownerRepository.findByUsername(username);
 	}
+
 }
