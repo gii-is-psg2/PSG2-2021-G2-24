@@ -2,7 +2,9 @@ package org.springframework.samples.petclinic.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,27 +12,62 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Entity
 @Table(name = "donations")
-@Data
+@Getter
+@Setter
 public class Donation extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "causa_id")
 	private Causa causa;
 
-	@JoinColumn(name = "importeDonacion")
+	@Column(name = "importeDonacion")
 	@NotNull
 	Double importeDonacion;
 
-	@JoinColumn(name = "fechaDonacion")
-	@NotNull
+	@Column(name = "fechaDonacion")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fechaDonacion;
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Causa getCausa() {
+		return causa;
+	}
+
+	public void setCausa(Causa causa) {
+		this.causa = causa;
+	}
+
+	public Double getImporteDonacion() {
+		return importeDonacion;
+	}
+
+	public void setImporteDonacion(Double importeDonacion) {
+		this.importeDonacion = importeDonacion;
+	}
+
+	public LocalDate getFechaDonacion() {
+		return fechaDonacion;
+	}
+
+	public void setFechaDonacion(LocalDate fechaDonacion) {
+		this.fechaDonacion = fechaDonacion;
+	}
+
 }

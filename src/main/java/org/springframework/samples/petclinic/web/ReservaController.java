@@ -16,6 +16,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.model.Room;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
@@ -38,6 +39,7 @@ public class ReservaController {
 
 	private final ReservaService reservaSer;
 	private final UserService userService;
+	private final OwnerService ownerService;
 
 	private List<Reserva> reservations;
 
@@ -50,9 +52,10 @@ public class ReservaController {
 	}
 
 	@Autowired
-	public ReservaController(ReservaService reservaSer, UserService userService) {
+	public ReservaController(ReservaService reservaSer, UserService userService, OwnerService ownerService) {
 		this.userService = userService;
 		this.reservaSer = reservaSer;
+		this.ownerService = ownerService;
 	}
 
 	@GetMapping()

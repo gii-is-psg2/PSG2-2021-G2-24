@@ -55,7 +55,7 @@ public class PetService {
 	}
 
 	@Transactional
-	public void saveVisit(Visit visit) throws DataAccessException {
+	public void saveVisit(Visit visit) {
 		visitRepository.save(visit);
 	}
 
@@ -64,12 +64,8 @@ public class PetService {
 		return petRepository.findById(id);
 	}
 
-	@Transactional(rollbackFor = DuplicatedPetNameException.class)
-	public void savePet(Pet pet) throws DataAccessException, DuplicatedPetNameException {
-		Pet otherPet = pet.getOwner().getPetwithIdDifferent(pet.getName(), pet.getId());
-		if (StringUtils.hasLength(pet.getName()) && (otherPet != null && otherPet.getId() != pet.getId())) {
-			throw new DuplicatedPetNameException();
-		} else
+	@Transactional
+	public void savePet(Pet pet)  {
 			petRepository.save(pet);
 	}
 

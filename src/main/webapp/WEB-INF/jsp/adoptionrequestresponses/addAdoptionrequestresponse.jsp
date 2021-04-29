@@ -15,7 +15,7 @@
 <petclinic:layout pageName="adoptionrequests">
 
     <jsp:body>
-        <h2>Formulario para dar aplicar a la adopción</h2>
+        <h2>Aply for adoption request</h2>
 
 
         <form:form modelAttribute="adoptionrequestresponse" class="form-horizontal" action="/adoptionrequestresponses">
