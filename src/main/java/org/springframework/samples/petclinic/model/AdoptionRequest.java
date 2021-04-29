@@ -18,16 +18,17 @@ import lombok.Setter;
 @Table(name = "adoptionrequests")
 public class AdoptionRequest extends BaseEntity {
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "owner_id")
-	private Owner ownerrequest;
+	private Owner owner;
 	
 	@OneToOne
 	@JoinColumn(name = "pet_id")
-	private Pet petrequest;
+	private Pet pet;
 	
 	@OneToMany
 	@JoinColumn(name = "setadoptionrequestresponse_id")
-	private Set<AdoptionRequestResponse> adoptionrequest;
+	private Set<AdoptionRequestResponse> adoptionRequestResponse;
+	
 	
 }

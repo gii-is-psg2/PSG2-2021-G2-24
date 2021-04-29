@@ -31,9 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/reservas")
 
@@ -45,15 +43,13 @@ public class ReservaController {
 
 	private List<Reserva> reservations;
 
-	
 	@Autowired
 	private ReservaValidator reservaVal;
-	
+
 	@InitBinder("reserva")
 	public void initRestaurantReservationBinder(WebDataBinder dataBinder) {
 		dataBinder.setValidator(reservaVal);
 	}
-
 
 	@Autowired
 	public ReservaController(ReservaService reservaSer, UserService userService, OwnerService ownerService) {
@@ -65,7 +61,7 @@ public class ReservaController {
 	@GetMapping()
 	public String reservasList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
-	//	log.info("El username es: " + username);
+		// log.info("El username es: " + username);
 		Authorities authority = reservaSer.getAuthority(username);
 		List<Reserva> reservas = StreamSupport.stream(reservaSer.findAll().spliterator(), false)
 				.collect(Collectors.toList());
@@ -99,27 +95,26 @@ public class ReservaController {
 	}
 
 	@PostMapping()
-	public String saveReserva(@Valid Reserva reserva,@RequestParam("owner.user.username") String username, 
-			@RequestParam("pet.name") String pet
-			,@RequestParam String room,BindingResult result, ModelMap modelMap) {
-		String view="reservas/listReservas";
-		if(result.hasErrors()) {
-	//		log.info("Tiene errores");
+	public String saveReserva(@Valid Reserva reserva, @RequestParam("owner.user.username") String username,
+			@RequestParam("pet.name") String pet, @RequestParam String room, BindingResult result, ModelMap modelMap) {
+		String view = "reservas/listReservas";
+		if (result.hasErrors()) {
+			// log.info("Tiene errores");
 			modelMap.addAttribute("reserva", reserva);
 			return "reservas/addReserva";
-		}else {
-			for(Pet petname: this.reservaSer.findPets()) {
-				if(petname.getName().equals(pet)) {
+		} else {
+			for (Pet petname : this.reservaSer.findPets()) {
+				if (petname.getName().equals(pet)) {
 					reserva.setPet(petname);
 				}
 			}
-			for(Owner owner: this.reservaSer.findOwners()) {
-				if(owner.getUser().getUsername().equals(username)) {
+			for (Owner owner : this.reservaSer.findOwners()) {
+				if (owner.getUser().getUsername().equals(username)) {
 					reserva.setOwner(owner);
 				}
 			}
-			for(Room roomid: this.reservaSer.findRooms()) {
-				if(roomid.getId().toString().equals(room)) {
+			for (Room roomid : this.reservaSer.findRooms()) {
+				if (roomid.getId().toString().equals(room)) {
 					reserva.setRoom(roomid);
 				}
 			}
@@ -154,7 +149,8 @@ public class ReservaController {
 		for (Pet pet : pets) {
 			petstostr.add(pet.getName());
 
-		}return petstostr;
+		}
+		return petstostr;
 
 	}
 
@@ -169,27 +165,25 @@ public class ReservaController {
 
 	@ModelAttribute("usernames")
 	public Collection<String> populateUsernames() {
-		
-		List<String> usernames= new ArrayList<String>();
+
+		List<String> usernames = new ArrayList<String>();
 		String username = UserUtils.getUser();
 		Authorities authority = reservaSer.getAuthority(username);
-		if(authority.getAuthority().equals("owner")) {
-			for(Owner o: reservaSer.findOwners()) {
-				if(o.getUser().getUsername().equals(username)) {
+		if (authority.getAuthority().equals("owner")) {
+			for (Owner o : reservaSer.findOwners()) {
+				if (o.getUser().getUsername().equals(username)) {
 					usernames.add(o.getUser().getUsername());
 				}
 			}
-			
-		}else if (authority.getAuthority().equals("admin")) { 
-			for(Owner o: reservaSer.findOwners()) {
-					usernames.add(o.getUser().getUsername());
+
+		} else if (authority.getAuthority().equals("admin")) {
+			for (Owner o : reservaSer.findOwners()) {
+				usernames.add(o.getUser().getUsername());
 			}
-			
 
 		}
 		return usernames;
 	}
-
 
 	@PostMapping(params = { "postDeleteBooking" })
 	public String deleteBooking(@RequestParam("reservaId") int reservaId) {

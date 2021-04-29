@@ -63,7 +63,7 @@ public class Pet extends NamedEntity {
 
 	@Column(name = "adoption_id")
 	private boolean adoption;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
 	private Set<Visit> visits;
 
