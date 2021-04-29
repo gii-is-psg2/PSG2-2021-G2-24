@@ -106,7 +106,7 @@ INSERT INTO adoptionrequestresponses (id, adoptionrequest_id, owner_id, descript
 
 
 
-INSERT INTO causas VALUES (1,'Name', 'Active', 100.00, false, 'Description', 10.5, 1 ); 
+INSERT INTO causas VALUES (1,'Name', 'Active', 100.00, false, 'Description', 10.5, 1); 
 
 
 INSERT INTO donations VALUES (1, '2021-04-22', 10.5, 1, 2);

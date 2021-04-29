@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,6 +51,17 @@ public class Causa extends NamedEntity {
 	public Double totalDonation ;
 	
 	public Boolean closed;
+
+	
+
+	public Boolean getClosed() {
+		return closed;
+	}
+
+
+	public void setClosed(Boolean closed) {
+		this.closed = closed;
+	}
 
 
 	public String getDescriptionCausa() {
