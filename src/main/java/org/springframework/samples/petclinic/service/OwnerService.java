@@ -80,4 +80,9 @@ public class OwnerService {
 	public void deleteOwner(Owner owner) throws DataAccessException {
 		ownerRepository.delete(owner);
 	}
+	
+	@Transactional
+	public Owner findByUserName(String username) throws DataAccessException {
+		return ownerRepository.findByUsername(username);
+	}
 }
