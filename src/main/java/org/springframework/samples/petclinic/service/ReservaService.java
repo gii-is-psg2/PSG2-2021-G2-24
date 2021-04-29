@@ -75,7 +75,7 @@ public class ReservaService {
 	public Boolean bookingSamePet(Reserva reserva) {
 		Boolean b = false;
 		for (Reserva r : findAll()) {
-			if (r.getPet().equals(reserva.getPet()) && !b) {
+			if (r.getPet().getId().equals(reserva.getPet().getId()) && !b) {
 				b = diasSolapados(reserva, r);
 			}
 		}
