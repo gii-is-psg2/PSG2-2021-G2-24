@@ -31,14 +31,15 @@
 					<td><c:out value="${causa.budgetTarget}" /></td>
 					<c:if test="${causa.closed}">
 						<td><c:out value="Close" /></td>
+						<td><c:out value="Currently Closed" /></td>
 					</c:if>
 					<c:if test="${causa.closed == false}">
 						<td><c:out value="Open" /></td>
-					</c:if>
-					<td><spring:url value="donations/{causaId}/new"
+						<td><spring:url value="donations/{causaId}/new"
 							var="donationURL">
 							<spring:param name="causaId" value="${causa.id}" />
 						</spring:url> <a href="${fn:escapeXml(donationURL)}">Donate</a></td>
+					</c:if>
 
 				</tr>
 			</c:forEach>

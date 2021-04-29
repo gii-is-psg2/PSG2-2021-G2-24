@@ -60,4 +60,6 @@ public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 	@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
 	public Owner findById(@Param("id") int id);
 
+	@Query("SELECT owner FROM Owner owner WHERE owner.user.username = :username")
+	Owner findByUsername(@Param("username") String username);
 }

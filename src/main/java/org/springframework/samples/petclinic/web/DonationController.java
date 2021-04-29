@@ -15,8 +15,10 @@ import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Causa;
 import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.CausaService;
 import org.springframework.samples.petclinic.service.DonationService;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
@@ -41,15 +43,18 @@ public class DonationController {
 	private final DonationService donationSer;
 	private final UserService userService;
 	private final CausaService causaService;
+	private final OwnerService ownerService;
 
 	@Autowired
 	private DonationValidator donationVal;
 
 	@Autowired
-	public DonationController(DonationService donationSer, UserService userService, CausaService causaService) {
+	public DonationController(DonationService donationSer, UserService userService, CausaService causaService,
+			OwnerService ownerService) {
 		this.userService = userService;
 		this.donationSer = donationSer;
 		this.causaService = causaService;
+		this.ownerService = ownerService;
 	}
 
 	@InitBinder("donation")
@@ -60,12 +65,20 @@ public class DonationController {
 	@GetMapping("/list")
 	public String donationsList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
-		// log.info("El username es: " + username);
-		List<Donation> donations = StreamSupport.stream(donationSer.findAll().spliterator(), false)
-				.collect(Collectors.toList());
+		Authorities authority = donationSer.getAuthority(username);
+		List<Donation> donations = new ArrayList<Donation>();
+		if (authority.getAuthority().equals("owner")) {
+			Owner owner = ownerService.findByUserName(username);
+			for (Causa causa : owner.getCausas()) {
+				for (Donation donation : causa.getDonations()) {
+					donations.add(donation);
+				}
+			}
 
+		} else {
+			donations = StreamSupport.stream(donationSer.findAll().spliterator(), false).collect(Collectors.toList());
+		}
 		modelMap.addAttribute("donations", donations);
-		modelMap.addAttribute("currentDate", LocalDate.now());
 
 		String view = "donations/donationsList";
 
@@ -147,19 +160,22 @@ public class DonationController {
 				if (owner.getUser().getUsername().equals(username)) {
 					donation.setOwner(owner);
 				}
-				}
-				Optional<Causa> causaOp = causaService.getCausaById(causaId);
-				assert causaOp.isPresent();
-				Causa causa = causaOp.get();
-				Double donationAct = causa.getTotalDonation() + donation.getImporteDonacion();
-				causa.setTotalDonation(donationAct);
-				donation.setFechaDonacion(LocalDate.now());
-				causaService.save(causa);
-				donationSer.save(donation);
-				modelMap.addAttribute("message", "Donation successfully saved!");
-				view = donationsList(modelMap);
 			}
-			return view;
+			Optional<Causa> causaOp = causaService.getCausaById(causaId);
+			assert causaOp.isPresent();
+			Causa causa = causaOp.get();
+			Double donationAct = causa.getTotalDonation() + donation.getImporteDonacion();
+			causa.setTotalDonation(donationAct);
+			if (causa.getBudgetTarget() <= causa.getTotalDonation()) {
+				causa.setClosed(true);
+			}
+			donation.setFechaDonacion(LocalDate.now());
+			causaService.save(causa);
+			donationSer.save(donation);
+			modelMap.addAttribute("message", "Donation successfully saved!");
+			view = donationsList(modelMap);
 		}
-
+		return view;
 	}
+
+}

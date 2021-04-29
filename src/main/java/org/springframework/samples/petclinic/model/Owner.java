@@ -39,6 +39,8 @@ import org.springframework.core.style.ToStringCreator;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -50,6 +52,8 @@ import lombok.EqualsAndHashCode;
  */
 
 @Entity
+@Getter
+@Setter
 @Table(name = "owners")
 public class Owner extends Person {
 
