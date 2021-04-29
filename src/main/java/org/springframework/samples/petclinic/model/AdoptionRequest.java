@@ -2,7 +2,10 @@ package org.springframework.samples.petclinic.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,16 +21,13 @@ import lombok.Setter;
 @Table(name = "adoptionrequests")
 public class AdoptionRequest extends BaseEntity {
 
-	@OneToOne
-	@JoinColumn(name = "owner_id")
-	private Owner ownerrequest;
+	@ManyToOne
+	private Owner owner;
 	
-	@OneToOne
-	@JoinColumn(name = "pet_id")
-	private Pet petrequest;
+	@ManyToOne
+	private Pet pet;
 	
-	@OneToMany
-	@JoinColumn(name = "setadoptionrequestresponse_id")
-	private Set<AdoptionRequestResponse> adoptionrequest;
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "adoptionrequest")
+	private Set<AdoptionRequestResponse> adoptionRequestResponse;
 	
 }

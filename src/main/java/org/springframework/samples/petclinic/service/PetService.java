@@ -39,26 +39,23 @@ import org.springframework.util.StringUtils;
 public class PetService {
 
 	private PetRepository petRepository;
-	
+
 	private VisitRepository visitRepository;
-	
-	private OwnerService ownerService;
+
 
 	@Autowired
-	public PetService(PetRepository petRepository,
-			VisitRepository visitRepository) {
+	public PetService(PetRepository petRepository, VisitRepository visitRepository) {
 		this.petRepository = petRepository;
 		this.visitRepository = visitRepository;
-		this.ownerService =ownerService;
 	}
 
 	@Transactional(readOnly = true)
 	public Collection<PetType> findPetTypes() throws DataAccessException {
 		return petRepository.findPetTypes();
 	}
-	
+
 	@Transactional
-	public void saveVisit(Visit visit) throws DataAccessException {
+	public void saveVisit(Visit visit) {
 		visitRepository.save(visit);
 	}
 
@@ -67,20 +64,15 @@ public class PetService {
 		return petRepository.findById(id);
 	}
 
-	@Transactional(rollbackFor = DuplicatedPetNameException.class)
-	public void savePet(Pet pet) throws DataAccessException, DuplicatedPetNameException {
-			Pet otherPet=pet.getOwner().getPetwithIdDifferent(pet.getName(), pet.getId());
-            if (StringUtils.hasLength(pet.getName()) &&  (otherPet!= null && otherPet.getId()!=pet.getId())) {            	
-            	throw new DuplicatedPetNameException();
-            }else
-                petRepository.save(pet);                
+	@Transactional
+	public void savePet(Pet pet)  {
+			petRepository.save(pet);
 	}
-
 
 	public Collection<Visit> findVisitsByPetId(int petId) {
 		return visitRepository.findByPetId(petId);
 	}
-	
+
 	@Transactional
 	public void deletePet(Pet pet) {
 		petRepository.delete(pet);

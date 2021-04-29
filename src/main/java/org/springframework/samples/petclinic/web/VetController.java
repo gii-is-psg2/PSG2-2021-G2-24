@@ -39,23 +39,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import lombok.extern.slf4j.Slf4j;
-
-
 /**
  * @author Juergen Hoeller
  * @author Mark Fisher
  * @author Ken Krebs
  * @author Arjen Poutsma
  */
-@Slf4j
+
 @Controller
 
 public class VetController {
 
 	private final VetService vetService;
 	private final UserService userService;
-	
+
 	@Autowired
 	public VetController(VetService clinicService, UserService userService) {
 		this.vetService = clinicService;
@@ -70,7 +67,7 @@ public class VetController {
 		// so it is simpler for Object-Xml mapping
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
-		if(!userOp.isPresent()) {
+		if (!userOp.isPresent()) {
 			return "redirect:/login";
 		}
 		User user = userOp.get();
@@ -92,34 +89,35 @@ public class VetController {
 		return vets;
 	}
 
-	@PostMapping(path = "/vets", params = {"postDeleteVet"})
+	@PostMapping(path = "/vets", params = { "postDeleteVet" })
 	public String deleteVet(@RequestParam("vetId") int vetId) {
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
-		if(!userOp.isPresent()) {
+		if (!userOp.isPresent()) {
 			return "redirect:/login";
 		}
 		User user = userOp.get();
-		if(!this.userService.isAdmin(user)) {
+		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
 		Optional<Vet> vetOp = this.vetService.findVetbyId(vetId);
-		if(!vetOp.isPresent()) {
+		if (!vetOp.isPresent()) {
 			return "redirect:/vets";
 		}
 		Vet vet = vetOp.get();
 		this.vetService.vetDelete(vet);
-		return "redirect:/vets"; 
+		return "redirect:/vets";
 	}
+
 	@GetMapping(path = "/vets/new")
 	public String createVet(ModelMap modelMap) {
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
-		if(!userOp.isPresent()) {
+		if (!userOp.isPresent()) {
 			return "redirect:/login";
 		}
 		User user = userOp.get();
-		if(!this.userService.isAdmin(user)) {
+		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
 		String view = "vets/addVet";
@@ -132,15 +130,15 @@ public class VetController {
 			ModelMap modelMap) {
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
-		if(!userOp.isPresent()) {
+		if (!userOp.isPresent()) {
 			return "redirect:/login";
 		}
 		User user = userOp.get();
-		if(!this.userService.isAdmin(user)) {
+		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-	//	log.info("El nombre es:" + vet.getFirstName());
-	//	log.info("El apellido es:" + vet.getLastName());
+		// log.info("El nombre es:" + vet.getFirstName());
+		// log.info("El apellido es:" + vet.getLastName());
 		String view = "vets/vetList";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("vet", vet);
@@ -174,14 +172,14 @@ public class VetController {
 	public String initUpdateVetForm(@PathVariable("vetId") int vetId, ModelMap model) {
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
-		if(!userOp.isPresent()) {
+		if (!userOp.isPresent()) {
 			return "redirect:/login";
 		}
 		User user = userOp.get();
-		if(!this.userService.isAdmin(user)) {
+		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-	//	log.info("Loading update vet form");
+		// log.info("Loading update vet form");
 		Vet vet = vetService.findVetbyId(vetId).get();
 		model.put("vet", vet);
 		return "vets/updateVet";
@@ -192,17 +190,17 @@ public class VetController {
 			ModelMap model, @RequestParam Optional<String[]> specialties) {
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
-		if(!userOp.isPresent()) {
+		if (!userOp.isPresent()) {
 			return "redirect:/login";
 		}
 		User user = userOp.get();
-		if(!this.userService.isAdmin(user)) {
+		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-	//	log.info("Updating vet: " + vetId);
+		// log.info("Updating vet: " + vetId);
 		vet.setId(vetId);
 		if (result.hasErrors()) {
-	//		log.warn("Found errors on update: " + result.getAllErrors());
+			// log.warn("Found errors on update: " + result.getAllErrors());
 			model.put("vet", vet);
 			return "vets/updateVet";
 		} else {

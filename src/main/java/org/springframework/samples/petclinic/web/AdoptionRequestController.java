@@ -13,10 +13,7 @@ import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.Reserva;
-import org.springframework.samples.petclinic.model.Room;
 import org.springframework.samples.petclinic.service.AdoptionRequestService;
-import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,56 +24,82 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import lombok.extern.slf4j.Slf4j;
-
-
 @Controller
 @RequestMapping("/adoptionrequests")
 public class AdoptionRequestController {
 
-	
-	private final AdoptionRequestService adoptioReqser;
-	
+	private final AdoptionRequestService adoptionRequestService;
+
 	@Autowired
-	public AdoptionRequestController(AdoptionRequestService adoptioReqser  ) {
-		this.adoptioReqser = adoptioReqser;
+	public AdoptionRequestController(AdoptionRequestService adoptioReqser) {
+		this.adoptionRequestService = adoptioReqser;
+
 	}
-	
+
+	@GetMapping("/list")
+	public String getAdoptionRequestListed(ModelMap modelMap) {
+		List<AdoptionRequest> adoptions = adoptionRequestService.findActive();
+
+		modelMap.addAttribute("adoptionRequests", adoptions);
+		return "adoptionrequests/adoptionRequestList";
+	}
+
 	@GetMapping(path = "/new")
 	public String createAdoptionrequest(ModelMap modelMap) {
 		String view = "adoptionrequests/addAdoptionrequest";
 		modelMap.addAttribute("adoptionrequest", new AdoptionRequest());
 		return view;
 	}
-	
+
 	@PostMapping()
-	public String saveAdoptionrequest(@Valid AdoptionRequest ar,BindingResult result, ModelMap modelMap) {
-		String view="adoptionrequests/listAdoptionRequests";
-		if(result.hasErrors()) {
-			modelMap.addAttribute("adoptionrequest", ar);
-			return "adoptionrequests/addAdoptionrequests";
-		}else {
-			adoptioReqser.save(ar);
+	public String saveAdoptionrequest(@Valid AdoptionRequest adoptionRequest,
+			@RequestParam("owner.user.username") String username, @RequestParam("pet.name") String petName,
+			BindingResult result, ModelMap modelMap) {
+		String view = "redirect:/adoptionrequests/list";
+		if (result.hasErrors()) {
+			modelMap.addAttribute("adoptionrequest", adoptionRequest);
+			return "redirect:/adoptionrequests/new";
+		} else {
+			Boolean stop = false;
+			for (Pet pet : this.adoptionRequestService.findPets()) {
+				if (pet.getName().equals(petName) && !stop) {
+					if (pet.isAdoption()) {
+						modelMap.addAttribute("adoptionrequest", adoptionRequest);
+						modelMap.addAttribute("message", "this pet is already in adoption");
+						return "adoptionrequests/addAdoptionrequest";
+					}
+					adoptionRequest.setPet(pet);
+					pet.setAdoption(true);
+					stop = true;
+				}
+			}
+			for (Owner owner : this.adoptionRequestService.findOwners()) {
+				if (owner.getUser().getUsername().equals(username)) {
+					adoptionRequest.setOwner(owner);
+				}
+			}
+			adoptionRequestService.save(adoptionRequest);
 			modelMap.addAttribute("message", "Request successfully saved!");
-			//view = reservasList(modelMap);
+			// view = reservasList(modelMap);
 		}
 		return view;
 	}
+
 	@ModelAttribute("usernames")
 	public Collection<String> populateUsernames() {
-		
-		List<String> usernames= new ArrayList<String>();
+
+		List<String> usernames = new ArrayList<String>();
 		String username = UserUtils.getUser();
-		Authorities authority = adoptioReqser.getAuthority(username);
-		if(authority.getAuthority().equals("owner")) {
-			for(Owner o: adoptioReqser.findOwners()) {
-				if(o.getUser().getUsername().equals(username)) {
+		Authorities authority = adoptionRequestService.getAuthority(username);
+		if (authority.getAuthority().equals("owner")) {
+			for (Owner o : adoptionRequestService.findOwners()) {
+				if (o.getUser().getUsername().equals(username)) {
 					usernames.add(o.getUser().getUsername());
 				}
 			}
-		}else if (authority.getAuthority().equals("admin")) { 
-			for(Owner o: adoptioReqser.findOwners()) {
-					usernames.add(o.getUser().getUsername());
+		} else if (authority.getAuthority().equals("admin")) {
+			for (Owner o : adoptionRequestService.findOwners()) {
+				usernames.add(o.getUser().getUsername());
 			}
 		}
 		return usernames;
@@ -87,12 +110,12 @@ public class AdoptionRequestController {
 		List<String> petstostr = new ArrayList<String>();
 		List<Pet> pets = new ArrayList<Pet>();
 		String username = UserUtils.getUser();
-		Authorities authority = adoptioReqser.getAuthority(username);
+		Authorities authority = adoptionRequestService.getAuthority(username);
 		if (authority.getAuthority().equals("owner")) {
-			for (Owner owner : adoptioReqser.findOwners()) {
+			for (Owner owner : adoptionRequestService.findOwners()) {
 				if (owner.getUser().getUsername().equals(username)) {
 					pets = new ArrayList<Pet>();
-					for (Pet pet : this.adoptioReqser.findPets()) {
+					for (Pet pet : this.adoptionRequestService.findPets()) {
 						if (pet.getOwner().getId() == owner.getId()) {
 							pets.add(pet);
 						}
@@ -100,11 +123,12 @@ public class AdoptionRequestController {
 				}
 			}
 		} else {
-			pets = StreamSupport.stream(adoptioReqser.findPets().spliterator(), false).collect(Collectors.toList());
+			pets = StreamSupport.stream(adoptionRequestService.findPets().spliterator(), false)
+					.collect(Collectors.toList());
 		}
 		for (Pet pet : pets) {
 			petstostr.add(pet.getName());
-		}return petstostr;
-
+		}
+		return petstostr;
 	}
 }

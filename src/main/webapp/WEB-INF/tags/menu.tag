@@ -45,11 +45,20 @@
 					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 					<span>Bookings</span>
 				</petclinic:menuItem>
-					
+
 				<petclinic:menuItem active="${name eq 'causes'}" url="/causas/list"
 					title="Causes">
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-					<span>Causes</span>
+					<span>Solidary Causes</span>
+
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'Adoptions'}"
+					url="/adoptionrequests/list"
+					title="trigger a RuntimeException to see how it is handled">
+					<span class="glyphicon glyphicon-text-background"
+						aria-hidden="true"></span>
+					<span>Adoptions</span>
 
 				</petclinic:menuItem>
 
@@ -97,12 +106,37 @@
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
-										</div>
+											<div class="col-lg-12">
+												<p class="text-left">
+													<a
+														href="<c:url value="/adoptionrequestresponses/ownersresponses" />"
+														class="btn btn-primary btn-block btn-sm">Adoption
+														Request Responses</a>
+												</p>
+											</div>
+											<div class="col-lg-12">
+												<p class="text-left">
+													<a href="<c:url value="/adoptionrequestresponses/list" />"
+														class="btn btn-primary btn-block btn-sm">Adoption Sent
+														Responses</a>
+												</p>
+											</div>
+											<div class="col-lg-12">
+												<p class="text-left">
+
+													<a href="<c:url value="causas/donations/list" />"
+														class="btn btn-primary btn-block btn-sm">My Causes
+														donations</a>
+												</p>
+											</div>
+										
 										<div class="col-lg-12">
 											<p class="text-left">
-												<a href="<c:url value="causas/donations/list" />"
-													class="btn btn-primary btn-block btn-sm">My Causes donations</a>
+												<a href="<c:url value="/notifications/list" />"
+													class="btn btn-primary btn-block btn-sm">Notifications</a>
+
 											</p>
+											</div>
 										</div>
 									</div>
 								</div>

@@ -99,7 +99,6 @@ public class CausaController {
 	@PostMapping()
 	public String saveCausa(@Valid Causa causa, @RequestParam("owner.user.username") String username,
 			BindingResult result, ModelMap modelMap) {
-		String view = "causes/causesList";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("causas", causa);
 			return "redirect:/causas/new";
