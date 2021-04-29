@@ -49,6 +49,10 @@ import org.springframework.core.style.ToStringCreator;
 @Table(name = "owners")
 public class Owner extends Person {
 
+	public Set<Pet> getPets() {
+		return pets;
+	}
+
 	@Column(name = "address")
 	@NotEmpty
 	private String address;
@@ -62,22 +66,16 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany
-	@JoinColumn(name = "setadoptionrequest_id")
+	@OneToMany( fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<AdoptionRequest> adoptionrequest;
 
-	@OneToMany
-	@JoinColumn(name = "setadoptionrequest_id")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<AdoptionRequestResponse> adoptionrequestresponses;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
-	private Set<Donation> donations;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	private Set<Causa> causas;
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -128,7 +126,7 @@ public class Owner extends Person {
 		this.pets = pets;
 	}
 
-	public List<Pet> getPets() {
+	public List<Pet> getPets1() {
 		List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
 		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedPets);

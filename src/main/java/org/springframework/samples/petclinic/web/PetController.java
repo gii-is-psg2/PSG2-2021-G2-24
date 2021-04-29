@@ -29,7 +29,6 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.UserService;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -118,13 +117,8 @@ public class PetController {
 					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
-				try {
-					owner.addPet(pet);
-					this.petService.savePet(pet);
-				} catch (DuplicatedPetNameException ex) {
-					result.rejectValue("name", "duplicate", "already exists");
-					return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-				}
+				owner.addPet(pet);
+				this.petService.savePet(pet);
 				return "redirect:/owners/{ownerId}";
 			}
 		}
@@ -164,12 +158,8 @@ public class PetController {
 			} else {
 				Pet petToUpdate = this.petService.findPetById(petId);
 				BeanUtils.copyProperties(pet, petToUpdate, "id", "owner", "visits");
-				try {
-					this.petService.savePet(petToUpdate);
-				} catch (DuplicatedPetNameException ex) {
-					result.rejectValue("name", "duplicate", "already exists");
-					return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
-				}
+				this.petService.savePet(petToUpdate);
+
 				return "redirect:/owners/{ownerId}";
 			}
 		}
@@ -193,7 +183,6 @@ public class PetController {
 
 			owner.removePet(pet);
 			this.petService.deletePet(pet);
-			this.ownerService.saveOwner(owner);
 			return String.format("redirect:/owners/%d", ownerId);
 		}
 	}

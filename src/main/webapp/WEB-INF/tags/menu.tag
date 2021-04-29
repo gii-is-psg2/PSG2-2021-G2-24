@@ -110,6 +110,12 @@
 													class="btn btn-primary btn-block btn-sm">Adoption Sent Responses</a>
 											</p>
 										</div>
+										<div class="col-lg-12">
+											<p class="text-left">
+												<a href="<c:url value="/notifications/list" />"
+													class="btn btn-primary btn-block btn-sm">Notifications</a>
+											</p>
+										</div>
 									</div>
 								</div>
 							</li>
