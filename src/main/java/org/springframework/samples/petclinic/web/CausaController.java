@@ -12,11 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Causa;
-import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.Reserva;
-import org.springframework.samples.petclinic.model.Room;
 import org.springframework.samples.petclinic.service.CausaService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
@@ -38,8 +34,6 @@ public class CausaController {
 
 	private final CausaService causaSer;
 	private final UserService userService;
-
-
 
 	@Autowired
 	public CausaController(CausaService causaSer, UserService userService) {
@@ -93,7 +87,6 @@ public class CausaController {
 	@PostMapping()
 	public String saveCausa(@Valid Causa causa, @RequestParam("owner.user.username") String username,
 			BindingResult result, ModelMap modelMap) {
-		String view = "causes/causesList";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("causas", causa);
 			return "redirect:/causas/new";
@@ -106,11 +99,6 @@ public class CausaController {
 			causa.setTotalDonation(0.0);
 			causa.setClosed(false);
 			causaSer.save(causa);
-			modelMap.addAttribute("message", "Causa successfully saved!");
-			List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
-
-			modelMap.addAttribute("causas", causas);
-			//view = causasList(modelMap);
 		}
 		return "redirect:/causas/list";
 	}
