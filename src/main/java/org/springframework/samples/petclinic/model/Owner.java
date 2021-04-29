@@ -26,6 +26,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,9 +37,11 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+
+
+import lombok.Getter;
+import lombok.Setter;
 /**
  * Simple JavaBean domain object representing an owner.
  *
@@ -49,8 +52,14 @@ import lombok.EqualsAndHashCode;
  */
 
 @Entity
+@Getter
+@Setter
 @Table(name = "owners")
 public class Owner extends Person {
+
+	public Set<Pet> getPets() {
+		return pets;
+	}
 
 	@Column(name = "address")
 	@NotEmpty
@@ -65,12 +74,24 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
+	@OneToMany( fetch = FetchType.EAGER, mappedBy = "owner")
+	private Set<AdoptionRequest> adoptionrequest;
+
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "owner")
+	private Set<AdoptionRequestResponse> adoptionrequestresponses;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
+	private Set<Donation> donations;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	private Set<Causa> causas;
+
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "user", referencedColumnName = "username")
 	private User user;
 	//
 
@@ -117,7 +138,7 @@ public class Owner extends Person {
 		this.pets = pets;
 	}
 
-	public List<Pet> getPets() {
+	public List<Pet> getPets1() {
 		List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
 		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedPets);
@@ -181,6 +202,26 @@ public class Owner extends Person {
 				.append("id", this.getId()).append("new", this.isNew()).append("lastName", this.getLastName())
 				.append("firstName", this.getFirstName()).append("address", this.address).append("city", this.city)
 				.append("telephone", this.telephone).toString();
+	}
+
+	public Set<AdoptionRequest> getAdoptionrequest() {
+		return adoptionrequest;
+	}
+
+	public void setAdoptionrequest(Set<AdoptionRequest> adoptionrequest) {
+		this.adoptionrequest = adoptionrequest;
+	}
+
+	public Set<AdoptionRequestResponse> getAdoptionrequestresponses() {
+		return adoptionrequestresponses;
+	}
+
+	public void setPets(Set<Pet> pets) {
+		this.pets = pets;
+	}
+
+	public void setAdoptionrequestresponses(Set<AdoptionRequestResponse> set) {
+		this.adoptionrequestresponses = set;
 	}
 
 }
