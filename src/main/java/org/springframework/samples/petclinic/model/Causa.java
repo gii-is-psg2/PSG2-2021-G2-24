@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,7 +25,6 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "causas")
-
 public class Causa extends NamedEntity {
 	
 	
@@ -46,7 +46,7 @@ public class Causa extends NamedEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "causa")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "causa", fetch = FetchType.EAGER)
 	private Set<Donation> donations;
 	
 	

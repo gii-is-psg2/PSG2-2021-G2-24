@@ -98,6 +98,12 @@
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
 										</div>
+										<div class="col-lg-12">
+											<p class="text-left">
+												<a href="<c:url value="causas/donations/list" />"
+													class="btn btn-primary btn-block btn-sm">My Causes donations</a>
+											</p>
+										</div>
 									</div>
 								</div>
 							</li>

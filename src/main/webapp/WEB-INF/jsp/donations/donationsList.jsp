@@ -27,12 +27,8 @@
         <c:forEach items="${donations}" var="donation">
             <tr>
 				<td><c:out value="${donation.owner.firstName}" /></td>
-				<td><c:out value="${donation.causa}" /></td>
+				<td><c:out value="${donation.causa.descriptionCausa}" /></td>
 				<td><c:out value="${donation.importeDonacion}" /></td> 
-
-  
-     
- 
             </tr>
         </c:forEach>
         </tbody>

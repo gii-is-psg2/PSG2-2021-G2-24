@@ -170,6 +170,7 @@ public class DonationController {
 				causa.setClosed(true);
 			}
 			donation.setFechaDonacion(LocalDate.now());
+			donation.setCausa(causa);
 			causaService.save(causa);
 			donationSer.save(donation);
 			modelMap.addAttribute("message", "Donation successfully saved!");

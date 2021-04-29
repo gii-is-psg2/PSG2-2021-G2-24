@@ -39,10 +39,7 @@ public class CausaController {
 	private final CausaService causaSer;
 	private final UserService userService;
 
-	private List<Causa> listaCausas;
 
-	@Autowired
-	private CausaValidator causaVal;
 
 	@Autowired
 	public CausaController(CausaService causaSer, UserService userService) {
@@ -54,7 +51,6 @@ public class CausaController {
 	public String causasList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
 		// log.info("El username es: " + username);
-		Authorities authority = causaSer.getAuthority(username);
 		List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
 
 		modelMap.addAttribute("causas", causas);
@@ -111,9 +107,12 @@ public class CausaController {
 			causa.setClosed(false);
 			causaSer.save(causa);
 			modelMap.addAttribute("message", "Causa successfully saved!");
-			view = causasList(modelMap);
+			List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
+
+			modelMap.addAttribute("causas", causas);
+			//view = causasList(modelMap);
 		}
-		return view;
+		return "redirect:/causas/list";
 	}
 
 }
