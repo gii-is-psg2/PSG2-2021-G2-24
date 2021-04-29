@@ -173,10 +173,8 @@ public class DonationController {
 			donation.setCausa(causa);
 			causaService.save(causa);
 			donationSer.save(donation);
-			modelMap.addAttribute("message", "Donation successfully saved!");
-			view = donationsList(modelMap);
 		}
-		return view;
+		return "redirect:/causas/donations/list";
 	}
 
 }
