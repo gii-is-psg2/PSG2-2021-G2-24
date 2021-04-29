@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -17,6 +19,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.model.Room;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.CausaService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
@@ -25,9 +28,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -113,6 +118,16 @@ public class CausaController {
 			//view = causasList(modelMap);
 		}
 		return "redirect:/causas/list";
+	}
+	
+	@GetMapping("/causas/{causaId}")
+	public ModelAndView showOwner(@PathVariable("causaId") int causaId) {
+
+		ModelAndView mav = new ModelAndView("causes/causeDetails");
+		Optional<Causa> causa = this.causaSer.getCausaById(causaId);
+		mav.addObject(causa);
+		mav.addObject("cause",this.causaSer.getCausaById(causaId));
+		return mav;
 	}
 
 }

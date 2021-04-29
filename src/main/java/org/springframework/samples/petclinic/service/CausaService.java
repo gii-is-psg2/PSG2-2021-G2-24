@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Reserva;
@@ -60,12 +61,12 @@ public class CausaService {
 
 
 	@Transactional
-	public Optional<Causa> getCausaById(int id) {
-		return this.causaRepo.findById(id);
+	public Optional<Causa> getCausaById(int id) throws DataAccessException {
+		return causaRepo.findById(id);
 	}
 	
 	@Transactional
-	public Collection<Donation> findDonations() {
+	public Collection<Donation> findDonations(int causaId) {
 
 		return causaRepo.findDonations();
 	}
