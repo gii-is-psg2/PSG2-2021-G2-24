@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.model.User;
-import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.ReservaService;
 import org.springframework.samples.petclinic.service.UserService;
@@ -53,15 +52,12 @@ public class OwnerController {
 
 	private final OwnerService ownerService;
 	private final UserService userService;
-	private final AuthoritiesService authoritiesService;
 	private final ReservaService reservaSer;
 
 	@Autowired
-	public OwnerController(OwnerService ownerService, UserService userService, AuthoritiesService authoritiesService,
-			ReservaService reservaSer) {
+	public OwnerController(OwnerService ownerService, UserService userService, ReservaService reservaSer) {
 		this.ownerService = ownerService;
 		this.userService = userService;
-		this.authoritiesService = authoritiesService;
 		this.reservaSer = reservaSer;
 	}
 

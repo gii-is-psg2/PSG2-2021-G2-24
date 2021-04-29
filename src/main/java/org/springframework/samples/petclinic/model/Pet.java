@@ -35,7 +35,8 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Simple business object representing a pet.
@@ -44,7 +45,8 @@ import lombok.Data;
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "pets")
 public class Pet extends NamedEntity {
@@ -61,8 +63,14 @@ public class Pet extends NamedEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
+	@Column(name = "adoption_id")
+	private boolean adoption;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
 	private Set<Visit> visits;
+
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "pet")
+	private Set<AdoptionRequest> adoptions;
 
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -84,7 +92,7 @@ public class Pet extends NamedEntity {
 		return this.owner;
 	}
 
-	protected void setOwner(Owner owner) {
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 
