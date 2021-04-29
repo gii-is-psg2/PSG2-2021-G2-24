@@ -134,7 +134,7 @@ public class DonationController {
 	public String saveDonation(@Valid Donation donation,@RequestParam("owner.user.username") String username, 
 			@RequestParam("causa.name") String causa
 			,BindingResult result, ModelMap modelMap) {
-		String view="causes/causesList";
+		String view="donations/donationsList";
 		if(result.hasErrors()) {
 	//		log.info("Tiene errores");
 			modelMap.addAttribute("donation", donation);

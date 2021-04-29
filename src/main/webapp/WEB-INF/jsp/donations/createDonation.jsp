@@ -11,7 +11,7 @@
 	<jsp:attribute name="customScript">
 		<script>
 			$(function () {
-				$("#sfechaDonacion").datepicker({dateFormat: 'yy-MM-dd'});
+				$("#fechaDonacion").datepicker({dateFormat: 'yy-MM-dd'});
 			});
 		</script>
 	</jsp:attribute>
