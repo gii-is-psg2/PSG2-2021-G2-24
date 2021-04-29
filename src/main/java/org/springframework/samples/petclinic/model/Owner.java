@@ -91,7 +91,7 @@ public class Owner extends Person {
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "user", referencedColumnName = "username")
 	private User user;
 	//
 

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,11 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Causa;
-import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.Reserva;
-import org.springframework.samples.petclinic.model.Room;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.CausaService;
 import org.springframework.samples.petclinic.service.UserService;
@@ -44,8 +39,6 @@ public class CausaController {
 	private final CausaService causaSer;
 	private final UserService userService;
 
-
-
 	@Autowired
 	public CausaController(CausaService causaSer, UserService userService) {
 		this.userService = userService;
@@ -55,11 +48,19 @@ public class CausaController {
 	@GetMapping("/list")
 	public String causasList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
-		// log.info("El username es: " + username);
+		Optional<User> userOp = userService.findUser(username);
+		assert userOp.isPresent();
+		User user = userOp.get();
+		Boolean isAdmin = userService.isAdmin(user);
+		if (isAdmin) {
+			modelMap.addAttribute("isAdmin", true);
+		} else {
+			modelMap.addAttribute("isAdmin", false);
+			modelMap.addAttribute("username", username);
+		}
 		List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
 
 		modelMap.addAttribute("causas", causas);
-		modelMap.addAttribute("currentDate", LocalDate.now());
 
 		String view = "causes/causesList";
 
@@ -111,22 +112,18 @@ public class CausaController {
 			causa.setTotalDonation(0.0);
 			causa.setClosed(false);
 			causaSer.save(causa);
-			modelMap.addAttribute("message", "Causa successfully saved!");
-			List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
-
-			modelMap.addAttribute("causas", causas);
-			//view = causasList(modelMap);
 		}
 		return "redirect:/causas/list";
 	}
-	
-	@GetMapping("/causas/{causaId}")
+
+	@GetMapping("details/{causaId}")
 	public ModelAndView showOwner(@PathVariable("causaId") int causaId) {
 
 		ModelAndView mav = new ModelAndView("causes/causeDetails");
 		Optional<Causa> causa = this.causaSer.getCausaById(causaId);
+		assert causa.isPresent();
 		mav.addObject(causa);
-		mav.addObject("cause",this.causaSer.getCausaById(causaId));
+		mav.addObject("causa", causa.get());
 		return mav;
 	}
 

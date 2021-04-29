@@ -11,25 +11,18 @@
 	<h2>Cause Details</h2>
 	
 	<br />
-		<key="name" />
 	<h1>
-		<c:out value="${causa.name}" />
+		<c:out value="Name: ${causa.name}" />
 	</h1>
 	<br />
-		<key="description" />
-	<h1>
-		<c:out value="${causa.descriptionCausa}" />
-	</h1>
+	<h2>
+		<c:out value="Description: ${causa.descriptionCausa}" />
+	</h2>
 	<br />
-		<key="budgetTarget" />
-	<h4>
-		<c:out value="${causa.budgetTarget}" />
-	</h1>
-	<br />
-		<key="activeOrganization" />
 	<h1>
-		<c:out value="${causa.ActivenpOrganization}" />
+		<c:out value="budget target:${causa.budgetTarget}" />
 	</h1>
+
 	<br />
 	
 
@@ -42,9 +35,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${donations}" var="donation">
+			<c:forEach items="${causa.donations}" var="donation">
 				<tr>
-					<td><c:out value="${donation.owner}" /></td>
+					<td><c:out value="${donation.owner.firstName}" /></td>
 					<td><c:out value="${donation.importeDonacion}" /></td>
 				</tr>
 			</c:forEach>

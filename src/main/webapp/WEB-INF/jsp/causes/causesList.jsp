@@ -43,12 +43,19 @@
 
 					</c:if>
 
-
-					<td><spring:url value="causas/{causaId}" var="detailsURL">
+					<c:if test="${isAdmin == true}">
+					<td><spring:url value="details/{causaId}" var="detailsURL">
 							<spring:param name="causaId" value="${causa.id}" />
 						</spring:url> <a href="${fn:escapeXml(detailsURL)}">Cause Details</a></td>
-
-
+					</c:if>
+					<c:if test="${(isAdmin == false) && (username == causa.owner.user.username)}">
+					<td><spring:url value="details/{causaId}" var="detailsURL">
+							<spring:param name="causaId" value="${causa.id}" />
+						</spring:url> <a href="${fn:escapeXml(detailsURL)}">Cause Details</a></td>
+					</c:if>
+					<c:if test="${(isAdmin == false) && (username != causa.owner.user.username)}">
+						<td><c:out value="Not available" /></td>
+					</c:if>
 				</tr>
 			</c:forEach>
 		</tbody>
