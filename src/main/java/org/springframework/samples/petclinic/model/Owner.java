@@ -49,6 +49,10 @@ import org.springframework.core.style.ToStringCreator;
 @Table(name = "owners")
 public class Owner extends Person {
 
+	public Set<Pet> getPets() {
+		return pets;
+	}
+
 	@Column(name = "address")
 	@NotEmpty
 	private String address;
@@ -122,7 +126,7 @@ public class Owner extends Person {
 		this.pets = pets;
 	}
 
-	public List<Pet> getPets() {
+	public List<Pet> getPets1() {
 		List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
 		PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
 		return Collections.unmodifiableList(sortedPets);

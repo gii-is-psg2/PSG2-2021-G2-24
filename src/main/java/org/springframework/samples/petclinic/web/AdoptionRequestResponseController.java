@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import antlr.Utils;
+
 @Controller
 @RequestMapping("/adoptionrequestresponses")
 public class AdoptionRequestResponseController {
@@ -41,6 +43,7 @@ public class AdoptionRequestResponseController {
 	private final AdoptionRequestService adoptionRequestService;
 	private final NotificationService notificationService;
 	private final OwnerService ownerService;
+	private final PetService petService;
 	private List<AdoptionRequestResponse> arrs;
 
 	@Autowired
@@ -51,6 +54,7 @@ public class AdoptionRequestResponseController {
 		this.adoptionRequestService = adoptionRequestService;
 		this.notificationService = notificationService;
 		this.ownerService = ownerService;
+		this.petService = petService;
 	}
 
 	@GetMapping(value = "/{adoptionRequestId}/new")
@@ -128,8 +132,13 @@ public class AdoptionRequestResponseController {
 			Pet pet = adoptionRequest.getPet();
 			notification.setMessage(String.format("%s have accepted your adoption petition, take good care of %s ",
 					adoptionRequest.getOwner().getFirstName(), pet.getName()));
+			
 			pet.setAdoption(false);
 			adoptionRequestResponseService.deActiveRequests(adoptionRequest);
+			Owner newOwner = adoptionRequestResponse.getOwner();
+
+			pet.setOwner(newOwner);
+			petService.savePet(pet);
 			adoptionRequestService.save(adoptionRequest);
 		} else {
 			notification.setMessage(String.format("%s have declined your petition to take care of %s ",
@@ -156,12 +165,12 @@ public class AdoptionRequestResponseController {
 			System.out.println("dos");
 			arr.setAdoptionrequest(a);
 			Owner owner = ownerService.findByUserName(username);
-				if (owner.equals(a.getOwner())) {
-					modelMap.addAttribute("adoptionrequestresponse", arr);
-					modelMap.addAttribute("message", "You cannot adopt your own pet Stupid");
-					return "adoptionrequestresponses/addAdoptionrequestresponse";
-				}
-				arr.setOwner(owner);
+			if (owner.equals(a.getOwner())) {
+				modelMap.addAttribute("adoptionrequestresponse", arr);
+				modelMap.addAttribute("message", "You cannot adopt your own pet Stupid");
+				return "adoptionrequestresponses/addAdoptionrequestresponse";
+			}
+			arr.setOwner(owner);
 			for (AdoptionRequestResponse r : owner.getAdoptionrequestresponses()) {
 				if (r.getAdoptionrequest().getId().equals(a.getId())) {
 					modelMap.addAttribute("adoptionrequestresponse", arr);
