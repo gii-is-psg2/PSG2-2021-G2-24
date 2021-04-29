@@ -21,7 +21,8 @@ public interface DonationRepository extends CrudRepository<Donation,Integer> {
 	
 	@Query("SELECT causa FROM Causa causa ORDER BY causa.id")
 	List<Causa> findCausas() throws DataAccessException;
-	@Query("SELECT owner FROM Owner owner ORDER BY owner.id")
+	
+	@Query("SELECT owner FROM Owner owner ")
 	List<Owner> findOwners() throws DataAccessException;
 	
 	@Query("SELECT donation FROM Donation donation ORDER BY donation.id")

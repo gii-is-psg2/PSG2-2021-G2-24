@@ -26,10 +26,6 @@
                 <div class="control-group">
                     <petclinic:inputField label="Description" name="descriptionCausa"/>
                 </div>
-                
-                <div class="control-group">
-                    <petclinic:inputField label="Total Donation" name="totalDonation"/>
-                </div>
                 <div class="control-group">
                     <petclinic:selectField name="owner.user.username" label="Username" names="${usernames}"  size="5"/>
                 </div>

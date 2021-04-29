@@ -26,25 +26,17 @@ public class CausaValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors errors) {
 		Causa causa = (Causa) obj;
-		
-		if (causa.getOwner() == null) {
-			errors.rejectValue("owner", "Owner is required", "Owner is required");
-		}
 
-		if (causa.getActivenpOrganization() == null) {
+		if (causa.getActivenpOrganization() == null ||causa.getActivenpOrganization().isEmpty()) {
 			errors.rejectValue("organization", "Value is required", "Value is required");
 		}
-		
-		if (causa.totalDonation> 0.00) {
-			errors.rejectValue("totalDonation", "Value is required", "Value is required");
-		}
-		if (causa.getBudgetTarget() == null) {
+		if (causa.getBudgetTarget() == null || causa.getBudgetTarget() > 0.0 ) {
 			errors.rejectValue("budgetTarget", "Value is required", "Value is required");
 		}
-		if (causa.getDescriptionCausa() == null) {
+		if (causa.getDescriptionCausa() == null || causa.getDescriptionCausa().isEmpty()) {
 			errors.rejectValue("budgetTarget", "Value is required", "Value is required");
 		}
-		if (causa.getName() == null) {
+		if (causa.getName() == null || causa.getName().isEmpty()) {
 			errors.rejectValue("budgetTarget", "Value is required", "Value is required");
 		}
 	}

@@ -38,7 +38,8 @@ public class CausaService {
 	public void delete(Causa Causa) {
 		causaRepo.delete(Causa);
 	}
-
+	
+	
 	@Transactional
 	public Iterable<Causa> findAll() {
 		return causaRepo.findAll();

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -15,7 +16,6 @@ import org.springframework.samples.petclinic.model.Causa;
 import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.CausaService;
-import org.springframework.samples.petclinic.web.CausaController;
 import org.springframework.samples.petclinic.service.DonationService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
@@ -26,6 +26,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,34 +35,35 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/donations")
+@RequestMapping("causas/donations")
 public class DonationController {
 
 	private final DonationService donationSer;
 	private final UserService userService;
-
+	private final CausaService causaService;
 
 	@Autowired
 	private DonationValidator donationVal;
 
 	@Autowired
-	public DonationController(DonationService donationSer, UserService userService) {
+	public DonationController(DonationService donationSer, UserService userService, CausaService causaService) {
 		this.userService = userService;
 		this.donationSer = donationSer;
+		this.causaService = causaService;
 	}
-	
+
 	@InitBinder("donation")
 	public void initRestaurantReservationBinder(WebDataBinder dataBinder) {
 		dataBinder.setValidator(donationVal);
 	}
-	
+
 	@GetMapping("/list")
 	public String donationsList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
 		// log.info("El username es: " + username);
-		Authorities authority = donationSer.getAuthority(username);
-		List<Donation> donations = StreamSupport.stream(donationSer.findAll().spliterator(), false).collect(Collectors.toList());
-		
+		List<Donation> donations = StreamSupport.stream(donationSer.findAll().spliterator(), false)
+				.collect(Collectors.toList());
+
 		modelMap.addAttribute("donations", donations);
 		modelMap.addAttribute("currentDate", LocalDate.now());
 
@@ -70,38 +72,39 @@ public class DonationController {
 		return view;
 	}
 
-	
-	@GetMapping(path = "/new")
-	public String createDonation(ModelMap modelMap) {
+	@GetMapping(path = "{causaId}/new")
+	public String createDonation(ModelMap modelMap, @PathVariable("causaId") int causaId) {
 		String view = "donations/createDonation";
-		modelMap.addAttribute("donation", new Donation());
+		Optional<Causa> causa = causaService.getCausaById(causaId);
+		assert causa.isPresent();
+		Donation donation = new Donation();
+		donation.setCausa(causa.get());
+		modelMap.addAttribute("donation", donation);
 		return view;
 	}
-	
-	
+
 	@ModelAttribute("usernames")
 	public Collection<String> populateUsernames() {
-		
-		List<String> usernames= new ArrayList<String>();
+
+		List<String> usernames = new ArrayList<String>();
 		String username = UserUtils.getUser();
 		Authorities authority = donationSer.getAuthority(username);
-		if(authority.getAuthority().equals("owner")) {
-			for(Owner o: donationSer.findOwners()) {
-				if(o.getUser().getUsername().equals(username)) {
+		if (authority.getAuthority().equals("owner")) {
+			for (Owner o : donationSer.findOwners()) {
+				if (o.getUser().getUsername().equals(username)) {
 					usernames.add(o.getUser().getUsername());
 				}
 			}
-			
-		}else if (authority.getAuthority().equals("admin")) { 
-			for(Owner o: donationSer.findOwners()) {
-					usernames.add(o.getUser().getUsername());
+
+		} else if (authority.getAuthority().equals("admin")) {
+			for (Owner o : donationSer.findOwners()) {
+				usernames.add(o.getUser().getUsername());
 			}
-			
 
 		}
 		return usernames;
 	}
-	
+
 	@ModelAttribute("causas")
 	public Collection<String> populateCausas() {
 		List<String> causastostr = new ArrayList<String>();
@@ -126,37 +129,37 @@ public class DonationController {
 		for (Causa causa : causas) {
 			causastostr.add(causa.getName());
 
-		}return causastostr;
+		}
+		return causastostr;
 
 	}
-	
+
 	@PostMapping()
-	public String saveDonation(@Valid Donation donation,@RequestParam("owner.user.username") String username, 
-			@RequestParam("causa.name") String causa
-			,BindingResult result, ModelMap modelMap) {
-		String view="donations/donationsList";
-		if(result.hasErrors()) {
-	//		log.info("Tiene errores");
+	public String saveDonation(@Valid Donation donation, @RequestParam("owner.user.username") String username,
+			@RequestParam("CausaId") int causaId, BindingResult result, ModelMap modelMap) {
+		String view;
+		if (result.hasErrors()) {
+			// log.info("Tiene errores");
 			modelMap.addAttribute("donation", donation);
 			return "donations/createDonation";
-		}else {
-
-			for(Owner owner: this.donationSer.findOwners()) {
-				if(owner.getUser().getUsername().equals(username)) {
+		} else {
+			for (Owner owner : donationSer.findOwners()) {
+				if (owner.getUser().getUsername().equals(username)) {
 					donation.setOwner(owner);
 				}
-				
-				for(Causa causaname: this.donationSer.findCausas()) {
-					if(causaname.getName().equals(causa)) {
-						donation.setCausa(causaname);
-					}
+				}
+				Optional<Causa> causaOp = causaService.getCausaById(causaId);
+				assert causaOp.isPresent();
+				Causa causa = causaOp.get();
+				Double donationAct = causa.getTotalDonation() + donation.getImporteDonacion();
+				causa.setTotalDonation(donationAct);
+				donation.setFechaDonacion(LocalDate.now());
+				causaService.save(causa);
+				donationSer.save(donation);
+				modelMap.addAttribute("message", "Donation successfully saved!");
+				view = donationsList(modelMap);
 			}
-			donationSer.save(donation);
-			modelMap.addAttribute("message", "Donation successfully saved!");
-			view = donationsList(modelMap);
+			return view;
 		}
-		return view;
-	}
 
-}
-}
+	}

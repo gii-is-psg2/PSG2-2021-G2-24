@@ -11,22 +11,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
-
-
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "causas")
 
 public class Causa extends NamedEntity {
 	
 	
 	@NotNull
+	@NotEmpty
 	@Column(name = "descriptionCausa_id")
 	private String descriptionCausa;
 
@@ -35,6 +38,7 @@ public class Causa extends NamedEntity {
 	private Double budgetTarget;
 	
 	@NotNull
+	@NotEmpty
 	@Column(name = "ActivenpOrganization_id")
 	private String ActivenpOrganization;
 	
@@ -45,8 +49,10 @@ public class Causa extends NamedEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "causa")
 	private Set<Donation> donations;
 	
-
-	public Double totalDonation;
+	
+	public Double totalDonation ;
+	
+	public Boolean closed;
 
 
 	public String getDescriptionCausa() {

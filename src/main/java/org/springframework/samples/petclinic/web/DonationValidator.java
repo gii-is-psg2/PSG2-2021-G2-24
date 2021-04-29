@@ -28,22 +28,11 @@ public class DonationValidator implements Validator {
 	@Override
 	public void validate(Object obj, Errors errors) {
 		Donation donation = (Donation) obj;
-		
-		if (donation.getOwner() == null) {
-			errors.rejectValue("owner", "Owner is required", "Owner is required");
-		}
 
-		if (donation.getCausa() == null) {
-			errors.rejectValue("Causa", "Value is required", "Value is required");
-		}
-		
-		if (donation.getImporteDonacion()< 0.00) {
+		if (donation.getImporteDonacion()<= 0.00) {
 			errors.rejectValue("importe", "Value is required", "Value is required");
 		}
-		if (donation.getFechaDonacion() == null ||donation.getFechaDonacion().isBefore(LocalDate.now())) {
-			errors.rejectValue("fechaDonacion", 
-					"La fecha puede estar nula, ser una fecha anterior a la actual");
-		}
+
 
 	}
 

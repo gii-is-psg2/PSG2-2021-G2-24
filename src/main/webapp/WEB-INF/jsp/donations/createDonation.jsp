@@ -8,38 +8,24 @@
 
 
 <petclinic:layout pageName="donations">
-	<jsp:attribute name="customScript">
-		<script>
-			$(function () {
-				$("#fechaDonacion").datepicker({dateFormat: 'yy-MM-dd'});
-			});
-		</script>
-	</jsp:attribute>
     <jsp:body>
         <h2>Donacion</h2>
 
 
-        <form:form modelAttribute="donation" class="form-horizontal" action="/donations">
+        <form:form modelAttribute="donation" class="form-horizontal" action="/causas/donations">
             <div class="form-group has-feedback">
             	<div class="control-group">
                      <petclinic:selectField name="owner.user.username" label="Username" names="${usernames}"  size="5"/>
-              
-                <div class="control-group">
-                    <petclinic:selectField name="causa.id" label="Causa" names="${causas}" size="5"/>
-                </div>
                 <div class="control-group">
                     <petclinic:inputField label="Importe" name="importeDonacion"/>
                 </div>
-                <div class="control-group">
-                    <petclinic:inputField label="Fecha" name="fechaDonacion"/>
-                </div>
-               
+
 
             </div>
 			</div>	
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <input type="hidden" name="donationId" value="${donation.id}"/>
+                		<input type="hidden" name="CausaId" value="${donation.causa.id}">
                     <button class="btn btn-default" type="submit">Add Donation</button>
                 </div>
             </div>

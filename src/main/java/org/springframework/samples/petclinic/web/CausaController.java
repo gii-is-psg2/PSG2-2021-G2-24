@@ -42,7 +42,7 @@ public class CausaController {
 	private List<Causa> listaCausas;
 
 	@Autowired
-	 private CausaValidator causaVal;
+	private CausaValidator causaVal;
 
 	@Autowired
 	public CausaController(CausaService causaSer, UserService userService) {
@@ -57,8 +57,6 @@ public class CausaController {
 		Authorities authority = causaSer.getAuthority(username);
 		List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
 
-
-
 		modelMap.addAttribute("causas", causas);
 		modelMap.addAttribute("currentDate", LocalDate.now());
 
@@ -66,52 +64,51 @@ public class CausaController {
 
 		return view;
 	}
-	
+
 	@GetMapping(path = "/new")
 	public String createCausa(ModelMap modelMap) {
 		String view = "causes/addCause";
 		modelMap.addAttribute("causa", new Causa());
 		return view;
 	}
-	
+
 	@ModelAttribute("usernames")
 	public Collection<String> populateUsernames() {
-		
-		List<String> usernames= new ArrayList<String>();
+
+		List<String> usernames = new ArrayList<String>();
 		String username = UserUtils.getUser();
 		Authorities authority = causaSer.getAuthority(username);
-		if(authority.getAuthority().equals("owner")) {
-			for(Owner o: causaSer.findOwners()) {
-				if(o.getUser().getUsername().equals(username)) {
+		if (authority.getAuthority().equals("owner")) {
+			for (Owner o : causaSer.findOwners()) {
+				if (o.getUser().getUsername().equals(username)) {
 					usernames.add(o.getUser().getUsername());
 				}
 			}
-			
-		}else if (authority.getAuthority().equals("admin")) { 
-			for(Owner o: causaSer.findOwners()) {
-					usernames.add(o.getUser().getUsername());
+
+		} else if (authority.getAuthority().equals("admin")) {
+			for (Owner o : causaSer.findOwners()) {
+				usernames.add(o.getUser().getUsername());
 			}
-			
 
 		}
 		return usernames;
 	}
-	
-	@PostMapping()
-	public String saveCausa(@Valid Causa causa,@RequestParam("owner.user.username") String username, 
-			BindingResult result, ModelMap modelMap) {
-		String view="causes/causesList";
-		if(result.hasErrors()) {
-	//		log.info("Tiene errores");
-			modelMap.addAttribute("causas", causa);
-			return "causes/addCause";
-		}else {
 
-			for(Owner owner: this.causaSer.findOwners()) {
-				if(owner.getUser().getUsername().equals(username)) {
+	@PostMapping()
+	public String saveCausa(@Valid Causa causa, @RequestParam("owner.user.username") String username,
+			BindingResult result, ModelMap modelMap) {
+		String view = "causes/causesList";
+		if (result.hasErrors()) {
+			modelMap.addAttribute("causas", causa);
+			return "redirect:/causas/new";
+		} else {
+			for (Owner owner : this.causaSer.findOwners()) {
+				if (owner.getUser().getUsername().equals(username)) {
 					causa.setOwner(owner);
 				}
 			}
+			causa.setTotalDonation(0.0);
+			causa.setClosed(false);
 			causaSer.save(causa);
 			modelMap.addAttribute("message", "Causa successfully saved!");
 			view = causasList(modelMap);

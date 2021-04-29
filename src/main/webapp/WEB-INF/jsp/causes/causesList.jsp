@@ -1,12 +1,13 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ page session="false" trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="causes">
-    <h2>Causes
+	<h2>
+		Causes
 
 		<spring:url value="/causas/new" var="causaNewUrl">
 		</spring:url>
@@ -18,30 +19,32 @@
 				<th style="width: 150px;">Name</th>
 				<th style="width: 200px;">Total Donation</th>
 				<th style="width: 200px;">Budget Target</th>
-
-
-				
-
-
-
+				<th style="width: 200px;">Status</th>
+				<th style="width: 200px;">Donate to this Cause</th>
 			</tr>
 		</thead>
-        <tbody>
-        <c:forEach items="${causas}" var="causa">
-            <tr>
-				<td><c:out value="${causa.name}" /></td>
-				<td><c:out value="${causa.totalDonation}" /></td>
-				<td><c:out value="${causa.budgetTarget}" /></td> 
+		<tbody>
+			<c:forEach items="${causas}" var="causa">
+				<tr>
+					<td><c:out value="${causa.name}" /></td>
+					<td><c:out value="${causa.totalDonation}" /></td>
+					<td><c:out value="${causa.budgetTarget}" /></td>
+					<c:if test="${causa.closed}">
+						<td><c:out value="Close" /></td>
+					</c:if>
+					<c:if test="${causa.closed == false}">
+						<td><c:out value="Open" /></td>
+					</c:if>
+					<td><spring:url value="donations/{causaId}/new"
+							var="donationURL">
+							<spring:param name="causaId" value="${causa.id}" />
+						</spring:url> <a href="${fn:escapeXml(donationURL)}">Donate</a></td>
 
-  
-     
- 
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    
-    		<a class="btn btn-default" href='<spring:url value="/donations/new" htmlEscape="true"/>'>Donate</a>
-    
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+
+
 
 </petclinic:layout>
