@@ -20,7 +20,7 @@
 	</h2>
 	<br />
 	<h1>
-		<c:out value="budget target:${causa.budgetTarget}" />
+		<c:out value="budget target: ${causa.budgetTarget}" />
 	</h1>
 
 	<br />
