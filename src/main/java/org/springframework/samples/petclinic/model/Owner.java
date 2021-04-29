@@ -26,6 +26,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,6 +37,11 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 
+
+
+
+import lombok.Getter;
+import lombok.Setter;
 /**
  * Simple JavaBean domain object representing an owner.
  *
@@ -46,6 +52,8 @@ import org.springframework.core.style.ToStringCreator;
  */
 
 @Entity
+@Getter
+@Setter
 @Table(name = "owners")
 public class Owner extends Person {
 
@@ -75,11 +83,15 @@ public class Owner extends Person {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
+	private Set<Donation> donations;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	private Set<Causa> causas;
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "name", referencedColumnName = "username")
 	private User user;
 	//
 
