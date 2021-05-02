@@ -34,10 +34,10 @@ public class ReservaValidator implements Validator {
 					"La fecha final o inicial puede estar nula, ser una fecha anterior a la actual o ser una fecha anterior a la de inicio");
 		}
 		if (reserva.getPet() == null) {
-			errors.rejectValue("pet", "Value is required", "Value is required");
+			errors.rejectValue("pet", "Select a pet to book in", "Select a pet to book in");
 		}
 		if (reserva.getRoom() == null) {
-			errors.rejectValue("room", "Value is required", "Value is required");
+			errors.rejectValue("room", "Select a room", "Select a room");
 		}
 		if (this.reservaService.alreadyBooked(reserva)) {
 			errors.rejectValue("room", "Room booked for another pet", "Room already booked for that time slot");
@@ -51,5 +51,4 @@ public class ReservaValidator implements Validator {
 	public boolean supports(Class<?> clazz) {
 		return Reserva.class.isAssignableFrom(clazz);
 	}
-
 }

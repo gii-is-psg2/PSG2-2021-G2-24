@@ -49,8 +49,6 @@ public class AdoptionRequestService {
 	}
 
 	public Authorities getAuthority(String username) {
-		// TODO Auto-generated method stub
-
 		return adoptReqrepo.getAuthority(username);
 	}
 
@@ -71,5 +69,5 @@ public class AdoptionRequestService {
 
 		return adoptReqrepo.findAdoptionsActive();
 	}
-	
+
 }

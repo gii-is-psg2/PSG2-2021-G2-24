@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
 import org.springframework.samples.petclinic.model.Authorities;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.AdoptionRequestResponseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +25,10 @@ public class AdoptionRequestResponseService {
 	public int restaurantReservationCount() {
 		return (int) adoptReqresprepo.count();
 	}
-	
+
 	@Transactional
 	public Optional<AdoptionRequestResponse> findById(int id) {
-		return  adoptReqresprepo.findById(id);
+		return adoptReqresprepo.findById(id);
 	}
 
 	@Transactional
@@ -56,11 +55,11 @@ public class AdoptionRequestResponseService {
 	public Authorities getAuthority(String username) {
 		return adoptReqresprepo.getAuthority(username);
 	}
-	
+
 	public void deActiveRequests(AdoptionRequest adoptionRequest) {
-		for(AdoptionRequestResponse adoptionRequestResponse:adoptionRequest.getAdoptionRequestResponse()){
+		for (AdoptionRequestResponse adoptionRequestResponse : adoptionRequest.getAdoptionRequestResponse()) {
 			adoptionRequestResponse.setIsactive(false);
 			adoptReqresprepo.save(adoptionRequestResponse);
 		}
 	}
-}	
+}

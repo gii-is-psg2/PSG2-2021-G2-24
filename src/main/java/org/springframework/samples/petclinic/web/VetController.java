@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -61,10 +63,6 @@ public class VetController {
 
 	@GetMapping(value = { "/vets" })
 	public String showVetList(Map<String, Object> model) {
-		// Here we are returning an object of type 'Vets' rather than a collection of
-		// Vet
-		// objects
-		// so it is simpler for Object-Xml mapping
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
 		if (!userOp.isPresent()) {
@@ -80,10 +78,6 @@ public class VetController {
 
 	@GetMapping(value = { "/vets.xml" })
 	public @ResponseBody Vets showResourcesVetList() {
-		// Here we are returning an object of type 'Vets' rather than a collection of
-		// Vet
-		// objects
-		// so it is simpler for JSon/Object mapping
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetService.findVets());
 		return vets;
@@ -137,34 +131,27 @@ public class VetController {
 		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-		// log.info("El nombre es:" + vet.getFirstName());
-		// log.info("El apellido es:" + vet.getLastName());
-		String view = "vets/vetList";
+		String view;
 		if (result.hasErrors()) {
 			modelMap.addAttribute("vet", vet);
 			return "vet/addVet";
 
-		} else {
-			if (!specialties.isPresent()) {
+		} else if (specialties.isPresent()) {
 
-			} else {
-				String[] specialtiesstr = specialties.get();
+			String[] specialtiesstr = specialties.get();
 
-				for (String s : specialtiesstr) {
-					Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
-					for (Specialty type : findSpecialties) {
-						if (type.getName().equals(s)) {
-							vet.addSpecialty(type);
-						}
+			for (String s : specialtiesstr) {
+				Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
+				for (Specialty type : findSpecialties) {
+					if (type.getName().equals(s)) {
+						vet.addSpecialty(type);
 					}
 				}
 			}
-			vetService.save(vet);
-			modelMap.addAttribute("message", "vet successfully saved!");
-			view = showVetList(modelMap);
-
 		}
-
+		vetService.save(vet);
+		modelMap.addAttribute("message", "vet successfully saved!");
+		view = showVetList(modelMap);
 		return view;
 	}
 
@@ -179,8 +166,9 @@ public class VetController {
 		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-		// log.info("Loading update vet form");
-		Vet vet = vetService.findVetbyId(vetId).get();
+		Optional<Vet> vetOp = vetService.findVetbyId(vetId);
+		assertTrue(vetOp.isPresent());
+		Vet vet = vetOp.get();
 		model.put("vet", vet);
 		return "vets/updateVet";
 	}
@@ -197,32 +185,27 @@ public class VetController {
 		if (!this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
-		// log.info("Updating vet: " + vetId);
 		vet.setId(vetId);
 		if (result.hasErrors()) {
-			// log.warn("Found errors on update: " + result.getAllErrors());
 			model.put("vet", vet);
 			return "vets/updateVet";
-		} else {
-			if (!specialties.isPresent()) {
+		} else if (specialties.isPresent()) {
 
-			} else {
-				String[] specialtiesstr = specialties.get();
+			String[] specialtiesstr = specialties.get();
 
-				for (String s : specialtiesstr) {
-					Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
-					for (Specialty type : findSpecialties) {
-						if (type.getName().equals(s)) {
-							vet.addSpecialty(type);
-						}
+			for (String s : specialtiesstr) {
+				Collection<Specialty> findSpecialties = this.vetService.findSpecialties();
+				for (Specialty type : findSpecialties) {
+					if (type.getName().equals(s)) {
+						vet.addSpecialty(type);
 					}
 				}
 			}
-			this.vetService.save(vet);
-			return "redirect:/vets";
 		}
+		this.vetService.save(vet);
+		return "redirect:/vets";
 	}
-
+	
 	@ModelAttribute("specialties")
 	public Collection<Specialty> populateSpecialties() {
 		return this.vetService.findSpecialties();

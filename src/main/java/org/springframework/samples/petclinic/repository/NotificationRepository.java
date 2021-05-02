@@ -10,14 +10,14 @@ import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Notification;
 
-public interface NotificationRepository extends CrudRepository<Notification, Integer>{
+public interface NotificationRepository extends CrudRepository<Notification, Integer> {
 
 	@Query("SELECT arr FROM AdoptionRequestResponse arr ORDER BY arr.id")
 	List<AdoptionRequestResponse> findAdoptionRequestResponses() throws DataAccessException;
-	
+
 	@Query("SELECT  auth FROM Authorities auth WHERE auth.user.username LIKE :username")
-	public Authorities getAuthority(@Param("username")String username) throws DataAccessException;
-	
+	public Authorities getAuthority(@Param("username") String username) throws DataAccessException;
+
 	@Query("SELECT notification FROM Notification notification WHERE notification.response.owner.id = :id")
 	public List<Notification> notificationsByOwner(@Param("id") int ownerId);
 }

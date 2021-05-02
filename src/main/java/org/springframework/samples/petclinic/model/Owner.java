@@ -26,7 +26,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,11 +36,9 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 
-
-
-
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  * Simple JavaBean domain object representing an owner.
  *
@@ -74,7 +71,7 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany( fetch = FetchType.EAGER, mappedBy = "owner")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<AdoptionRequest> adoptionrequest;
 
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "owner")
@@ -86,7 +83,7 @@ public class Owner extends Person {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<Donation> donations;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "owner", fetch = FetchType.EAGER)
 	private Set<Causa> causas;
 
 	//
@@ -168,7 +165,7 @@ public class Owner extends Person {
 		for (Pet pet : getPetsInternal()) {
 			String compName = pet.getName();
 			compName = compName.toLowerCase();
-			if (compName.equals(name) && pet.getId() != id) {
+			if (compName.equals(name) && !pet.getId().equals(id)) {
 				return pet;
 			}
 		}

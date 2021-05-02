@@ -1,7 +1,8 @@
 package org.springframework.samples.petclinic.web;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -12,8 +13,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.samples.petclinic.model.User;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.UserService;
-import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -62,7 +61,7 @@ class VisitControllerTests {
 
 		Pet petMock = new Pet();
 		petMock.setId(2);
-		//petMock.setVisits(new HashSet<>());
+		// petMock.setVisits(new HashSet<>());
 		Set<Pet> pets = new HashSet<Pet>();
 		pets.add(petMock);
 		given(this.userService.findUser(any(String.class))).willReturn(Optional.of(userMock));
@@ -80,8 +79,8 @@ class VisitControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessNewVisitFormSuccess() throws Exception {
-		mockMvc.perform(post("/owners/1/pets/2/visits/new").with(csrf()).param("name", "George")
-				.param("description", "Visit Description")).andExpect(status().is3xxRedirection())
+		mockMvc.perform(post("/owners/1/pets/2/visits/new").with(csrf()).param("name", "George").param("description",
+				"Visit Description")).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
 

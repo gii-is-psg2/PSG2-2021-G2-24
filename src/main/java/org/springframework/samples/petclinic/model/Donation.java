@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
 @Table(name = "donations")
 @Getter
@@ -26,7 +25,7 @@ public class Donation extends BaseEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "causa_id")
 	private Causa causa;
 

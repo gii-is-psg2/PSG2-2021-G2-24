@@ -15,12 +15,16 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.UserService;
@@ -68,29 +72,26 @@ public class VisitController {
 	 */
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("petId") int petId) {
-		System.out.println("holiwi");
 		Pet pet = this.petService.findPetById(petId);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
 		return visit;
 	}
 
-	// Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is
-	// called
 	@GetMapping(value = "/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-		System.out.println("holiwi");
 		return "pets/createOrUpdateVisitForm";
 	}
 
-	// Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is
-	// called
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		} else {
-			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
+			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+			assertTrue(userOp.isPresent());
+			User user = userOp.get();
+			if (!this.userService.isAdmin(user)
 					&& !(visit.getPet().getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			}

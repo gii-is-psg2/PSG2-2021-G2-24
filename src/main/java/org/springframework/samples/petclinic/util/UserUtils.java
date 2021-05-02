@@ -8,7 +8,7 @@ public class UserUtils {
 	public static String getUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails)
-			return ((UserDetails)principal).getUsername();
+			return ((UserDetails) principal).getUsername();
 		else
 			return principal.toString();
 	}

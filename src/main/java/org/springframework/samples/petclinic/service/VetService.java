@@ -43,44 +43,41 @@ public class VetService {
 	@Autowired
 	public VetService(VetRepository vetRepository) {
 		this.vetRepository = vetRepository;
-	}		
+	}
 
-	@Transactional(readOnly = true)	
+	@Transactional(readOnly = true)
 	public Collection<Vet> findVets() throws DataAccessException {
 		return vetRepository.findAll();
-	}	
-	
+	}
+
 	@Transactional
 	public void vetDelete(Vet vet) {
 		this.vetRepository.delete(vet);
 	}
 
-	
 	@Transactional
 	public int vetCount() {
-		return (int)vetRepository.count();
+		return (int) vetRepository.count();
 	}
-	
-	@Transactional(readOnly=true)
-	public  Optional<Vet> findVetbyId(int id){
+
+	@Transactional(readOnly = true)
+	public Optional<Vet> findVetbyId(int id) {
 		return vetRepository.findById(id);
 	}
-	@Transactional(readOnly=true)
-	public  Optional<Specialty> findSpecialtybyId(int id){
+
+	@Transactional(readOnly = true)
+	public Optional<Specialty> findSpecialtybyId(int id) {
 		return speRepo.findById(id);
 	}
 
 	@Transactional
-	public  void save(Vet vet) throws DataAccessException {
+	public void save(Vet vet) throws DataAccessException {
 		vetRepository.save(vet);
-		
+
 	}
 
-	public Collection<Specialty> findSpecialties() throws DataAccessException{
-        // TODO Auto-generated method stub
-        return vetRepository.findSpecialties();
-    }
-	
-	
+	public Collection<Specialty> findSpecialties() throws DataAccessException {
+		return vetRepository.findSpecialties();
+	}
 
 }

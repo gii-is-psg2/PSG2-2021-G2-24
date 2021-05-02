@@ -15,7 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,9 +23,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Simple JavaBean domain object representing a visit.
@@ -66,6 +65,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Getter for property date.
+	 * 
 	 * @return Value of property date.
 	 */
 	public LocalDate getDate() {
@@ -74,6 +74,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Setter for property date.
+	 * 
 	 * @param date New value of property date.
 	 */
 	public void setDate(LocalDate date) {
@@ -82,6 +83,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Getter for property description.
+	 * 
 	 * @return Value of property description.
 	 */
 	public String getDescription() {
@@ -90,6 +92,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Setter for property description.
+	 * 
 	 * @param description New value of property description.
 	 */
 	public void setDescription(String description) {
@@ -98,6 +101,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Getter for property pet.
+	 * 
 	 * @return Value of property pet.
 	 */
 	public Pet getPet() {
@@ -106,6 +110,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Setter for property pet.
+	 * 
 	 * @param pet New value of property pet.
 	 */
 	public void setPet(Pet pet) {

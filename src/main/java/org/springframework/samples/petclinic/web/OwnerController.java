@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -78,7 +80,6 @@ public class OwnerController {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		} else {
-			// creating owner, user and authorities
 			this.ownerService.saveOwner(owner);
 			return "redirect:/owners/" + owner.getId();
 		}
@@ -93,23 +94,18 @@ public class OwnerController {
 	@GetMapping(value = "/owners")
 	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
-		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
-			owner.setLastName(""); // empty string signifies broadest possible search
+			owner.setLastName("");
 		}
 
-		// find owners by last name
 		Collection<Owner> results = this.ownerService.findOwnerByLastName(owner.getLastName());
 		if (results.isEmpty()) {
-			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
 		} else if (results.size() == 1) {
-			// 1 owner found
 			owner = results.iterator().next();
 			return "redirect:/owners/" + owner.getId();
 		} else {
-			// multiple owners found
 			model.put("selections", results);
 			return "owners/ownersList";
 		}
@@ -118,8 +114,10 @@ public class OwnerController {
 	@GetMapping(value = "/owners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.ownerService.findOwnerById(ownerId);
-		if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
-				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+		assertTrue(userOp.isPresent());
+		User user = userOp.get();
+		if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) && !this.userService.isAdmin(user)) {
 			return "redirect:/oups";
 		}
 		model.addAttribute(owner);
@@ -132,8 +130,10 @@ public class OwnerController {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		} else {
-			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
-					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
+			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+			assertTrue(userOp.isPresent());
+			User user = userOp.get();
+			if (!this.userService.isAdmin(user) && !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
 				owner.setId(ownerId);
@@ -151,7 +151,6 @@ public class OwnerController {
 	 */
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-		System.out.println("holis2");
 		String userName = UserUtils.getUser();
 		Optional<User> userOp = this.userService.findUser(userName);
 		if (!userOp.isPresent()) {
@@ -172,21 +171,21 @@ public class OwnerController {
 	public String deleteOwner(@PathVariable("ownerId") int ownerId) {
 
 		Owner owner = this.ownerService.findOwnerById(ownerId);
-		if (!(owner.getUser().getUsername().equals(UserUtils.getUser()))
-				&& !this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
-			return "redirect:/oups";// Comprobamos que el usuario que va a borrar el owner es el usuario asociado al
-									// owner
+		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+		assertTrue(userOp.isPresent());
+		User user = userOp.get();
+		if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) && !this.userService.isAdmin(user)) {
+			return "redirect:/oups";
 		}
 		for (Reserva reserva : this.reservaSer.findAll()) {
-			if (reserva.getOwner().getId() == ownerId) {
+			if (reserva.getOwner().getId().equals(ownerId)) {
 				reservaSer.delete(reserva);
 			}
 		}
-		if (this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())) {
+		if (this.userService.isAdmin(user)) {
 			this.ownerService.deleteOwner(owner);
 			return "redirect:/owners/find";
 		}
-		System.out.println("hola");
 		this.ownerService.deleteOwner(owner);
 		return "redirect:/login";
 	}
