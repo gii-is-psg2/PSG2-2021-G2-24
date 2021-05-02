@@ -5,22 +5,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Notification;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.repository.AdoptionRequestRepository;
 import org.springframework.samples.petclinic.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 public class NotificationService {
-	
+
 	private NotificationRepository notificationRepository;
 
 	@Autowired
@@ -52,19 +46,21 @@ public class NotificationService {
 	public Optional<Notification> findById(int id) {
 		return notificationRepository.findById(id);
 	}
+
 	@Transactional
 	public Collection<AdoptionRequestResponse> findAdoptionRequestResponses() {
 
 		return notificationRepository.findAdoptionRequestResponses();
 	}
-	
+
 	@Transactional
 	public Authorities getAuthority(String username) {
 		return notificationRepository.getAuthority(username);
 	}
+
 	@Transactional
 	public List<Notification> findNotificationsByOwner(int ownerId) {
 		return notificationRepository.notificationsByOwner(ownerId);
 	}
-	
+
 }

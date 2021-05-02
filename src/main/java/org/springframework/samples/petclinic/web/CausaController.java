@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.web;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,10 +60,7 @@ public class CausaController {
 		List<Causa> causas = StreamSupport.stream(causaSer.findAll().spliterator(), false).collect(Collectors.toList());
 
 		modelMap.addAttribute("causas", causas);
-
-		String view = "causes/causesList";
-
-		return view;
+		return "causes/causesList";
 	}
 
 	@GetMapping(path = "/new")
@@ -77,7 +73,7 @@ public class CausaController {
 	@ModelAttribute("usernames")
 	public Collection<String> populateUsernames() {
 
-		List<String> usernames = new ArrayList<String>();
+		List<String> usernames = new ArrayList<>();
 		String username = UserUtils.getUser();
 		Authorities authority = causaSer.getAuthority(username);
 		if (authority.getAuthority().equals("owner")) {

@@ -16,56 +16,43 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.Reserva;
-import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.model.Authorities;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration test of the Service and the Repository layer.
  * <p>
- * ClinicServiceSpringDataJpaTests subclasses benefit from the following services provided
- * by the Spring TestContext Framework:
+ * ClinicServiceSpringDataJpaTests subclasses benefit from the following
+ * services provided by the Spring TestContext Framework:
  * </p>
  * <ul>
- * <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
- * time between test execution.</li>
- * <li><strong>Dependency Injection</strong> of test fixture instances, meaning that we
- * don't need to perform application context lookups. See the use of
+ * <li><strong>Spring IoC container caching</strong> which spares us unnecessary
+ * set up time between test execution.</li>
+ * <li><strong>Dependency Injection</strong> of test fixture instances, meaning
+ * that we don't need to perform application context lookups. See the use of
  * {@link Autowired @Autowired} on the <code>{@link
- * ClinicServiceTests#clinicService clinicService}</code> instance variable, which uses
- * autowiring <em>by type</em>.
- * <li><strong>Transaction management</strong>, meaning each test method is executed in
- * its own transaction, which is automatically rolled back by default. Thus, even if tests
- * insert or otherwise change database state, there is no need for a teardown or cleanup
- * script.
- * <li>An {@link org.springframework.context.ApplicationContext ApplicationContext} is
- * also inherited and can be used for explicit bean lookup if necessary.</li>
+ * ClinicServiceTests#clinicService clinicService}</code> instance variable,
+ * which uses autowiring <em>by type</em>.
+ * <li><strong>Transaction management</strong>, meaning each test method is
+ * executed in its own transaction, which is automatically rolled back by
+ * default. Thus, even if tests insert or otherwise change database state, there
+ * is no need for a teardown or cleanup script.
+ * <li>An {@link org.springframework.context.ApplicationContext
+ * ApplicationContext} is also inherited and can be used for explicit bean
+ * lookup if necessary.</li>
  * </ul>
  *
  * @author Ken Krebs
@@ -80,53 +67,51 @@ import org.springframework.transaction.annotation.Transactional;
 class ReservaServiceTests {
 
 	@Autowired
-	protected ReservaService reservaSer;	
+	protected ReservaService reservaSer;
 
 	@Test
 	void shouldFindReservas() {
 		Iterable<Reserva> reservaIt = this.reservaSer.findAll();
 		List<Reserva> reservas = new ArrayList<Reserva>();
-		
+
 		for (Reserva reserva : reservaIt) {
 			reservas.add(reserva);
 		}
 		Reserva reserva = EntityUtils.getById(reservas, Reserva.class, 1);
 		assertThat(reserva.getPet().getName()).isEqualTo("Leo");
-		assertThat(reserva.getRoom().getId() == 1);
+		assertEquals(reserva.getRoom().getId(), 1);
 		assertThat(reserva.getOwner().getFirstName()).isEqualTo("George");
 		assertThat(reserva.getOwner().getLastName()).isEqualTo("Franklin");
-		assertThat(reserva.getId() == 1);
+		assertEquals(reserva.getId(), 1);
 		assertThat(reserva.getStartDate()).isEqualTo("2013-01-01");
 		assertThat(reserva.getEndingDate()).isEqualTo("2013-01-03");
-		
-		
+
 	}
-	
+
 	@Test
 	void shouldbebooked() {
 		Iterable<Reserva> reservaIt = this.reservaSer.findAll();
 		List<Reserva> reservas = new ArrayList<Reserva>();
-		
+
 		for (Reserva reserva : reservaIt) {
 			reservas.add(reserva);
 		}
 		Reserva reserva = EntityUtils.getById(reservas, Reserva.class, 1);
-		assertTrue(reservaSer.alreadyBooked(reserva) == false);
+		assertTrue(!reservaSer.alreadyBooked(reserva));
 	}
-	
-	
+
 	@Test
 	void shouldfinduser() {
 		Authorities auth = this.reservaSer.getAuthority("admin1");
 		assertThat(auth.getUser().getUsername()).isEqualTo("admin1");
 	}
-	
+
 	@Test
 	void shoulddeletereserva() {
 		Reserva reserva = reservaSer.getReservaById(1).get();
 		this.reservaSer.delete(reserva);
-		for(Reserva res : reservaSer.findAll()) {
-			assertTrue(res.getId() != reserva.getId());
+		for (Reserva res : reservaSer.findAll()) {
+			assertNotSame(res.getId(), reserva.getId());
 		}
 	}
 

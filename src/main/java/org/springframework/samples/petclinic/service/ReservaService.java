@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -38,14 +39,11 @@ public class ReservaService {
 		reservaRepo.delete(reserva);
 	}
 
-	@Transactional
 	public Iterable<Reserva> findAll() {
 		return reservaRepo.findAll();
 	}
 
 	public Authorities getAuthority(String username) {
-		// TODO Auto-generated method stub
-
 		return reservaRepo.getAuthority(username);
 	}
 
@@ -71,7 +69,7 @@ public class ReservaService {
 	public Optional<Reserva> getReservaById(int id) {
 		return this.reservaRepo.findById(id);
 	}
-	
+
 	public Boolean bookingSamePet(Reserva reserva) {
 		Boolean b = false;
 		for (Reserva r : findAll()) {
@@ -93,25 +91,22 @@ public class ReservaService {
 	}
 
 	private Boolean diasSolapados(Reserva res1, Reserva res2) {
-		if(res1.getId() == res2.getId()) {
-			return false;
-		}else {
-			if ((res1.getStartDate().isAfter(res2.getStartDate()) && res1.getStartDate().isBefore(res2.getEndingDate()))
-					|| (res1.getEndingDate().isAfter(res2.getStartDate())
-							&& res1.getEndingDate().isBefore(res2.getEndingDate()))) {
-				return true;
-			}
-			if ((res2.getStartDate().isAfter(res1.getStartDate()) && res2.getStartDate().isBefore(res1.getEndingDate()))
-					|| (res2.getEndingDate().isAfter(res1.getStartDate())
-							&& res2.getEndingDate().isBefore(res1.getEndingDate()))) {
-				return true;
-			}
-			if (res1.getStartDate().isEqual(res2.getStartDate()) && res1.getEndingDate().isEqual(res1.getEndingDate())) {
-				return true;
-			} else {
-				return false;
-			}
+		LocalDate fechaInicial1 = res1.getStartDate();
+		LocalDate fechaInicial2 = res2.getStartDate();
+		LocalDate fechaFinal1 = res1.getEndingDate();
+		LocalDate fechaFinal2 = res2.getEndingDate();
+
+		if ((fechaInicial1.isAfter(fechaInicial2) && fechaInicial1.isBefore(fechaFinal2))
+				|| (fechaFinal1.isAfter(fechaInicial2) && fechaFinal1.isBefore(fechaFinal2))) {
+			return true;
 		}
-		
+		if ((fechaInicial2.isAfter(fechaInicial1) && fechaInicial2.isBefore(fechaFinal1))
+				|| (fechaFinal2.isAfter(fechaInicial1) && fechaFinal2.isBefore(fechaFinal1))) {
+			return true;
+		}
+		if (fechaInicial1.isEqual(fechaInicial2) && fechaFinal1.isEqual(fechaFinal1)) {
+			return true;
+		}
+		return false;
 	}
 }

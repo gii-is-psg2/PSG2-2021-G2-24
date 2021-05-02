@@ -33,13 +33,15 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 
 	/**
 	 * Retrieve all <code>PetType</code>s from the data store.
+	 * 
 	 * @return a <code>Collection</code> of <code>PetType</code>s
 	 */
 	@Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
 	List<PetType> findPetTypes() throws DataAccessException;
-	
+
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
+	 * 
 	 * @param id the id to search for
 	 * @return the <code>Pet</code> if found
 	 * @throws org.springframework.dao.DataRetrievalFailureException if not found
@@ -48,9 +50,9 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 
 	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.
+	 * 
 	 * @param pet the <code>Pet</code> to save
 	 * @see BaseEntity#isNew
 	 */
-
 
 }

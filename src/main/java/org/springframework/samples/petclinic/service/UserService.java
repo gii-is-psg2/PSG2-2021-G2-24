@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.service;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,20 +46,21 @@ public class UserService {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
+
 	@Transactional
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
 	}
-	
+
 	@Transactional
 	public void deleteUser(User user) {
 		userRepository.delete(user);
 	}
-	
+
 	public Boolean isAdmin(User user) {
 		Boolean result = false;
-		for(Authorities au:user.getAuthorities()) {
-			if(!result && au.getAuthority().equals(("admin"))) {
+		for (Authorities au : user.getAuthorities()) {
+			if (!result && au.getAuthority().equals(("admin"))) {
 				result = true;
 			}
 		}

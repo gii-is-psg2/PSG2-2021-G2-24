@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Table(name = "rooms")
 @Entity
-public class Room extends BaseEntity{
+public class Room extends BaseEntity {
 
-	
 }

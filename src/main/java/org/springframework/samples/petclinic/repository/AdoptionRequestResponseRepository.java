@@ -9,16 +9,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.AdoptionRequestResponse;
 import org.springframework.samples.petclinic.model.Authorities;
-import org.springframework.samples.petclinic.model.Owner;
 
-public interface AdoptionRequestResponseRepository extends CrudRepository<AdoptionRequestResponse, Integer>{
+public interface AdoptionRequestResponseRepository extends CrudRepository<AdoptionRequestResponse, Integer> {
 
 	@Query("SELECT ar FROM AdoptionRequest ar ORDER BY ar.id")
 	List<AdoptionRequest> findAdoptionRequests() throws DataAccessException;
-	
-	@Query("SELECT  auth FROM Authorities auth WHERE auth.user.username LIKE :username")
-	public Authorities getAuthority(@Param("username")String username) throws DataAccessException;
-	
 
-	
+	@Query("SELECT  auth FROM Authorities auth WHERE auth.user.username LIKE :username")
+	public Authorities getAuthority(@Param("username") String username) throws DataAccessException;
+
 }

@@ -12,16 +12,17 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Reserva;
 import org.springframework.samples.petclinic.model.Room;
 
-public interface ReservaRepository extends CrudRepository<Reserva,Integer> {
+public interface ReservaRepository extends CrudRepository<Reserva, Integer> {
 
 	@Query("SELECT  auth FROM Authorities auth WHERE auth.user.username LIKE :username")
-	public Authorities getAuthority(@Param("username")String username) throws DataAccessException;
-	
+	public Authorities getAuthority(@Param("username") String username) throws DataAccessException;
+
 	@Query("SELECT pet FROM Pet pet ORDER BY pet.id")
 	List<Pet> findPets() throws DataAccessException;
+
 	@Query("SELECT owner FROM Owner owner ORDER BY owner.id")
 	List<Owner> findOwners() throws DataAccessException;
-	
+
 	@Query("SELECT room FROM Room room ORDER BY room.id")
 	List<Room> findRooms() throws DataAccessException;
 }
