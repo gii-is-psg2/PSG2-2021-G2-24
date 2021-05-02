@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.web;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -115,7 +113,9 @@ public class OwnerController {
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.ownerService.findOwnerById(ownerId);
 		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
-		assertTrue(userOp.isPresent());
+		if (!userOp.isPresent()) {
+			return "redirect:/oups";
+		}
 		User user = userOp.get();
 		if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) && !this.userService.isAdmin(user)) {
 			return "redirect:/oups";
@@ -131,7 +131,9 @@ public class OwnerController {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		} else {
 			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
-			assertTrue(userOp.isPresent());
+			if (!userOp.isPresent()) {
+				return "redirect:/oups";
+			}
 			User user = userOp.get();
 			if (!this.userService.isAdmin(user) && !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
@@ -172,7 +174,9 @@ public class OwnerController {
 
 		Owner owner = this.ownerService.findOwnerById(ownerId);
 		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
-		assertTrue(userOp.isPresent());
+		if (!userOp.isPresent()) {
+			return "redirect:/oups";
+		}
 		User user = userOp.get();
 		if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) && !this.userService.isAdmin(user)) {
 			return "redirect:/oups";

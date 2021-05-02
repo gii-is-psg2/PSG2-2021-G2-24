@@ -1,6 +1,5 @@
-package org.springframework.samples.petclinic.web;
 
-import static org.junit.Assert.assertTrue;
+package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -182,12 +181,14 @@ public class ReservaController {
 	public String deleteBooking(@RequestParam("reservaId") int reservaId) {
 		Optional<Reserva> reservaOp = this.reservaSer.getReservaById(reservaId);
 		if (!reservaOp.isPresent()) {
-			return "redirect:/oups";
+			return "redirect:/login";
 		} else {
 			Reserva reserva = reservaOp.get();
 			Owner owner = reserva.getOwner();
 			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
-			assertTrue(userOp.isPresent());
+			if (!userOp.isPresent()) {
+				return "redirect:/oups";
+			}
 			User user = userOp.get();
 			if (!(owner.getUser().getUsername().equals(UserUtils.getUser())) && !this.userService.isAdmin(user)) {
 				return "redirect:/oups";
