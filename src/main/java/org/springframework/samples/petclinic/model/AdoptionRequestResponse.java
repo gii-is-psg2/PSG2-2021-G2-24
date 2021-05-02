@@ -4,7 +4,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -27,10 +26,10 @@ public class AdoptionRequestResponse extends BaseEntity {
 
 	@NotNull
 	private String description;
-	
+
 	@Column(name = "isactive")
 	private boolean isactive;
-	
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER,mappedBy = "response")
+
+	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "response")
 	private Notification notification;
 }

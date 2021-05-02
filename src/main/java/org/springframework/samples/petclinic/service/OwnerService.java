@@ -33,19 +33,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OwnerService {
 
-	private OwnerRepository ownerRepository;	
-	
+	private OwnerRepository ownerRepository;
 
 	private UserService userService;
-	
+
 	private AuthoritiesService authoritiesService;
 
 	@Autowired
-	public OwnerService(OwnerRepository ownerRepository, AuthoritiesService authoritiesService, UserService userService) {
+	public OwnerService(OwnerRepository ownerRepository, AuthoritiesService authoritiesService,
+			UserService userService) {
 		this.ownerRepository = ownerRepository;
 		this.authoritiesService = authoritiesService;
 		this.userService = userService;
-	}	
+	}
 
 	@Transactional(readOnly = true)
 	public Owner findOwnerById(int id) throws DataAccessException {
@@ -59,18 +59,18 @@ public class OwnerService {
 
 	@Transactional
 	public void saveOwner(Owner owner) throws DataAccessException {
-		ownerRepository.save(owner);	
-		
+		ownerRepository.save(owner);
+
 		this.userService.saveUser(owner.getUser());
 		this.authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
-		
-	}		
-	
+
+	}
+
 	@Transactional
 	public void deleteOwner(Owner owner) throws DataAccessException {
 		ownerRepository.delete(owner);
 	}
-	
+
 	@Transactional
 	public Owner findByUserName(String username) throws DataAccessException {
 		return ownerRepository.findByUsername(username);

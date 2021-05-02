@@ -45,8 +45,7 @@ import org.springframework.beans.support.PropertyComparator;
 public class Vet extends Person {
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
-			inverseJoinColumns = @JoinColumn(name = "specialty_id"))
+	@JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
 	private Set<Specialty> specialties;
 
 	protected Set<Specialty> getSpecialtiesInternal() {
@@ -59,7 +58,7 @@ public class Vet extends Person {
 	protected void setSpecialtiesInternal(Set<Specialty> specialties) {
 		this.specialties = specialties;
 	}
-	
+
 	@XmlElement
 	public List<Specialty> getSpecialties() {
 		List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());

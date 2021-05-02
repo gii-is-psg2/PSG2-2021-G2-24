@@ -22,9 +22,9 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Visit;
 
 /**
- * Repository class for <code>Visit</code> domain objects All method names are compliant
- * with Spring Data naming conventions so this interface can easily be extended for Spring
- * Data See here:
+ * Repository class for <code>Visit</code> domain objects All method names are
+ * compliant with Spring Data naming conventions so this interface can easily be
+ * extended for Spring Data See here:
  * http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -36,6 +36,7 @@ public interface VisitRepository extends CrudRepository<Visit, Integer> {
 
 	/**
 	 * Save a <code>Visit</code> to the data store, either inserting or updating it.
+	 * 
 	 * @param visit the <code>Visit</code> to save
 	 * @see BaseEntity#isNew
 	 */

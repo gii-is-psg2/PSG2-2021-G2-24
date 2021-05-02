@@ -23,8 +23,8 @@ import org.springframework.validation.Validator;
 /**
  * <code>Validator</code> for <code>Pet</code> forms.
  * <p>
- * We're not using Bean Validation annotations here because it is easier to define such
- * validation rule in Java.
+ * We're not using Bean Validation annotations here because it is easier to
+ * define such validation rule in Java.
  * </p>
  *
  * @author Ken Krebs
@@ -39,8 +39,9 @@ public class PetValidator implements Validator {
 		Pet pet = (Pet) obj;
 		String name = pet.getName();
 		// name validation
-		if (!StringUtils.hasLength(name) || name.length()>50 || name.length()<3) {
-			errors.rejectValue("name", REQUIRED+" and between 3 and 50 characters", REQUIRED+" and between 3 and 50 character");
+		if (!StringUtils.hasLength(name) || name.length() > 50 || name.length() < 3) {
+			errors.rejectValue("name", REQUIRED + " and between 3 and 50 characters",
+					REQUIRED + " and between 3 and 50 character");
 		}
 
 		// type validation

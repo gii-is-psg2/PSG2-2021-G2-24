@@ -15,7 +15,10 @@
  */
 package org.springframework.samples.petclinic.web;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -25,6 +28,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Reserva;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.ReservaService;
@@ -77,13 +81,6 @@ public class PetController {
 		return this.ownerService.findOwnerById(ownerId);
 	}
 
-	/*
-	 * @ModelAttribute("pet") public Pet findPet(@PathVariable("petId") Integer
-	 * petId) { Pet result=null; if(petId!=null)
-	 * result=this.clinicService.findPetById(petId); else result=new Pet(); return
-	 * result; }
-	 */
-
 	@InitBinder("owner")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -96,9 +93,10 @@ public class PetController {
 
 	@GetMapping(value = "/pets/new")
 	public String initCreationForm(Owner owner, ModelMap model) {
-
-		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
-				&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
+		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+		assertTrue(userOp.isPresent());
+		User user = userOp.get();
+		if (!this.userService.isAdmin(user) && !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 		}
 		Pet pet = new Pet();
@@ -113,8 +111,10 @@ public class PetController {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
-			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
-					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
+			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+			assertTrue(userOp.isPresent());
+			User user = userOp.get();
+			if (!this.userService.isAdmin(user) && !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
 				owner.addPet(pet);
@@ -127,8 +127,10 @@ public class PetController {
 	@GetMapping(value = "/pets/{petId}/edit")
 	public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
 		Pet pet = this.petService.findPetById(petId);
-		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
-				&& !(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
+		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+		assertTrue(userOp.isPresent());
+		User user = userOp.get();
+		if (!this.userService.isAdmin(user) && !(pet.getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 		}
 		model.put("pet", pet);
@@ -152,8 +154,10 @@ public class PetController {
 			model.put("pet", pet);
 			return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
-			if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
-					&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
+			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+			assertTrue(userOp.isPresent());
+			User user = userOp.get();
+			if (!this.userService.isAdmin(user) && !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 				return "redirect:/oups";
 			} else {
 				Pet petToUpdate = this.petService.findPetById(petId);
@@ -169,13 +173,15 @@ public class PetController {
 	public String deletePet(@RequestParam("petId") int petId, @PathVariable("ownerId") int ownerId) {
 
 		Owner owner = this.ownerService.findOwnerById(ownerId);
-		if (!this.userService.isAdmin(this.userService.findUser(UserUtils.getUser()).get())
-				&& !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
+		Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
+		assertTrue(userOp.isPresent());
+		User user = userOp.get();
+		if (!this.userService.isAdmin(user) && !(owner.getUser().getUsername().equals(UserUtils.getUser()))) {
 			return "redirect:/oups";
 
 		} else {
 			for (Reserva reserva : this.reservaSer.findAll()) {
-				if (reserva.getPet().getId() == petId) {
+				if (reserva.getPet().getId().equals(petId)) {
 					reservaSer.delete(reserva);
 				}
 			}

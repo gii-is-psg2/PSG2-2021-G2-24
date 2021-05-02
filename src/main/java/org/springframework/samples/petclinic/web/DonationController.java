@@ -15,11 +15,9 @@ import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Causa;
 import org.springframework.samples.petclinic.model.Donation;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.CausaService;
 import org.springframework.samples.petclinic.service.DonationService;
 import org.springframework.samples.petclinic.service.OwnerService;
-import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 public class DonationController {
 
 	private final DonationService donationSer;
-	private final UserService userService;
 	private final CausaService causaService;
 	private final OwnerService ownerService;
 
@@ -49,10 +46,8 @@ public class DonationController {
 	private DonationValidator donationVal;
 
 	@Autowired
-	public DonationController(DonationService donationSer, UserService userService, CausaService causaService,
-			OwnerService ownerService) {
-		this.userService = userService;
-		this.donationSer = donationSer;
+	public DonationController(DonationService donationService, CausaService causaService, OwnerService ownerService) {
+		this.donationSer = donationService;
 		this.causaService = causaService;
 		this.ownerService = ownerService;
 	}
@@ -66,7 +61,7 @@ public class DonationController {
 	public String donationsList(ModelMap modelMap) {
 		String username = UserUtils.getUser();
 		Authorities authority = donationSer.getAuthority(username);
-		List<Donation> donations = new ArrayList<Donation>();
+		List<Donation> donations = new ArrayList<>();
 		if (authority.getAuthority().equals("owner")) {
 			Owner owner = ownerService.findByUserName(username);
 			for (Causa causa : owner.getCausas()) {
@@ -79,10 +74,7 @@ public class DonationController {
 			donations = StreamSupport.stream(donationSer.findAll().spliterator(), false).collect(Collectors.toList());
 		}
 		modelMap.addAttribute("donations", donations);
-
-		String view = "donations/donationsList";
-
-		return view;
+		return "donations/donationsList";
 	}
 
 	@GetMapping(path = "{causaId}/new")
@@ -99,7 +91,7 @@ public class DonationController {
 	@ModelAttribute("usernames")
 	public Collection<String> populateUsernames() {
 
-		List<String> usernames = new ArrayList<String>();
+		List<String> usernames = new ArrayList<>();
 		String username = UserUtils.getUser();
 		Authorities authority = donationSer.getAuthority(username);
 		if (authority.getAuthority().equals("owner")) {
@@ -120,22 +112,21 @@ public class DonationController {
 
 	@ModelAttribute("causas")
 	public Collection<String> populateCausas() {
-		List<String> causastostr = new ArrayList<String>();
-		List<Causa> causas = new ArrayList<Causa>();
+		List<String> causastostr = new ArrayList<>();
+		List<Causa> causas = new ArrayList<>();
 		String username = UserUtils.getUser();
 		Authorities authority = donationSer.getAuthority(username);
 		if (authority.getAuthority().equals("owner")) {
 			for (Owner owner : donationSer.findOwners()) {
 				if (owner.getUser().getUsername().equals(username)) {
-					causas = new ArrayList<Causa>();
+					causas = new ArrayList<>();
 					for (Causa causa : this.donationSer.findCausas()) {
-						if (causa.getOwner().getId() == owner.getId()) {
+						if (causa.getOwner().getId().equals(owner.getId())) {
 							causas.add(causa);
 						}
 					}
 				}
 			}
-
 		} else {
 			causas = StreamSupport.stream(donationSer.findCausas().spliterator(), false).collect(Collectors.toList());
 		}
@@ -150,9 +141,7 @@ public class DonationController {
 	@PostMapping()
 	public String saveDonation(@Valid Donation donation, @RequestParam("owner.user.username") String username,
 			@RequestParam("CausaId") int causaId, BindingResult result, ModelMap modelMap) {
-		String view;
 		if (result.hasErrors()) {
-			// log.info("Tiene errores");
 			modelMap.addAttribute("donation", donation);
 			return "donations/createDonation";
 		} else {

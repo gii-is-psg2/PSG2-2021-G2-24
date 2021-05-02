@@ -10,10 +10,10 @@ import lombok.Data;
 @Data
 @Table(name = "notifications")
 
-public class Notification extends BaseEntity{
+public class Notification extends BaseEntity {
 
 	private String message;
-	
+
 	@OneToOne
 	private AdoptionRequestResponse response;
 }
