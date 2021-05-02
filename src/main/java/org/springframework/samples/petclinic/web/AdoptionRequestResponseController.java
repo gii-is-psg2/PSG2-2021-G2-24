@@ -167,13 +167,14 @@ public class AdoptionRequestResponseController {
 			return add;
 		} else {
 			Optional<AdoptionRequest> optional = this.adoptionRequestService.findById(ar);
+			System.out.println(optional.isPresent());
 			assertTrue(optional.isPresent());
 			AdoptionRequest a = optional.get();
 			arr.setAdoptionrequest(a);
 			Owner owner = ownerService.findByUserName(username);
 			if (owner.equals(a.getOwner())) {
 				modelMap.addAttribute(response, arr);
-				modelMap.addAttribute(message, "You cannot adopt your own pet Stupid");
+				modelMap.addAttribute(message, "You cannot adopt your own pet");
 				return add;
 			}
 			arr.setOwner(owner);

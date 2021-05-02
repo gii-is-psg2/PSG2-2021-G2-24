@@ -96,20 +96,16 @@ public class ReservaService {
 		LocalDate fechaFinal1 = res1.getEndingDate();
 		LocalDate fechaFinal2 = res2.getEndingDate();
 
-		if (res1.getId().equals(res2.getId())) {
-			return false;
-		} else {
-			if ((fechaInicial1.isAfter(fechaInicial2) && fechaInicial1.isBefore(fechaFinal2))
-					|| (fechaFinal1.isAfter(fechaInicial2) && fechaFinal1.isBefore(fechaFinal2))) {
-				return true;
-			}
-			if ((fechaInicial2.isAfter(fechaInicial1) && fechaInicial2.isBefore(fechaFinal1))
-					|| (fechaFinal2.isAfter(fechaInicial1) && fechaFinal2.isBefore(fechaFinal1))) {
-				return true;
-			}
-			if (fechaInicial1.isEqual(fechaInicial2) && fechaFinal1.isEqual(fechaFinal1)) {
-				return true;
-			}
+		if ((fechaInicial1.isAfter(fechaInicial2) && fechaInicial1.isBefore(fechaFinal2))
+				|| (fechaFinal1.isAfter(fechaInicial2) && fechaFinal1.isBefore(fechaFinal2))) {
+			return true;
+		}
+		if ((fechaInicial2.isAfter(fechaInicial1) && fechaInicial2.isBefore(fechaFinal1))
+				|| (fechaFinal2.isAfter(fechaInicial1) && fechaFinal2.isBefore(fechaFinal1))) {
+			return true;
+		}
+		if (fechaInicial1.isEqual(fechaInicial2) && fechaFinal1.isEqual(fechaFinal1)) {
+			return true;
 		}
 		return false;
 	}
