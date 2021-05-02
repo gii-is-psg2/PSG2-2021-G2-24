@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.web;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -167,7 +165,9 @@ public class VetController {
 			return "redirect:/oups";
 		}
 		Optional<Vet> vetOp = vetService.findVetbyId(vetId);
-		assertTrue(vetOp.isPresent());
+		if (!vetOp.isPresent()) {
+			return "redirect:/oups";
+		}
 		Vet vet = vetOp.get();
 		model.put("vet", vet);
 		return "vets/updateVet";

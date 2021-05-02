@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.web;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Map;
 import java.util.Optional;
 
@@ -89,7 +87,9 @@ public class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		} else {
 			Optional<User> userOp = this.userService.findUser(UserUtils.getUser());
-			assertTrue(userOp.isPresent());
+			if (!userOp.isPresent()) {
+				return "redirect:/oups";
+			}
 			User user = userOp.get();
 			if (!this.userService.isAdmin(user)
 					&& !(visit.getPet().getOwner().getUser().getUsername().equals(UserUtils.getUser()))) {
