@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.web;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -127,7 +125,9 @@ public class AdoptionRequestResponseController {
 			@RequestParam("accepted") Boolean accepted) {
 		Notification notification = new Notification();
 		Optional<AdoptionRequestResponse> adoptionRequestResponseOp = this.adoptionRequestResponseService.findById(id);
-		assertTrue(adoptionRequestResponseOp.isPresent());
+		if (!adoptionRequestResponseOp.isPresent()) {
+			return "redirect:/oups";
+		}
 		AdoptionRequestResponse adoptionRequestResponse = adoptionRequestResponseOp.get();
 		notification.setResponse(adoptionRequestResponse);
 		if (accepted) {
@@ -167,8 +167,9 @@ public class AdoptionRequestResponseController {
 			return add;
 		} else {
 			Optional<AdoptionRequest> optional = this.adoptionRequestService.findById(ar);
-			System.out.println(optional.isPresent());
-			assertTrue(optional.isPresent());
+			if (!optional.isPresent()) {
+				return "redirect:/oups";
+			}
 			AdoptionRequest a = optional.get();
 			arr.setAdoptionrequest(a);
 			Owner owner = ownerService.findByUserName(username);

@@ -25,7 +25,7 @@ public class Donation extends BaseEntity {
 	@JoinColumn(name = "owner_id")
 	private Owner owner;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "causa_id")
 	private Causa causa;
 
