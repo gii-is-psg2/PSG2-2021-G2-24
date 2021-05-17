@@ -51,3 +51,4 @@ In the retrospective meeting, the team has a discussion about those results.
 | 02/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
 | 03/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
 | 09/05/2021    |               |                |                |                |   :smile:      |                |
+| 16/05/2021    |               |                |   :smile:      |                |                |                |
