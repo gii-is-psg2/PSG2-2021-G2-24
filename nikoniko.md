@@ -50,7 +50,9 @@ In the retrospective meeting, the team has a discussion about those results.
 | 01/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
 | 02/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
 | 03/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
-| 09/05/2021    |               |                |                |                |   :smile:      |                |
+| 07/05/2021    |   :smile      |                |                |                |                |                |
+| 09/05/2021    |   :smile      |                |                |                |   :smile:      |                |
+| 10/05/2021    |   :smile      |                |                |                |                |                |
 | 14/05/2021    |               |                |                |                |   :smile:      |                |
-| 15/05/2021    |               |                |                |                |:neutral_face:  |                |
-| 16/05/2021    |               |                |   :smile:      |                |                |                |
+| 15/05/2021    |:smile:        |               |                |                |:neutral_face:  |                |
+| 16/05/2021    |:smile:        |               |   :smile:      |                |                |                |
