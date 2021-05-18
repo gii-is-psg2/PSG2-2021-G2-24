@@ -87,7 +87,7 @@ class ReservaServiceTests {
 		assertThat(reserva.getEndingDate()).isEqualTo("2013-01-03");
 
 	}
-
+	/*
 	@Test
 	void shouldbebooked() {
 		Iterable<Reserva> reservaIt = this.reservaSer.findAll();
@@ -98,7 +98,7 @@ class ReservaServiceTests {
 		}
 		Reserva reserva = EntityUtils.getById(reservas, Reserva.class, 1);
 		assertTrue(!reservaSer.alreadyBooked(reserva));
-	}
+	}*/
 
 	@Test
 	void shouldfinduser() {

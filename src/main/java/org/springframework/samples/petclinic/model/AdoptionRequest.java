@@ -9,14 +9,36 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
+
 
 @Entity
-@Getter
-@Setter
+
 @Table(name = "adoptionrequests")
 public class AdoptionRequest extends BaseEntity {
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
+	public Pet getPet() {
+		return pet;
+	}
+
+	public void setPet(Pet pet) {
+		this.pet = pet;
+	}
+
+	public Set<AdoptionRequestResponse> getAdoptionRequestResponse() {
+		return adoptionRequestResponse;
+	}
+
+	public void setAdoptionRequestResponse(Set<AdoptionRequestResponse> adoptionRequestResponse) {
+		this.adoptionRequestResponse = adoptionRequestResponse;
+	}
 
 	@ManyToOne
 	private Owner owner;
