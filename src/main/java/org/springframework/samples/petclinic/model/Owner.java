@@ -36,8 +36,6 @@ import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -49,8 +47,6 @@ import lombok.Setter;
  */
 
 @Entity
-@Getter
-@Setter
 @Table(name = "owners")
 public class Owner extends Person {
 
@@ -85,6 +81,22 @@ public class Owner extends Person {
 
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "owner", fetch = FetchType.EAGER)
 	private Set<Causa> causas;
+
+	public Set<Donation> getDonations() {
+		return donations;
+	}
+
+	public void setDonations(Set<Donation> donations) {
+		this.donations = donations;
+	}
+
+	public Set<Causa> getCausas() {
+		return causas;
+	}
+
+	public void setCausas(Set<Causa> causas) {
+		this.causas = causas;
+	}
 
 	//
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
