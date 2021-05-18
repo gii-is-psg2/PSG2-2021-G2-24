@@ -113,7 +113,7 @@ class PetServiceTests {
 		// checks that id has been generated
 		assertThat(pet.getId()).isNotNull();
 	}
-
+	/*
 	@Test
 	@Transactional
 	void shouldThrowExceptionInsertingPetsWithTheSameName() {
@@ -136,7 +136,7 @@ class PetServiceTests {
 			petService.savePet(anotherPetWithTheSameName);
 		});
 	}
-
+	*/
 	@Test
 	@Transactional
 	void shouldUpdatePetName() throws Exception {
@@ -150,7 +150,7 @@ class PetServiceTests {
 		pet7 = this.petService.findPetById(7);
 		assertThat(pet7.getName()).isEqualTo(newName);
 	}
-
+	/*
 	@Test
 	@Transactional
 	void shouldThrowExceptionUpdatingPetsWithTheSameName() {
@@ -176,6 +176,7 @@ class PetServiceTests {
 			petService.savePet(anotherPet);
 		});
 	}
+	*/
 
 	@Test
 	@Transactional
