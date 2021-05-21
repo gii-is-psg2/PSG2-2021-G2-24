@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.web;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -153,7 +155,8 @@ public class DonationController {
 			Optional<Causa> causaOp = causaService.getCausaById(causaId);
 			assert causaOp.isPresent();
 			Causa causa = causaOp.get();
-			Double donationAct = causa.getTotalDonation() + donation.getImporteDonacion();
+			Double d = round(donation.getImporteDonacion(), 2);			
+			Double donationAct = causa.getTotalDonation() + d;
 			causa.setTotalDonation(donationAct);
 			if (causa.getBudgetTarget() <= causa.getTotalDonation()) {
 				causa.setClosed(true);
@@ -164,6 +167,14 @@ public class DonationController {
 			donationSer.save(donation);
 		}
 		return "redirect:/causas/donations/list";
+	}
+	
+	private static Double round(Double value, Integer places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = BigDecimal.valueOf(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 
 }

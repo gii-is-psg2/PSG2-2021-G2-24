@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 @Entity
 @Table(name = "donations")
 
@@ -27,7 +26,7 @@ public class Donation extends BaseEntity {
 
 	@Column(name = "importeDonacion")
 	@NotNull
-	Double importeDonacion;
+	private Double importeDonacion;
 
 	@Column(name = "fechaDonacion")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
