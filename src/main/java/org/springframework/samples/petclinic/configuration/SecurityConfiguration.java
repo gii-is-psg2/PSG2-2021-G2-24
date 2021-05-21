@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAnyAuthority(admin, owner).antMatchers("/donations/**").hasAnyAuthority(admin, owner)
 				.antMatchers("/notifications/**").hasAnyAuthority(admin, owner)
 				.antMatchers("/manage/health/**").permitAll()
+				.antMatchers("/contact").permitAll()
 				.anyRequest().denyAll().and().formLogin()
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");

@@ -8,7 +8,6 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="reservas">
@@ -35,6 +34,8 @@
 			</tr>
 		</thead>
 		<tbody>
+
+
 			<c:forEach items="${reservas}" var="reserva">
 				<tr>
 					<td><c:out value="${reserva.id}" /></td>
