@@ -12,8 +12,12 @@ public class DonationValidator implements Validator {
 	public void validate(Object obj, Errors errors) {
 		Donation donation = (Donation) obj;
 
-		if (donation.getImporteDonacion() <= 0.00) {
-			errors.rejectValue("importe", "Value is required", "Value is required");
+		if (donation.getImporteDonacion() < 0.00) {
+			errors.rejectValue("importe", "El valor debe ser mayor de 0", "El valor debe ser mayor de 0");
+		}
+
+		if (donation.getImporteDonacion().toString() != String.format("%.2f", donation.getImporteDonacion().toString())) {
+			errors.rejectValue("importe", "El importe debe escribirse con 2 cifras decimales", "El importe debe escribirse con 2 cifras decimales");
 		}
 	}
 
