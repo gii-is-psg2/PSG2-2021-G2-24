@@ -50,18 +50,18 @@ In the retrospective meeting, the team has a discussion about those results.
 | 01/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
 | 02/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
 | 03/05/2021    |:smile:        |   :smile:      |  :smile:       |:smile:         |   :smile:      |                |
-| 07/05/2021    |   :smile:     |                |                |                |                |                |
-| 09/05/2021    |   :smile:     |                |                |                |   :smile:      |                |
-| 10/05/2021    |   :smile:     |                |                |                |                |                |
-| 14/05/2021    |               |                |                |                |   :smile:      |                |
+| 07/05/2021    |   :smile:     |   :smile:      |                |                |                |                |
+| 09/05/2021    |   :smile:     |   :smile:      |                |                |   :smile:      |                |
+| 10/05/2021    |   :smile:     |   :smile:      |                |                |                |                |
+| 14/05/2021    |               |   :smile:      |                |                |   :smile:      |                |
 | 15/05/2021    |:smile:        |                |                |                |:neutral_face:  |                |
-| 16/05/2021    |:smile:        |                |   :smile:      |                |:neutral_face:  |                |
+| 16/05/2021    |:smile:        |   :smile:      |   :smile:      |                |:neutral_face:  |                |
 | 17/05/2021    |               |                |                |                |  :smile:       |                |
 | 18/05/2021    |               |                |   :smile:      |                |                |                |
-| 19/05/2021    |               |                |   :smile:      |                |                |                |
+| 19/05/2021    |               |   :smile:      |   :smile:      |                |                |                |
 | 20/05/2021    |               |                |                |                |  :smile:       |                |
-| 21/05/2021    |   :neutral_face:       |                |   :smile:      |                |  :worried:     |                |
-| 22/05/2021    |               |                |                |                |  :smile:       |                |
+| 21/05/2021    | :neutral_face:| :neutral_face: |   :smile:      |                |  :worried:     |                |
+| 22/05/2021    |               |   :smile:      |                |                |  :smile:       |                |
 | 23/05/2021    |     :smile:   |                |                |                |:neutral_face:  |                |
 
 
