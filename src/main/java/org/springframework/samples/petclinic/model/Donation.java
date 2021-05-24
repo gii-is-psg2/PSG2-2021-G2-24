@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.model;
 
+//import java.math.BigDecimal;
+//import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -62,6 +64,5 @@ public class Donation extends BaseEntity {
 
 	public void setFechaDonacion(LocalDate fechaDonacion) {
 		this.fechaDonacion = fechaDonacion;
-	}
-
+	}	
 }
