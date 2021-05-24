@@ -60,8 +60,8 @@ In the retrospective meeting, the team has a discussion about those results.
 | 18/05/2021    |               |                |   :smile:      |                |                |                |
 | 19/05/2021    |               |                |   :smile:      |                |                |                |
 | 20/05/2021    |               |                |                |                |  :smile:       |                |
-| 21/05/2021    |               |                |   :smile:      |                |  :worried:     |                |
+| 21/05/2021    |   :neutral_face:       |                |   :smile:      |                |  :worried:     |                |
 | 22/05/2021    |               |                |                |                |  :smile:       |                |
-| 23/05/2021    |               |                |                |                |:neutral_face:  |                |
+| 23/05/2021    |     :smile:   |                |                |                |:neutral_face:  |                |
 
 
