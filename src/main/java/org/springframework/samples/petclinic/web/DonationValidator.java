@@ -12,15 +12,15 @@ public class DonationValidator implements Validator {
 	public void validate(Object obj, Errors errors) {
 		Donation donation = (Donation) obj;
 		String s = donation.getImporteDonacion().toString();
-		String[] a = s.split(".");
+		String[] a = s.split("\\.");
 
-		if (donation.getImporteDonacion() < 0.00) {
+		if (donation.getImporteDonacion() <= 0) {
 			errors.rejectValue("importe", "El valor debe ser mayor de 0", "El valor debe ser mayor de 0");
 		}
 
 		if (a[1].length() >= 3) {
-			errors.rejectValue("importe", "El valor debe tener dos valores decimales",
-					"El valor debe tener dos valores decimales");
+			errors.rejectValue("importe", "El valor debe tener hasta dos valores decimales",
+					"El valor debe tener hasta dos valores decimales");
 		}
 	}
 
