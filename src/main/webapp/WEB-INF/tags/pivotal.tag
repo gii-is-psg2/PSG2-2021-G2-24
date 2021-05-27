@@ -9,11 +9,18 @@
 				src="<spring:url value="/resources/images/logopsgus.png" htmlEscape="true" />"
 				alt="Sponsored by Pivotal" />
 		</div>
-
-
-
 	</div>
 	<spring:url value="/contact" var="contact">
 	</spring:url>
 	<a href="${fn:escapeXml(contact)}"><strong>Contact us</strong></a>
+	
+	<p></p>
+	
+	<spring:url value="/terms_and_conditions" var="terms_and_conditions">
+	</spring:url>
+	<a href="${fn:escapeXml(terms_and_conditions)}"><strong>Terms and Conditions</strong></a>
+	
 </div>
+
+
+	
