@@ -14,13 +14,7 @@
 			<tr>
 				<th style="width: 150px;">Client</th>
 				<th style="width: 200px;">Cause</th>
-				<th style="width: 200px;">Amount</th>
-
-
-				
-
-
-
+				<th style="width: 200px;">Amount</th>	
 			</tr>
 		</thead>
         <tbody>

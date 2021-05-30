@@ -1,9 +1,9 @@
-
 package org.springframework.samples.petclinic.web;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -14,7 +14,9 @@ import org.springframework.samples.petclinic.model.AdoptionRequest;
 import org.springframework.samples.petclinic.model.Authorities;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.AdoptionRequestService;
+import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,10 +32,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AdoptionRequestController {
 
 	private final AdoptionRequestService adoptionRequestService;
-
+	private final UserService userService;
+	
 	@Autowired
-	public AdoptionRequestController(AdoptionRequestService adoptioReqser) {
+	public AdoptionRequestController(AdoptionRequestService adoptioReqser, UserService userService) {
 		this.adoptionRequestService = adoptioReqser;
+		this.userService = userService;
 	}
 	
 	private Authorities getAuthorities(String userName) {
@@ -50,24 +54,46 @@ public class AdoptionRequestController {
 
 	@GetMapping(path = "/new")
 	public String createAdoptionrequest(ModelMap modelMap) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if (!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
 		String view = "adoptionrequests/addAdoptionrequest";
+		modelMap.addAttribute("isAdmin", this.userService.isAdmin(userOp.get()));
 		modelMap.addAttribute("adoptionrequest", new AdoptionRequest());
+		modelMap.addAttribute("username", user.getUsername());
 		return view;
 	}
 
 	@PostMapping()
-	public String saveAdoptionrequest(@Valid AdoptionRequest adoptionRequest,
+	public String saveAdoptionrequest(@Valid AdoptionRequest adoptionRequest,BindingResult result,
 			@RequestParam("owner.user.username") String username, @RequestParam("pet.name") String petName,
-			BindingResult result, ModelMap modelMap) {
+			 ModelMap modelMap) {
+		System.out.println(petName);
 		String adoptionReq = "adoptionrequest";
 		String view = "redirect:/adoptionrequests/list";
-		if (result.hasErrors()) {
-			modelMap.addAttribute(adoptionReq, adoptionRequest);
-			return "redirect:/adoptionrequests/new";
+		if (result.hasErrors() || petName.equals("Error")) {
+			String userName = UserUtils.getUser();
+			Optional<User> userOp = this.userService.findUser(userName);
+			if (!userOp.isPresent()) {
+				return "redirect:/login";
+			}
+			User user = userOp.get();
+			modelMap.addAttribute("isAdmin", this.userService.isAdmin(userOp.get()));
+			modelMap.addAttribute("adoptionrequest", new AdoptionRequest());
+			modelMap.addAttribute("username", user.getUsername());
+			modelMap.addAttribute("message", "you must select a pet");
+			return "adoptionrequests/addAdoptionrequest";
 		} else {
+			String[] input = petName.split(",");
+			String petNameReal = input[0];
+			System.out.println(petNameReal);
+			System.out.println(username);
 			Boolean stop = false;
 			for (Pet pet : this.adoptionRequestService.findPets()) {
-				if (pet.getName().equals(petName) && !stop) {
+				if (pet.getName().equals(petNameReal) && !stop) {
 					if (pet.isAdoption()) {
 						modelMap.addAttribute(adoptionReq, adoptionRequest);
 						modelMap.addAttribute("message", "this pet is already in adoption");
