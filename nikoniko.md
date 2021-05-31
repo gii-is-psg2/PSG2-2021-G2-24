@@ -63,9 +63,12 @@ In the retrospective meeting, the team has a discussion about those results.
 | 21/05/2021    | :neutral_face:|   :worried:    |   :smile:      |                |  :worried:     |                |
 | 22/05/2021    |               |   :smile:      |                |                |  :smile:       |                |
 | 23/05/2021    |     :smile:   |                |                |                |:neutral_face:  |                |
-| 26/05/2021    |        |                |                |                       |                |                |
-| 28/05/2021    |               |                |        😟        |                |                |                |
-| 29/05/2021    |               |                |        :fearful:|                |         |                |
-| 30/05/2021    |     😐  |                |           :fearful:     |                |         |                |
-| 31/05/2021    |     :smile:   |                |         😄       |                |         |                |
+| 24/05/2021    |               |                |                |                | :neutral_face: |                |
+| 25/05/2021    |               |                |                |                |  :smile:       |                |
+| 26/05/2021    |               |                |                |                |                |                |
+| 27/05/2021    |               |                |                |                | :smile:        |                |
+| 28/05/2021    |               |                |  :worried:     |                |                |                |
+| 29/05/2021    |               |                |   :fearful:    |                | :neutral_face: |                |
+| 30/05/2021    |:neutral_face: |                |   :fearful:    |                | :neutral_face: |                |
+| 31/05/2021    |     :smile:   |                |    :smile:     |                |                |                |
 
