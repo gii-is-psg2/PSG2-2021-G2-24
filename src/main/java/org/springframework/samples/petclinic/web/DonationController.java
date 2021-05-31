@@ -31,9 +31,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
-
 @Controller
 @RequestMapping("causas/donations")
 public class DonationController {
@@ -165,5 +162,4 @@ public class DonationController {
 		}
 		return "redirect:/causas/donations/list";
 	}
-
 }

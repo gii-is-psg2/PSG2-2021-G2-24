@@ -40,7 +40,7 @@ public class ReservaController {
 	private final ReservaService reservaSer;
 	private final UserService userService;
 
-	private List<Reserva> reservations;
+	private List<Reserva> reservations = new ArrayList<>();
 
 	@Autowired
 	private ReservaValidator reservaVal;
@@ -74,6 +74,7 @@ public class ReservaController {
 				}
 			}
 			modelMap.addAttribute("reservas", reservations);
+			modelMap.addAttribute("currentDate", LocalDate.now());
 		} else {
 			modelMap.addAttribute("reservas", reservas);
 			modelMap.addAttribute("currentDate", LocalDate.now());

@@ -26,10 +26,13 @@
                 <div class="control-group">
                     <petclinic:inputField label="Description" name="descriptionCausa"/>
                 </div>
+                <c:if test="${isAdmin}">
                 <div class="control-group">
                     <petclinic:selectField name="owner.user.username" label="Username" names="${usernames}"  size="5"/>
-                </div>
-               
+                </div></c:if>
+               <c:if test="${!isAdmin}">
+               		<input type="hidden" name="owner.user.username" value="${username}"/>
+               </c:if>
 
             </div>
 			</div>	

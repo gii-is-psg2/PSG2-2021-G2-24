@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.model;
 
+//import java.math.BigDecimal;
+//import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -10,7 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 
 @Entity
 @Table(name = "donations")
@@ -27,7 +28,7 @@ public class Donation extends BaseEntity {
 
 	@Column(name = "importeDonacion")
 	@NotNull
-	Double importeDonacion;
+	private Double importeDonacion;
 
 	@Column(name = "fechaDonacion")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -63,6 +64,5 @@ public class Donation extends BaseEntity {
 
 	public void setFechaDonacion(LocalDate fechaDonacion) {
 		this.fechaDonacion = fechaDonacion;
-	}
-
+	}	
 }

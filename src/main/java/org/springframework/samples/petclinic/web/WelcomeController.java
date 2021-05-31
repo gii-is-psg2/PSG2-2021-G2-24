@@ -13,4 +13,9 @@ public class WelcomeController {
 
 		return "welcome";
 	}
+	@GetMapping("/contact")
+	public String contactUs(Map<String, Object> model) {
+
+		return "contact";
+	}
 }

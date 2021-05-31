@@ -20,6 +20,7 @@ import org.springframework.samples.petclinic.util.UserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-
 
 @Controller
 @RequestMapping("/causas")
@@ -64,8 +63,16 @@ public class CausaController {
 
 	@GetMapping(path = "/new")
 	public String createCausa(ModelMap modelMap) {
+		String userName = UserUtils.getUser();
+		Optional<User> userOp = this.userService.findUser(userName);
+		if (!userOp.isPresent()) {
+			return "redirect:/login";
+		}
+		User user = userOp.get();
 		String view = "causes/addCause";
+		modelMap.addAttribute("isAdmin", this.userService.isAdmin(userOp.get()));
 		modelMap.addAttribute("causa", new Causa());
+		modelMap.addAttribute("username", user.getUsername());
 		return view;
 	}
 
@@ -92,11 +99,11 @@ public class CausaController {
 	}
 
 	@PostMapping()
-	public String saveCausa(@Valid Causa causa, @RequestParam("owner.user.username") String username,
-			BindingResult result, ModelMap modelMap) {
+	public String saveCausa(@Valid Causa causa, BindingResult result,
+			@RequestParam("owner.user.username") String username, ModelMap modelMap) {
 		if (result.hasErrors()) {
 			modelMap.addAttribute("causas", causa);
-			return "redirect:/causas/new";
+			return "causes/addCause";
 		} else {
 			for (Owner owner : this.causaSer.findOwners()) {
 				if (owner.getUser().getUsername().equals(username)) {
